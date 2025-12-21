@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-serif: "Playfair Display", serif;
+  --font-family-sans: "Inter", sans-serif;
+
+  --color-dusty-blue: #8B9DC3;
+  --color-off-white: #FAF9F6;
+  --color-muted-slate: #64748B;
+}
