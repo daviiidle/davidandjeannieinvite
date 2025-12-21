@@ -1,0 +1,19 @@
+{
+  "guests": [
+    { "name": "John Smith", "table": 1 },
+    { "name": "Sarah Johnson", "table": 1 },
+    { "name": "Michael Chen", "table": 1 },
+    { "name": "Emily Davis", "table": 2 },
+    { "name": "Robert Wilson", "table": 2 },
+    { "name": "Jessica Martinez", "table": 2 },
+    { "name": "David Anderson", "table": 3 },
+    { "name": "Amanda Taylor", "table": 3 },
+    { "name": "Christopher Lee", "table": 3 },
+    { "name": "Michelle Brown", "table": 4 },
+    { "name": "Daniel Garcia", "table": 4 },
+    { "name": "Jennifer White", "table": 4 },
+    { "name": "Matthew Thompson", "table": 5 },
+    { "name": "Ashley Rodriguez", "table": 5 },
+    { "name": "James Miller", "table": 5 }
+  ]
+}

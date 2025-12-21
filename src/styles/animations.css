@@ -1,0 +1,51 @@
+/* Button Hover Animations */
+.btn-hover {
+  transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+}
+
+/* Link Hover Animations - Underline Grow */
+.link-hover {
+  position: relative;
+  text-decoration: none;
+  transition: color 300ms ease-in-out;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 300ms ease-in-out;
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Photo Card Hover Animations */
+.photo-card {
+  transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out, filter 300ms ease-in-out;
+}
+
+.photo-card:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Detail Card Hover Animation */
+.detail-card {
+  transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out;
+}
+
+.detail-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

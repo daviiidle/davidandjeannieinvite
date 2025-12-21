@@ -1,0 +1,151 @@
+import { theme } from '../theme';
+
+interface SocialLink {
+  platform: string;
+  url: string;
+  icon?: string;
+}
+
+interface FooterProps {
+  coupleName?: string;
+  email?: string;
+  showSocials?: boolean;
+  socialLinks?: SocialLink[];
+}
+
+export function Footer({
+  coupleName = "David & Jeannie",
+  email = "daviiidle@gmail.com",
+  showSocials = false,
+  socialLinks = []
+}: FooterProps) {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer
+      style={{
+        backgroundColor: theme.colors.primary.dustyBlue,
+        padding: `${theme.spacing['3xl']} ${theme.spacing.lg}`,
+        textAlign: 'center',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: theme.layout.maxWidth,
+          margin: '0 auto',
+        }}
+      >
+        {/* Social Links (Optional) */}
+        {showSocials && socialLinks.length > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: theme.spacing.lg,
+              marginBottom: theme.spacing.xl,
+            }}
+          >
+            {socialLinks.map((link, index) => (
+              <a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-hover"
+                style={{
+                  color: theme.colors.text.inverse,
+                  fontSize: theme.typography.fontSize.lg,
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontWeight: theme.typography.fontWeight.medium,
+                  textDecoration: 'none',
+                }}
+                aria-label={link.platform}
+              >
+                {link.icon || link.platform}
+              </a>
+            ))}
+          </div>
+        )}
+
+        {/* Contact Email */}
+        {email && (
+          <p
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              fontWeight: theme.typography.fontWeight.normal,
+              color: theme.colors.text.inverse,
+              marginBottom: theme.spacing.md,
+              opacity: 0.9,
+            }}
+          >
+            <a
+              href={`mailto:${email}`}
+              className="link-hover"
+              style={{
+                color: theme.colors.text.inverse,
+                display: 'inline-block',
+              }}
+            >
+              {email}
+            </a>
+          </p>
+        )}
+
+        {/* Divider */}
+        <div
+          style={{
+            width: '60px',
+            height: '1px',
+            backgroundColor: theme.colors.text.inverse,
+            margin: `${theme.spacing.lg} auto`,
+            opacity: 0.3,
+          }}
+        />
+
+        {/* Copyright */}
+        <p
+          className="font-serif"
+          style={{
+            fontFamily: theme.typography.fontFamily.serif,
+            fontSize: theme.typography.fontSize.base,
+            fontWeight: theme.typography.fontWeight.normal,
+            color: theme.colors.text.inverse,
+            marginBottom: theme.spacing.xs,
+          }}
+        >
+          {coupleName}
+        </p>
+
+        <p
+          className="font-sans"
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.sm,
+            fontWeight: theme.typography.fontWeight.normal,
+            color: theme.colors.text.inverse,
+            opacity: 0.8,
+          }}
+        >
+          © {currentYear} · All Rights Reserved
+        </p>
+
+        {/* Made with Love */}
+        <p
+          className="font-sans"
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.xs,
+            fontWeight: theme.typography.fontWeight.normal,
+            color: theme.colors.text.inverse,
+            opacity: 0.6,
+            marginTop: theme.spacing.lg,
+            fontStyle: 'italic',
+          }}
+        >
+          Made with ♡
+        </p>
+      </div>
+    </footer>
+  );
+}
