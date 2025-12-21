@@ -15,6 +15,7 @@ export function Hero({
   const { strings } = useLanguage();
   const resolvedGroom = groomName ?? strings.hero.groomName;
   const resolvedBride = brideName ?? strings.hero.brideName;
+  const backgroundImageUrl = 'https://images.unsplash.com/photo-1520854223477-08661d33a360?w=1600&auto=format&fit=crop&q=80';
   // Refs for animation targets
   const sectionRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -95,6 +96,10 @@ export function Hero({
       className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden"
       style={{
         backgroundColor: theme.colors.background.white,
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         position: 'relative',
         transformOrigin: 'center center',
       }}

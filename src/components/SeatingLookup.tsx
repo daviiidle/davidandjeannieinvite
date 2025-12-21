@@ -225,104 +225,104 @@ export function SeatingLookup() {
             flexDirection: 'column',
             gap: theme.spacing.md,
             marginBottom: theme.spacing.xl,
-            position: 'relative',
           }}
         >
-          {/* Input Field */}
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={seatingText.inputPlaceholder}
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            onKeyDown={handleKeyDown}
-            autoComplete="off"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-expanded={showSuggestions}
-            aria-controls="suggestions-list"
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-              border: `2px solid ${theme.colors.primary.dustyBlue}40`,
-              borderRadius: theme.borderRadius.lg,
-              outline: 'none',
-              transition: theme.transitions.base,
-              backgroundColor: theme.colors.background.white,
-              color: theme.colors.text.primary,
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.primary.dustyBlue;
-              e.currentTarget.style.boxShadow = `0 0 0 3px ${theme.colors.primary.dustyBlue}20`;
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = `${theme.colors.primary.dustyBlue}40`;
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          />
-
-          {/* Suggestions Dropdown */}
-          {showSuggestions && suggestions.length > 0 && (
-            <div
-              ref={suggestionsRef}
-              id="suggestions-list"
-              role="listbox"
+          <div style={{ position: 'relative' }}>
+            {/* Input Field */}
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder={seatingText.inputPlaceholder}
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              onKeyDown={handleKeyDown}
+              autoComplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={showSuggestions}
+              aria-controls="suggestions-list"
               style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                right: 0,
-                marginTop: theme.spacing.xs,
-                backgroundColor: theme.colors.background.white,
-                border: `2px solid ${theme.colors.primary.dustyBlue}`,
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.base,
+                padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                border: `2px solid ${theme.colors.primary.dustyBlue}40`,
                 borderRadius: theme.borderRadius.lg,
-                boxShadow: theme.shadows.xl,
-                maxHeight: '300px',
-                overflowY: 'auto',
-                zIndex: 1000,
+                outline: 'none',
+                transition: theme.transitions.base,
+                backgroundColor: theme.colors.background.white,
+                color: theme.colors.text.primary,
               }}
-            >
-              {suggestions.map((guest, index) => (
-                <div
-                  key={`${guest.name}-${guest.table}`}
-                  role="option"
-                  aria-selected={selectedSuggestionIndex === index}
-                  onClick={() => handleSelectSuggestion(guest)}
-                  onMouseEnter={() => setSelectedSuggestionIndex(index)}
-                  style={{
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.base,
-                    padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-                    cursor: 'pointer',
-                    backgroundColor:
-                      selectedSuggestionIndex === index
-                        ? `${theme.colors.primary.dustyBlue}20`
-                        : theme.colors.background.white,
-                    color: theme.colors.text.primary,
-                    borderBottom:
-                      index < suggestions.length - 1
-                        ? `1px solid ${theme.colors.primary.dustyBlue}20`
-                        : 'none',
-                    transition: theme.transitions.fast,
-                  }}
-                >
-                  <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                    {guest.name}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.primary.dustyBlue;
+                e.currentTarget.style.boxShadow = `0 0 0 3px ${theme.colors.primary.dustyBlue}20`;
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = `${theme.colors.primary.dustyBlue}40`;
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            />
+
+            {/* Suggestions Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <div
+                ref={suggestionsRef}
+                id="suggestions-list"
+                role="listbox"
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 4px)',
+                  left: 0,
+                  right: 0,
+                  backgroundColor: theme.colors.background.white,
+                  border: `2px solid ${theme.colors.primary.dustyBlue}`,
+                  borderRadius: theme.borderRadius.lg,
+                  boxShadow: theme.shadows.xl,
+                  maxHeight: '300px',
+                  overflowY: 'auto',
+                  zIndex: 5,
+                }}
+              >
+                {suggestions.map((guest, index) => (
+                  <div
+                    key={`${guest.name}-${guest.table}`}
+                    role="option"
+                    aria-selected={selectedSuggestionIndex === index}
+                    onClick={() => handleSelectSuggestion(guest)}
+                    onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                    style={{
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.base,
+                      padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                      cursor: 'pointer',
+                      backgroundColor:
+                        selectedSuggestionIndex === index
+                          ? `${theme.colors.primary.dustyBlue}20`
+                          : theme.colors.background.white,
+                      color: theme.colors.text.primary,
+                      borderBottom:
+                        index < suggestions.length - 1
+                          ? `1px solid ${theme.colors.primary.dustyBlue}20`
+                          : 'none',
+                      transition: theme.transitions.fast,
+                    }}
+                  >
+                    <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
+                      {guest.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: theme.typography.fontSize.sm,
+                        color: theme.colors.text.secondary,
+                        marginTop: '2px',
+                      }}
+                    >
+                      {formatMessage(seatingText.tableLabel, { table: guest.table })}
+                    </div>
                   </div>
-                <div
-                  style={{
-                    fontSize: theme.typography.fontSize.sm,
-                    color: theme.colors.text.secondary,
-                    marginTop: '2px',
-                  }}
-                >
-                  {formatMessage(seatingText.tableLabel, { table: guest.table })}
-                </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Search Button */}
           <button

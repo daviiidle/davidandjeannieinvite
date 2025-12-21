@@ -24,6 +24,30 @@ export interface TranslationContent {
       seconds: string;
     };
     sectionTitle: string;
+    infoTitle?: string;
+    parents: {
+      groomTitle: string;
+      groomNames: string;
+      brideTitle: string;
+      brideNames: string;
+    };
+    weddingParty: {
+      columns: Array<{
+        title: string;
+        name: string;
+        groupTitle: string;
+        members: string[];
+      }>;
+    };
+    infoSections?: Array<{
+      title: string;
+      layoutIndex?: number;
+      subsections: Array<{
+        heading: string;
+        body?: string;
+        bullets?: string[];
+      }>;
+    }>;
     cards: Array<{
       heading: string;
       time?: string;
@@ -96,6 +120,106 @@ export const translations: Record<Language, TranslationContent> = {
         seconds: 'SECONDS',
       },
       sectionTitle: 'Event Details',
+      infoTitle: 'Wedding Etiquette & Important Information',
+      parents: {
+        groomTitle: 'Parents of the Groom',
+        groomNames: 'Ken Do & Hanh Nguyen',
+        brideTitle: 'Parents of the Bride',
+        brideNames: 'Annie McHale & Anthony McHale',
+      },
+      weddingParty: {
+        columns: [
+          {
+            title: 'Best Man',
+            name: 'Best Man Name',
+            groupTitle: 'Groomsmen',
+            members: ['Daniel Le', 'Viet Vu', 'Brian Nguyen'],
+          },
+          {
+            title: 'Maid of Honor',
+            name: 'Patricia Dionisio',
+            groupTitle: 'Bridesmaids',
+            members: ['Yvette Olaes', 'Lorie Bigalbal', 'Jazmine McHale'],
+          },
+        ],
+      },
+      infoSections: [
+        {
+          title: 'Reception Details',
+          layoutIndex: 0,
+          subsections: [
+            {
+              heading: 'Reception Timing',
+              body: 'Reception concludes at 11:00 PM sharp to respect venue regulations and ensure a smooth evening for all guests.',
+            },
+            {
+              heading: 'Photography & Phones',
+              body: 'We invite you to be fully present and enjoy the moment with us.',
+              bullets: [
+                'Please refrain from stepping into aisles during the ceremony',
+                'Kindly avoid using flash photography',
+                'Our photographers will capture the evening so you can relax and celebrate',
+              ],
+            },
+            {
+              heading: 'Seating Arrangements',
+              body: 'All seating arrangements are available on this website. Please enter your name exactly as shown on your invitation to view your assigned table for the reception.',
+            },
+          ],
+        },
+        {
+          title: 'Attire & Dress Code',
+          layoutIndex: 1,
+          subsections: [
+            {
+              heading: 'Dress Code: Semi-Formal / Elegant',
+              body: 'We kindly ask guests to dress in polished, evening-appropriate attire to match the tone of the celebration.',
+              bullets: [
+                'Cocktail dresses, evening dresses, suits, or dress shirts are welcome',
+                'Neutral, pastel, or rich evening colours are encouraged',
+                'Please avoid overly casual clothing such as jeans, sneakers, or T-shirts',
+              ],
+            },
+            {
+              heading: 'Children',
+              body: 'This will be an adults-focused celebration to allow everyone to fully enjoy the evening. A small number of children from our immediate family will be in attendance. Thank you for your understanding.',
+            },
+            {
+              heading: 'Gifts & Well-Wishes',
+              body: 'Your presence truly means the world to us. For those who wish to share their well-wishes in a traditional way, a wishing table will be available at the reception.',
+            },
+          ],
+        },
+        {
+          title: 'Celebration Notes',
+          layoutIndex: 2,
+          subsections: [
+            {
+              heading: 'Food & Celebration Style',
+              body: 'Dinner will be served as individual plated courses throughout the evening. Relax, enjoy each course, and celebrate with us.',
+            },
+            {
+              heading: 'Respectful Celebration',
+              body: 'We kindly ask all guests to help make the night enjoyable for everyone.',
+              bullets: [
+                'Celebrate responsibly',
+                'Be mindful of volume as the evening progresses',
+                'Respect venue staff and fellow guests',
+              ],
+            },
+            {
+              heading: 'Quick Notes (Mobile Summary)',
+              bullets: [
+                'Semi-formal attire',
+                'Adults-focused celebration',
+                'Wishing table available',
+                'Assigned seating via website',
+                'Reception ends at 11:00 PM',
+              ],
+            },
+          ],
+        },
+      ],
       cards: [
         {
           heading: 'Ceremony',
@@ -180,6 +304,106 @@ export const translations: Record<Language, TranslationContent> = {
         seconds: 'GIÂY',
       },
       sectionTitle: 'Thông tin sự kiện',
+      infoTitle: 'Nghi thức & thông tin quan trọng',
+      parents: {
+        groomTitle: 'Ba mẹ chú rể',
+        groomNames: 'Ken Do & Hanh Nguyen',
+        brideTitle: 'Ba mẹ cô dâu',
+        brideNames: 'Annie McHale & Anthony McHale',
+      },
+      weddingParty: {
+        columns: [
+          {
+            title: 'Phù rể chính',
+            name: 'Tên phù rể chính',
+            groupTitle: 'Phù rể',
+            members: ['Daniel Le', 'Viet Vu', 'Brian Nguyen'],
+          },
+          {
+            title: 'Phù dâu chính',
+            name: 'Patricia Dionisio',
+            groupTitle: 'Phù dâu',
+            members: ['Yvette Olaes', 'Lorie Bigalbal', 'Jazmine McHale'],
+          },
+        ],
+      },
+      infoSections: [
+        {
+          title: 'Chi tiết tiệc cưới',
+          layoutIndex: 0,
+          subsections: [
+            {
+              heading: 'Thời gian tiệc',
+              body: 'Tiệc sẽ kết thúc đúng 11:00 PM để tuân thủ quy định của địa điểm và giúp buổi tối diễn ra trọn vẹn.',
+            },
+            {
+              heading: 'Chụp hình & điện thoại',
+              body: 'Mong mọi người hãy tận hưởng khoảnh khắc cùng chúng tôi.',
+              bullets: [
+                'Vui lòng không bước vào lối đi trong lúc làm lễ',
+                'Hạn chế sử dụng đèn flash khi chụp ảnh',
+                'Đã có nhiếp ảnh gia ghi lại trọn vẹn buổi tối để bạn yên tâm vui tiệc',
+              ],
+            },
+            {
+              heading: 'Sắp xếp chỗ ngồi',
+              body: 'Sơ đồ chỗ ngồi được hiển thị ngay trên website. Vui lòng nhập đúng họ tên như trên thiệp mời để xem bàn tiệc được sắp xếp cho bạn.',
+            },
+          ],
+        },
+        {
+          title: 'Trang phục & Dress code',
+          layoutIndex: 1,
+          subsections: [
+            {
+              heading: 'Trang phục: Bán trang trọng / thanh lịch',
+              body: 'Rất mong mọi người chọn trang phục chỉn chu, phù hợp không khí ấm áp của buổi tối.',
+              bullets: [
+                'Khuyến khích váy cocktail, đầm dạ tiệc, vest, sơ mi lịch sự',
+                'Màu trung tính, pastel hoặc sắc tối sang trọng đều phù hợp',
+                'Vui lòng hạn chế đồ quá casual như quần jeans, giày thể thao hoặc áo thun',
+              ],
+            },
+            {
+              heading: 'Trẻ em',
+              body: 'Buổi tiệc ưu tiên người lớn để mọi người có thể tận hưởng trọn vẹn. Một vài bé trong gia đình hai bên sẽ tham dự cùng chúng tôi. Cảm ơn bạn đã thông cảm.',
+            },
+            {
+              heading: 'Quà tặng & lời chúc',
+              body: 'Sự hiện diện của bạn là món quà quý giá nhất. Nếu muốn gửi lời chúc theo cách truyền thống, xin mời ghé “wishing table” tại tiệc.',
+            },
+          ],
+        },
+        {
+          title: 'Ghi chú buổi tiệc',
+          layoutIndex: 2,
+          subsections: [
+            {
+              heading: 'Phong cách tiệc & ẩm thực',
+              body: 'Bữa tối được phục vụ theo từng phần riêng cho mỗi khách, với nhiều món nối tiếp nhau. Mời mọi người thư giãn, thưởng thức và cùng nhau chúc mừng.',
+            },
+            {
+              heading: 'Ăn mừng văn minh',
+              body: 'Để buổi tối trọn vẹn hơn, mong mọi người:',
+              bullets: [
+                'Vui hết mình nhưng vẫn điều độ',
+                'Giữ âm lượng vừa phải khi đêm về khuya',
+                'Tôn trọng nhân viên phục vụ và khách mời khác',
+              ],
+            },
+            {
+              heading: 'Ghi chú nhanh',
+              bullets: [
+                'Trang phục bán trang trọng',
+                'Tiệc ưu tiên người lớn',
+                'Có bàn nhận lời chúc',
+                'Xem chỗ ngồi ngay trên website',
+                'Tiệc kết thúc 11:00 PM',
+              ],
+            },
+          ],
+        },
+      ],
       cards: [
         {
           heading: 'Lễ cưới',

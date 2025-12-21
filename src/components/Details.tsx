@@ -8,8 +8,12 @@ export function Details() {
   useScrollReveal(sectionRef, { duration: 0.8 });
   const { strings } = useLanguage();
   const { details } = strings;
+  const parents = details.parents;
+  const weddingParty = details.weddingParty;
 
   const cards = details.cards;
+  const mainCards = cards.slice(0, 2);
+  const orderedInfoSections = details.infoSections ?? [];
   const targetDate = new Date('2026-10-03T00:00:00');
 
   const calculateTimeRemaining = () => {
@@ -125,6 +129,200 @@ export function Details() {
           </div>
         </div>
 
+        {/* Parents */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: theme.spacing.xl,
+          }}
+        >
+          <div
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            <p
+              className="font-sans"
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.sm,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: theme.colors.secondary.slate,
+                marginBottom: theme.spacing.xs,
+              }}
+            >
+              {parents.groomTitle}
+            </p>
+            <p
+              className="font-serif"
+              style={{
+                fontFamily: theme.typography.fontFamily.serif,
+                fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+                color: theme.colors.primary.dustyBlue,
+              }}
+            >
+              {parents.groomNames}
+            </p>
+          </div>
+          <div
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            <p
+              className="font-sans"
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.sm,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: theme.colors.secondary.slate,
+                marginBottom: theme.spacing.xs,
+              }}
+            >
+              {parents.brideTitle}
+            </p>
+            <p
+              className="font-serif"
+              style={{
+                fontFamily: theme.typography.fontFamily.serif,
+                fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+                color: theme.colors.primary.dustyBlue,
+              }}
+            >
+              {parents.brideNames}
+            </p>
+          </div>
+        </div>
+
+        {/* Principal Sponsors */}
+        <div
+          style={{
+            textAlign: 'center',
+            marginBottom: theme.spacing['3xl'],
+          }}
+        >
+          <p
+            className="font-sans"
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: theme.colors.secondary.slate,
+              marginBottom: theme.spacing.xs,
+            }}
+          >
+            Principal Sponsors
+          </p>
+          <p
+            className="font-serif"
+            style={{
+              fontFamily: theme.typography.fontFamily.serif,
+              fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+              color: theme.colors.primary.dustyBlue,
+            }}
+          >
+            Diana & Eddie
+          </p>
+        </div>
+
+        {/* Wedding Party */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: theme.spacing.xl,
+          }}
+        >
+          {weddingParty.columns.map((column, index) => (
+            <div
+              key={`${column.title}-${index}`}
+              style={{
+                borderRadius: theme.borderRadius.xl,
+                padding: theme.spacing['2xl'],
+              }}
+            >
+              <p
+                className="font-sans text-center"
+                style={{
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.sm,
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: theme.colors.secondary.slate,
+                  marginBottom: theme.spacing.xs,
+                }}
+              >
+                {column.title}
+              </p>
+              <p
+                style={{
+                  fontFamily: theme.typography.fontFamily.serif,
+                  fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+                  fontWeight: theme.typography.fontWeight.normal,
+                  color: theme.colors.primary.dustyBlue,
+                  marginBottom: theme.spacing.sm,
+                }}
+              >
+                {column.name}
+                <span
+                  style={{
+                    display: 'block',
+                    width: '60px',
+                    height: '1px',
+                    backgroundColor: theme.colors.primary.dustyBlue,
+                    margin: `${theme.spacing.sm} auto 0`,
+                    opacity: 0.4,
+                  }}
+                />
+              </p>
+              <p
+                className="font-sans text-center"
+                style={{
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.sm,
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  color: theme.colors.secondary.slate,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em',
+                  marginBottom: theme.spacing.sm,
+                }}
+              >
+                {column.groupTitle}
+              </p>
+              <ul
+                style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'grid',
+                  gap: theme.spacing.xs,
+                }}
+              >
+                {column.members.map((member) => (
+                  <li
+                    key={member}
+                    className="font-sans text-center"
+                    style={{
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.base,
+                      color: theme.colors.text.secondary,
+                      letterSpacing: '0.03em',
+                    }}
+                  >
+                    {member}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
         {/* Section Title */}
         <h2
           id="details-heading"
@@ -140,118 +338,247 @@ export function Details() {
           {details.sectionTitle}
         </h2>
 
-        {/* Cards Grid */}
+        {/* Ceremony & Reception */}
         <div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: theme.spacing.xl,
+            marginBottom: theme.spacing['3xl'],
           }}
         >
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              className="detail-card"
-              style={{
-                backgroundColor: 'transparent',
-                borderRadius: theme.borderRadius.xl,
-                padding: theme.spacing['2xl'],
-                boxShadow: 'none',
-                border: 'none',
-              }}
-            >
-              {/* Heading */}
-              <h3
-                className="font-serif text-center"
+          {mainCards.map((card, index) => {
+            const mapLink = card.address
+              ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`
+              : undefined;
+
+            return (
+              <div
+                key={index}
                 style={{
-                  fontFamily: theme.typography.fontFamily.serif,
-                  fontSize: theme.typography.fontSize['2xl'],
-                  fontWeight: theme.typography.fontWeight.semibold,
-                  color: theme.colors.primary.dustyBlue,
-                  marginBottom: theme.spacing.lg,
+                  padding: theme.spacing['2xl'],
+                  textAlign: 'center',
                 }}
               >
-                {card.heading}
-              </h3>
-
-              {/* Time */}
-              {card.time && (
                 <p
-                  className="font-sans text-center"
+                  className="font-sans"
                   style={{
                     fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.lg,
-                    fontWeight: theme.typography.fontWeight.semibold,
-                    color: theme.colors.text.primary,
-                    marginBottom: theme.spacing.sm,
-                  }}
-                >
-                  {card.time}
-                </p>
-              )}
-
-              {/* Location */}
-              {card.location && (
-                <p
-                  className="font-sans text-center"
-                  style={{
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.base,
-                    fontWeight: theme.typography.fontWeight.medium,
+                    fontSize: theme.typography.fontSize.sm,
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
                     color: theme.colors.secondary.slate,
                     marginBottom: theme.spacing.xs,
                   }}
                 >
-                  {card.location}
+                  {card.heading}
                 </p>
-              )}
 
-              {/* Address */}
-              {card.address && (
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-sans text-center link-hover"
-                  style={{
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.sm,
-                    fontWeight: theme.typography.fontWeight.normal,
-                    color: theme.colors.primary.dustyBlue,
-                    marginBottom: theme.spacing.md,
-                    lineHeight: theme.typography.lineHeight.relaxed,
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                    display: 'block',
-                  }}
-                >
-                  {card.address}
-                </a>
-              )}
+                {card.time && (
+                  <p
+                    className="font-serif"
+                    style={{
+                      fontFamily: theme.typography.fontFamily.serif,
+                      fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
+                      fontWeight: theme.typography.fontWeight.semibold,
+                      color: theme.colors.primary.dustyBlue,
+                      marginBottom: theme.spacing.sm,
+                    }}
+                  >
+                    {card.time}
+                  </p>
+                )}
 
-              {/* Description */}
-              {card.description && (
-                <p
-                  className="font-sans text-center"
-                  style={{
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.sm,
-                    fontWeight: theme.typography.fontWeight.normal,
-                    color: theme.colors.text.secondary,
-                    lineHeight: theme.typography.lineHeight.relaxed,
-                    fontStyle: card.time ? 'italic' : 'normal',
-                    marginTop: card.address ? theme.spacing.md : 0,
-                    paddingTop: card.address ? theme.spacing.md : 0,
-                    borderTop: card.address ? `1px solid ${theme.colors.primary.dustyBlue}20` : 'none',
-                  }}
-                >
-                  {card.description}
-                </p>
-              )}
-            </div>
-          ))}
+                {card.location && (
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.base,
+                      fontWeight: theme.typography.fontWeight.medium,
+                      color: theme.colors.text.primary,
+                      marginBottom: theme.spacing.xs,
+                    }}
+                  >
+                    {card.location}
+                  </p>
+                )}
+
+                {mapLink && (
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.primary.dustyBlue,
+                      lineHeight: theme.typography.lineHeight.relaxed,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    {card.address}
+                  </p>
+                )}
+
+                {mapLink && (
+                  <div
+                    style={{
+                      marginTop: theme.spacing.md,
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(mapLink)}`}
+                      alt={`QR code for ${card.heading} location`}
+                      style={{
+                        width: '160px',
+                        height: '160px',
+                        borderRadius: theme.borderRadius.md,
+                      }}
+                    />
+                  </div>
+                )}
+
+                {card.description && (
+                  <p
+                    className="font-sans"
+                    style={{
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                      lineHeight: theme.typography.lineHeight.relaxed,
+                      fontStyle: 'italic',
+                      marginTop: theme.spacing.md,
+                    }}
+                  >
+                    {card.description}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
+
+        {/* Wedding Etiquette & Information */}
+        {orderedInfoSections.length > 0 && (
+          <div
+            style={{
+              marginTop: theme.spacing['4xl'],
+              marginBottom: theme.spacing['4xl'],
+            }}
+          >
+            <h3
+              className="font-serif text-center"
+              style={{
+                fontFamily: theme.typography.fontFamily.serif,
+                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+                fontWeight: theme.typography.fontWeight.semibold,
+                color: theme.colors.primary.dustyBlue,
+                marginBottom: theme.spacing['2xl'],
+              }}
+            >
+              {details.infoTitle}
+            </h3>
+            <div
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                gap: theme.spacing.xl,
+                alignItems: 'stretch',
+              }}
+            >
+              {orderedInfoSections.map((column, columnIndex) => (
+                <div
+                  key={`${column.title}-${columnIndex}`}
+                  style={{
+                    padding: theme.spacing['2xl'],
+                    textAlign: 'center',
+                    maxWidth: '360px',
+                    margin: '0 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                  }}
+                >
+                  <p
+                    className="font-sans text-center"
+                    style={{
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.sm,
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      color: theme.colors.secondary.slate,
+                      marginBottom: theme.spacing.sm,
+                    }}
+                  >
+                    {column.title}
+                  </p>
+                  {column.subsections.map((section, idx) => (
+                    <div
+                      key={`${section.heading}-${idx}`}
+                      style={{
+                        marginBottom: theme.spacing.lg,
+                        textAlign: 'center',
+                      }}
+                    >
+                      <p
+                        className="font-serif"
+                        style={{
+                          fontFamily: theme.typography.fontFamily.serif,
+                          fontSize: theme.typography.fontSize.lg,
+                          fontWeight: theme.typography.fontWeight.semibold,
+                          color: theme.colors.primary.dustyBlue,
+                          marginBottom: theme.spacing.xs,
+                        }}
+                      >
+                        {section.heading}
+                      </p>
+                      {section.body && (
+                        <p
+                          className="font-sans"
+                          style={{
+                            fontFamily: theme.typography.fontFamily.sans,
+                            fontSize: theme.typography.fontSize.sm,
+                            color: theme.colors.text.secondary,
+                            lineHeight: theme.typography.lineHeight.relaxed,
+                            marginBottom: section.bullets ? theme.spacing.xs : 0,
+                          }}
+                        >
+                          {section.body}
+                        </p>
+                      )}
+                      {section.bullets && (
+                        <ul
+                          style={{
+                            listStyle: 'none',
+                            paddingLeft: 0,
+                            marginTop: theme.spacing.xs,
+                            color: theme.colors.text.secondary,
+                          }}
+                        >
+                          {section.bullets.map((bullet) => (
+                            <li
+                              key={bullet}
+                              style={{
+                                fontFamily: theme.typography.fontFamily.sans,
+                                fontSize: theme.typography.fontSize.sm,
+                                marginBottom: '4px',
+                              }}
+                            >
+                              {`• ${bullet}`}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
