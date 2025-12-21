@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
@@ -21,7 +21,7 @@ export function Details({
   ceremonyCard = {
     icon: "⛪",
     heading: "Ceremony",
-    time: "3:00 PM",
+    time: "1:00 PM",
     location: "Holy Family Parish",
     address: "46A Ballarat Rd, Maidstone VIC 3012",
     description: "Please arrive 15 minutes early for seating"
@@ -44,6 +44,30 @@ export function Details({
   useScrollReveal(sectionRef, { duration: 0.8 });
 
   const cards = [ceremonyCard, receptionCard, dressCodeCard];
+  const targetDate = new Date('2026-10-03T00:00:00');
+
+  const calculateTimeRemaining = () => {
+    const total = targetDate.getTime() - Date.now();
+    if (total <= 0) {
+      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    }
+
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(total / (1000 * 60 * 60 * 24));
+    return { days, hours, minutes, seconds };
+  };
+
+  const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTimeRemaining(calculateTimeRemaining());
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   return (
     <section
@@ -51,7 +75,6 @@ export function Details({
       ref={sectionRef}
       aria-labelledby="details-heading"
       style={{
-        backgroundColor: theme.colors.background.offWhite,
         padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
       }}
     >
@@ -61,6 +84,81 @@ export function Details({
           margin: '0 auto',
         }}
       >
+        {/* Save the Date */}
+        <div
+          className="text-center mb-10"
+          style={{
+            fontFamily: theme.typography.fontFamily.serif,
+            color: theme.colors.primary.dustyBlue,
+          }}
+        >
+          <p
+            style={{
+              fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
+              fontWeight: theme.typography.fontWeight.semibold,
+              marginBottom: theme.spacing.xs,
+            }}
+          >
+            Save the Date
+          </p>
+          <p
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+            }}
+          >
+            October 3, 2026
+          </p>
+        </div>
+
+        {/* Countdown */}
+        <div
+          className="font-sans text-center mb-10"
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            color: theme.colors.primary.dustyBlue,
+          }}
+        >
+          <p
+            style={{
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              fontSize: theme.typography.fontSize.sm,
+              marginBottom: theme.spacing.sm,
+            }}
+          >
+            Countdown to the big day
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: theme.spacing.xl,
+              fontFamily: theme.typography.fontFamily.serif,
+              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            }}
+          >
+            {(['days', 'hours', 'minutes', 'seconds'] as const).map((unit) => (
+              <div key={unit}>
+                <div>{String(timeRemaining[unit]).padStart(2, '0')}</div>
+                <div
+                  style={{
+                    fontFamily: theme.typography.fontFamily.sans,
+                    fontSize: theme.typography.fontSize.sm,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    marginTop: theme.spacing.xs,
+                  }}
+                >
+                  {unit}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Section Title */}
         <h2
           id="details-heading"
@@ -90,11 +188,11 @@ export function Details({
               key={index}
               className="detail-card"
               style={{
-                backgroundColor: theme.colors.background.white,
+                backgroundColor: 'transparent',
                 borderRadius: theme.borderRadius.xl,
                 padding: theme.spacing['2xl'],
-                boxShadow: theme.shadows.md,
-                border: `1px solid ${theme.colors.primary.dustyBlue}20`,
+                boxShadow: 'none',
+                border: 'none',
               }}
             >
               {/* Icon (optional) */}

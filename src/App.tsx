@@ -8,8 +8,8 @@ function App() {
 
       <main id="main-content">
         <Hero
-          groomName="David Le"
-          brideName="Jeannie Chiu"
+          groomName="David"
+          brideName="Jeannie"
           ceremonyTime="1pm"
           ceremonyLocation="Holy Family Parish"
           ceremonyAddress="46A Ballarat Rd, Maidstone VIC 3012"
@@ -20,7 +20,7 @@ function App() {
         <Details
           ceremonyCard={{
             heading: "Ceremony",
-            time: "3:00 PM",
+            time: "1:00 PM",
             location: "Holy Family Parish",
             address: "46A Ballarat Rd, Maidstone VIC 3012",
             description: "Please arrive 15 minutes early for seating"

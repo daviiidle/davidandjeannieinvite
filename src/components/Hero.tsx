@@ -5,30 +5,16 @@ import { theme } from '../theme';
 interface HeroProps {
   groomName?: string;
   brideName?: string;
-  ceremonyTime?: string;
-  ceremonyLocation?: string;
-  ceremonyAddress?: string;
-  receptionTime?: string;
-  receptionLocation?: string;
-  receptionAddress?: string;
 }
 
 export function Hero({
-  groomName = "David Le",
-  brideName = "Jeannie Chiu",
-  ceremonyTime = "1pm",
-  ceremonyLocation = "Holy Family Parish",
-  ceremonyAddress = "46A Ballarat Rd, Maidstone VIC 3012",
-  receptionTime = "6pm",
-  receptionLocation = "Ultima Function Centre",
-  receptionAddress = "Corner of Ely Court, Keilor Park Dr, Keilor East VIC 3042"
+  groomName = "David",
+  brideName = "Jeannie",
 }: HeroProps) {
   // Refs for animation targets
   const sectionRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const namesRef = useRef<HTMLDivElement>(null);
-  const eventDetailsRef = useRef<HTMLDivElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
 
   // Split names into letters for animation
   const splitNames = useMemo(() => {
@@ -53,8 +39,6 @@ export function Hero({
       // Skip animation, show final state immediately
       if (overlayRef.current) gsap.set(overlayRef.current, { opacity: 1 });
       if (namesRef.current) gsap.set(namesRef.current.children, { opacity: 1 });
-      if (eventDetailsRef.current) gsap.set(eventDetailsRef.current, { opacity: 1, y: 0 });
-      if (buttonsRef.current) gsap.set(buttonsRef.current, { opacity: 1, y: 0 });
       if (sectionRef.current) gsap.set(sectionRef.current, { scale: 1 });
       return;
     }
@@ -94,22 +78,6 @@ export function Hero({
         0.4 // Start after 0.4s
       );
     }
-
-    // 3. Slide in event details from bottom (0.6s)
-    tl.fromTo(
-      eventDetailsRef.current,
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.6 },
-      1.8 // Start after names animation
-    );
-
-    // 4. Slide in buttons (0.5s)
-    tl.fromTo(
-      buttonsRef.current,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.5 },
-      2.2 // Start shortly after event details
-    );
 
     // Cleanup function
     return () => {
@@ -186,231 +154,6 @@ export function Hero({
           ))}
         </div>
 
-        {/* Event Details Container */}
-        <div
-          ref={eventDetailsRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10 lg:mb-12 max-w-4xl mx-auto"
-          style={{ opacity: 0 }}
-        >
-
-          {/* Ceremony */}
-          <div
-            style={{
-              backgroundColor: theme.colors.background.offWhite,
-              borderRadius: theme.borderRadius.xl,
-              padding: theme.spacing.xl,
-              border: `2px solid ${theme.colors.primary.dustyBlue}30`,
-              boxShadow: theme.shadows.md,
-            }}
-          >
-            <p
-              className="font-sans mb-3"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                fontWeight: theme.typography.fontWeight.semibold,
-                color: theme.colors.secondary.slate,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Church Ceremony
-            </p>
-            <p
-              className="font-serif mb-2"
-              style={{
-                fontFamily: theme.typography.fontFamily.serif,
-                fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-                fontWeight: theme.typography.fontWeight.semibold,
-                color: theme.colors.primary.dustyBlue,
-              }}
-            >
-              {ceremonyTime}
-            </p>
-            <p
-              className="font-sans mb-2"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                fontWeight: theme.typography.fontWeight.medium,
-                color: theme.colors.text.primary,
-              }}
-            >
-              {ceremonyLocation}
-            </p>
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ceremonyAddress)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans link-hover"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: 'clamp(0.875rem, 1.5vw, 0.9375rem)',
-                fontWeight: theme.typography.fontWeight.normal,
-                color: theme.colors.primary.dustyBlue,
-                lineHeight: theme.typography.lineHeight.relaxed,
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                display: 'inline-block',
-              }}
-            >
-              {ceremonyAddress}
-            </a>
-          </div>
-
-          {/* Reception */}
-          <div
-            style={{
-              backgroundColor: theme.colors.background.offWhite,
-              borderRadius: theme.borderRadius.xl,
-              padding: theme.spacing.xl,
-              border: `2px solid ${theme.colors.primary.dustyBlue}30`,
-              boxShadow: theme.shadows.md,
-            }}
-          >
-            <p
-              className="font-sans mb-3"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                fontWeight: theme.typography.fontWeight.semibold,
-                color: theme.colors.secondary.slate,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Wedding Reception
-            </p>
-            <p
-              className="font-serif mb-2"
-              style={{
-                fontFamily: theme.typography.fontFamily.serif,
-                fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-                fontWeight: theme.typography.fontWeight.semibold,
-                color: theme.colors.primary.dustyBlue,
-              }}
-            >
-              {receptionTime}
-            </p>
-            <p
-              className="font-sans mb-2"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                fontWeight: theme.typography.fontWeight.medium,
-                color: theme.colors.text.primary,
-              }}
-            >
-              {receptionLocation}
-            </p>
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(receptionAddress)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans link-hover"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: 'clamp(0.875rem, 1.5vw, 0.9375rem)',
-                fontWeight: theme.typography.fontWeight.normal,
-                color: theme.colors.primary.dustyBlue,
-                lineHeight: theme.typography.lineHeight.relaxed,
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                display: 'inline-block',
-              }}
-            >
-              {receptionAddress}
-            </a>
-          </div>
-
-        </div>
-
-        {/* CTA Buttons */}
-        <div
-          ref={buttonsRef}
-          className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
-          style={{ opacity: 0 }}
-        >
-
-          {/* RSVP Button - Primary */}
-          <button
-            className="w-full sm:w-auto font-sans btn-hover"
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              fontWeight: theme.typography.fontWeight.semibold,
-              padding: `${theme.spacing.md} ${theme.spacing['2xl']}`,
-              minHeight: '48px',
-              minWidth: '200px',
-              backgroundColor: theme.colors.primary.dustyBlue,
-              color: theme.colors.text.inverse,
-              border: 'none',
-              borderRadius: theme.borderRadius.lg,
-              cursor: 'pointer',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              boxShadow: theme.shadows.lg,
-              transition: theme.transitions.base,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = theme.colors.primary.dustyBlueDark;
-              e.currentTarget.style.boxShadow = theme.shadows.xl;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = theme.colors.primary.dustyBlue;
-              e.currentTarget.style.boxShadow = theme.shadows.lg;
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.outline = `3px solid ${theme.colors.primary.dustyBlue}40`;
-              e.currentTarget.style.outlineOffset = '2px';
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.outline = 'none';
-            }}
-          >
-            RSVP
-          </button>
-
-          {/* Find My Seat Button - Secondary */}
-          <button
-            className="w-full sm:w-auto font-sans btn-hover"
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              fontWeight: theme.typography.fontWeight.semibold,
-              padding: `${theme.spacing.md} ${theme.spacing['2xl']}`,
-              minHeight: '48px',
-              minWidth: '200px',
-              backgroundColor: 'transparent',
-              color: theme.colors.primary.dustyBlue,
-              border: `2px solid ${theme.colors.primary.dustyBlue}`,
-              borderRadius: theme.borderRadius.lg,
-              cursor: 'pointer',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              boxShadow: 'none',
-              transition: theme.transitions.base,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = theme.colors.primary.dustyBlue;
-              e.currentTarget.style.color = theme.colors.text.inverse;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = theme.colors.primary.dustyBlue;
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.outline = `3px solid ${theme.colors.primary.dustyBlue}40`;
-              e.currentTarget.style.outlineOffset = '2px';
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.outline = 'none';
-            }}
-          >
-            Find My Seat
-          </button>
-
-        </div>
       </div>
     </section>
   );
