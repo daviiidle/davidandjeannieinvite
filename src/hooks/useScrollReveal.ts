@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect, type RefObject } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,7 +12,7 @@ interface UseScrollRevealOptions {
 }
 
 export function useScrollReveal(
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   options: UseScrollRevealOptions = {}
 ) {
   const {

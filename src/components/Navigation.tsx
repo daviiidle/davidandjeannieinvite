@@ -1,6 +1,9 @@
 import { theme } from '../theme';
+import { useLanguage } from '../context/LanguageContext';
 
 export function Navigation() {
+  const { strings, openLanguageSelector } = useLanguage();
+
   return (
     <>
       {/* Skip to Content Link */}
@@ -27,7 +30,7 @@ export function Navigation() {
           e.currentTarget.style.left = '-9999px';
         }}
       >
-        Skip to main content
+        {strings.navigation.skipToContent}
       </a>
 
       {/* Navigation Menu */}
@@ -69,7 +72,7 @@ export function Navigation() {
               display: 'inline-block',
             }}
           >
-            Details
+            {strings.navigation.details}
           </a>
           <a
             href="#story"
@@ -86,7 +89,7 @@ export function Navigation() {
               display: 'inline-block',
             }}
           >
-            Our Story
+            {strings.navigation.story}
           </a>
           <a
             href="#seating"
@@ -103,7 +106,7 @@ export function Navigation() {
               display: 'inline-block',
             }}
           >
-            Seating
+            {strings.navigation.seating}
           </a>
           <a
             href="#rsvp"
@@ -120,8 +123,27 @@ export function Navigation() {
               display: 'inline-block',
             }}
           >
-            RSVP
+            {strings.navigation.rsvp}
           </a>
+          <button
+            type="button"
+            onClick={openLanguageSelector}
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              fontWeight: theme.typography.fontWeight.medium,
+              color: theme.colors.primary.dustyBlue,
+              padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              border: `1px solid ${theme.colors.primary.dustyBlue}40`,
+              borderRadius: theme.borderRadius.md,
+              backgroundColor: 'transparent',
+              cursor: 'pointer',
+            }}
+          >
+            {strings.navigation.changeLanguage}
+          </button>
         </div>
       </nav>
     </>

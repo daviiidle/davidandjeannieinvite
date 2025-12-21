@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useLanguage } from '../context/LanguageContext';
 
 interface Guest {
   name: string;
@@ -14,6 +15,8 @@ interface SeatingData {
 export function SeatingLookup() {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef, { duration: 0.6 });
+  const { strings, formatMessage } = useLanguage();
+  const seatingText = strings.seating;
 
   const [searchName, setSearchName] = useState('');
   const [result, setResult] = useState<{ found: boolean; table?: number; message: string } | null>(null);
@@ -71,7 +74,7 @@ export function SeatingLookup() {
     if (!nameToSearch.trim()) {
       setResult({
         found: false,
-        message: 'Please enter your name'
+        message: seatingText.enterNamePrompt
       });
       return;
     }
@@ -92,18 +95,18 @@ export function SeatingLookup() {
         setResult({
           found: true,
           table: guest.table,
-          message: `You're seated at Table ${guest.table}`
+          message: formatMessage(seatingText.resultFound, { table: guest.table })
         });
       } else {
         setResult({
           found: false,
-          message: "We couldn't find your name in our seating list."
+          message: seatingText.resultNotFound
         });
       }
     } catch (error) {
       setResult({
         found: false,
-        message: 'Error loading seating information. Please try again later.'
+        message: seatingText.error
       });
       console.error('Seating lookup error:', error);
     } finally {
@@ -198,7 +201,7 @@ export function SeatingLookup() {
             marginBottom: theme.spacing.lg,
           }}
         >
-          Find Your Seat
+          {seatingText.heading}
         </h2>
 
         {/* Subtitle */}
@@ -212,7 +215,7 @@ export function SeatingLookup() {
             marginBottom: theme.spacing['2xl'],
           }}
         >
-          Enter your full name to find your table assignment
+          {seatingText.subtitle}
         </p>
 
         {/* Search Input Container */}
@@ -229,7 +232,7 @@ export function SeatingLookup() {
           <input
             ref={inputRef}
             type="text"
-            placeholder="Enter your full name"
+            placeholder={seatingText.inputPlaceholder}
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -307,15 +310,15 @@ export function SeatingLookup() {
                   <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
                     {guest.name}
                   </div>
-                  <div
-                    style={{
-                      fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      marginTop: '2px',
-                    }}
-                  >
-                    Table {guest.table}
-                  </div>
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                    marginTop: '2px',
+                  }}
+                >
+                  {formatMessage(seatingText.tableLabel, { table: guest.table })}
+                </div>
                 </div>
               ))}
             </div>
@@ -323,7 +326,7 @@ export function SeatingLookup() {
 
           {/* Search Button */}
           <button
-            onClick={handleSearch}
+            onClick={() => handleSearch()}
             disabled={isLoading}
             className={!isLoading ? 'btn-hover' : ''}
             style={{
@@ -355,7 +358,7 @@ export function SeatingLookup() {
               }
             }}
           >
-            {isLoading ? 'Searching...' : 'Find My Table'}
+            {isLoading ? seatingText.searchingButton : seatingText.searchButton}
           </button>
         </div>
 
@@ -401,7 +404,7 @@ export function SeatingLookup() {
                   fontStyle: 'italic',
                 }}
               >
-                Try alternate spelling if not found, or contact us for assistance.
+                {seatingText.notFoundHint}
               </p>
             )}
           </div>
@@ -418,7 +421,7 @@ export function SeatingLookup() {
             fontStyle: 'italic',
           }}
         >
-          Tip: Try using your first and last name as it appears on your invitation
+          {seatingText.hint}
         </p>
       </div>
     </section>

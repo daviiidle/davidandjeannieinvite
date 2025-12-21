@@ -1,49 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useLanguage } from '../context/LanguageContext';
 
-interface DetailCard {
-  icon?: string;
-  heading: string;
-  time?: string;
-  location?: string;
-  address?: string;
-  description?: string;
-}
-
-interface DetailsProps {
-  ceremonyCard?: DetailCard;
-  receptionCard?: DetailCard;
-  dressCodeCard?: DetailCard;
-}
-
-export function Details({
-  ceremonyCard = {
-    icon: "⛪",
-    heading: "Ceremony",
-    time: "1:00 PM",
-    location: "Holy Family Parish",
-    address: "46A Ballarat Rd, Maidstone VIC 3012",
-    description: "Please arrive 15 minutes early for seating"
-  },
-  receptionCard = {
-    icon: "🎉",
-    heading: "Reception",
-    time: "6:00 PM",
-    location: "Ultima Function Centre",
-    address: "Corner of Ely Court, Keilor Park Dr, Keilor East VIC 3042",
-    description: "Dinner, drinks, and dancing to follow"
-  },
-  dressCodeCard = {
-    icon: "👔",
-    heading: "Dress Code",
-    description: "Semi-formal attire requested. Ladies: Cocktail dresses or elegant separates. Gentlemen: Suits or dress pants with collared shirts."
-  }
-}: DetailsProps) {
+export function Details() {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef, { duration: 0.8 });
+  const { strings } = useLanguage();
+  const { details } = strings;
 
-  const cards = [ceremonyCard, receptionCard, dressCodeCard];
+  const cards = details.cards;
   const targetDate = new Date('2026-10-03T00:00:00');
 
   const calculateTimeRemaining = () => {
@@ -99,7 +65,7 @@ export function Details({
               marginBottom: theme.spacing.xs,
             }}
           >
-            Save the Date
+            {details.saveTheDate}
           </p>
           <p
             style={{
@@ -109,7 +75,7 @@ export function Details({
               textTransform: 'uppercase',
             }}
           >
-            October 3, 2026
+            {details.dateLabel}
           </p>
         </div>
 
@@ -129,7 +95,7 @@ export function Details({
               marginBottom: theme.spacing.sm,
             }}
           >
-            Countdown to the big day
+            {details.countdownTitle}
           </p>
           <div
             style={{
@@ -152,7 +118,7 @@ export function Details({
                     marginTop: theme.spacing.xs,
                   }}
                 >
-                  {unit}
+                  {details.countdownUnits[unit]}
                 </div>
               </div>
             ))}
@@ -171,7 +137,7 @@ export function Details({
             marginBottom: theme.spacing['3xl'],
           }}
         >
-          Event Details
+          {details.sectionTitle}
         </h2>
 
         {/* Cards Grid */}
@@ -195,19 +161,6 @@ export function Details({
                 border: 'none',
               }}
             >
-              {/* Icon (optional) */}
-              {card.icon && (
-                <div
-                  style={{
-                    fontSize: theme.typography.fontSize['4xl'],
-                    textAlign: 'center',
-                    marginBottom: theme.spacing.lg,
-                  }}
-                >
-                  {card.icon}
-                </div>
-              )}
-
               {/* Heading */}
               <h3
                 className="font-serif text-center"

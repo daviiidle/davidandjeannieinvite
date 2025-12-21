@@ -1,6 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { theme } from '../theme';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeroProps {
   groomName?: string;
@@ -8,9 +9,12 @@ interface HeroProps {
 }
 
 export function Hero({
-  groomName = "David",
-  brideName = "Jeannie",
+  groomName,
+  brideName,
 }: HeroProps) {
+  const { strings } = useLanguage();
+  const resolvedGroom = groomName ?? strings.hero.groomName;
+  const resolvedBride = brideName ?? strings.hero.brideName;
   // Refs for animation targets
   const sectionRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -24,11 +28,11 @@ export function Hero({
     }));
 
     return {
-      groom: splitText(groomName),
+      groom: splitText(resolvedGroom),
       ampersand: '&',
-      bride: splitText(brideName)
+      bride: splitText(resolvedBride)
     };
-  }, [groomName, brideName]);
+  }, [resolvedGroom, resolvedBride]);
 
   // Animation on mount
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useLanguage } from '../context/LanguageContext';
 
 interface StoryImage {
   src: string;
@@ -8,12 +9,10 @@ interface StoryImage {
 }
 
 interface StoryProps {
-  heading?: string;
   images?: StoryImage[];
 }
 
 export function Story({
-  heading = "Our Story",
   images = [
     {
       src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=800&fit=crop",
@@ -43,6 +42,7 @@ export function Story({
 }: StoryProps) {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef, { duration: 0.9 });
+  const { strings } = useLanguage();
 
   const [selectedImage, setSelectedImage] = useState<StoryImage | null>(null);
 
@@ -82,7 +82,7 @@ export function Story({
             marginBottom: theme.spacing['3xl'],
           }}
         >
-          {heading}
+          {strings.story.heading}
         </h2>
 
         {/* Photo Gallery Grid */}
@@ -142,7 +142,7 @@ export function Story({
                   e.currentTarget.style.backgroundColor = 'rgba(139, 157, 195, 0.3)';
                 }}
               >
-                Click to View
+                {strings.story.viewPrompt}
               </div>
             </div>
           ))}
@@ -194,7 +194,7 @@ export function Story({
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
             }}
-            aria-label="Close"
+            aria-label={strings.story.closeLabel}
           >
             ×
           </button>

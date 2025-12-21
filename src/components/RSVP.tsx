@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RSVPProps {
   heading?: string;
@@ -10,13 +11,16 @@ interface RSVPProps {
 }
 
 export function RSVP({
-  heading = "RSVP",
-  deadline = "Please respond by March 1st, 2025",
+  heading,
+  deadline,
   formUrl = "https://forms.google.com/your-form-url",
   emails = ["davidandjeannie@wedding.com"]
 }: RSVPProps) {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef, { duration: 0.7 });
+  const { strings } = useLanguage();
+  const headingText = heading ?? strings.rsvp.heading;
+  const deadlineText = deadline ?? strings.rsvp.deadline;
 
   return (
     <section
@@ -47,7 +51,7 @@ export function RSVP({
             marginBottom: theme.spacing.lg,
           }}
         >
-          {heading}
+          {headingText}
         </h2>
 
         {/* Deadline Text */}
@@ -61,7 +65,7 @@ export function RSVP({
             marginBottom: theme.spacing['2xl'],
           }}
         >
-          {deadline}
+          {deadlineText}
         </p>
 
         {/* Main RSVP Button */}
@@ -98,7 +102,7 @@ export function RSVP({
             e.currentTarget.style.boxShadow = theme.shadows.lg;
           }}
         >
-          Complete RSVP Form
+          {strings.rsvp.button}
         </a>
 
         {/* Contact Line */}
@@ -119,7 +123,7 @@ export function RSVP({
               marginBottom: theme.spacing.sm,
             }}
           >
-            Having trouble?
+            {strings.rsvp.havingTrouble}
           </p>
           <div
             style={{
@@ -129,6 +133,18 @@ export function RSVP({
               alignItems: 'center',
             }}
           >
+            <p
+              className="font-sans"
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.sm,
+                fontWeight: theme.typography.fontWeight.normal,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing.sm,
+              }}
+            >
+              {strings.rsvp.contactHint}
+            </p>
             {emails.map((email, index) => (
               <a
                 key={index}

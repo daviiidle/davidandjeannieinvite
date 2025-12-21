@@ -1,4 +1,5 @@
 import { theme } from '../theme';
+import { useLanguage } from '../context/LanguageContext';
 
 interface SocialLink {
   platform: string;
@@ -20,6 +21,7 @@ export function Footer({
   socialLinks = []
 }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const { strings } = useLanguage();
 
   return (
     <footer
@@ -127,7 +129,7 @@ export function Footer({
             opacity: 0.8,
           }}
         >
-          © {currentYear} · All Rights Reserved
+          © {currentYear} · {strings.footer.rights}
         </p>
 
         {/* Made with Love */}
@@ -143,7 +145,7 @@ export function Footer({
             fontStyle: 'italic',
           }}
         >
-          Made with ♡
+          {strings.footer.madeWith}
         </p>
       </div>
     </footer>
