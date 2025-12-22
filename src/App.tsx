@@ -17,7 +17,7 @@ const routeMap: Record<string, PageKey> = {
 };
 
 const navLinks = [
-  { path: '/', label: 'Save the Date' },
+  { path: '/', label: 'RSVP' },
   { path: '/details', label: 'Details' },
   { path: '/seating', label: 'Seating' },
   { path: '/photos', label: 'Photos' },
@@ -62,10 +62,7 @@ export default function App() {
         {page === 'home' && (
           <>
             <Hero />
-            <RSVP
-              formUrl="https://forms.google.com/your-form-url"
-              emails={['daviiidle@gmail.com', 'jheea05@gmail.com']}
-            />
+            <RSVP />
           </>
         )}
 

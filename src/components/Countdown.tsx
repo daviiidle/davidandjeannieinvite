@@ -29,30 +29,8 @@ export function Countdown() {
       style={{
         fontFamily: theme.typography.fontFamily.sans,
         color: theme.colors.primary.dustyBlue,
-        marginTop: '2rem',
       }}
     >
-      <p
-        style={{
-          fontFamily: theme.typography.fontFamily.serif,
-          fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
-          fontWeight: theme.typography.fontWeight.semibold,
-          marginBottom: theme.spacing.xs,
-        }}
-      >
-        {strings.details.saveTheDate}
-      </p>
-      <p
-        style={{
-          fontFamily: theme.typography.fontFamily.sans,
-          fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          marginBottom: theme.spacing.lg,
-        }}
-      >
-        {strings.details.dateLabel}
-      </p>
       <p
         style={{
           textTransform: 'uppercase',
