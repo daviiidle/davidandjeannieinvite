@@ -12,6 +12,7 @@ export interface TranslationContent {
   hero: {
     groomName: string;
     brideName: string;
+    date: string;
   };
   details: {
     saveTheDate: string;
@@ -108,6 +109,7 @@ export const translations: Record<Language, TranslationContent> = {
     hero: {
       groomName: 'David',
       brideName: 'Jeannie',
+      date: 'October 3, 2026',
     },
     details: {
       saveTheDate: 'Save the Date',
@@ -292,6 +294,7 @@ export const translations: Record<Language, TranslationContent> = {
     hero: {
       groomName: 'David',
       brideName: 'Jeannie',
+      date: 'Ngày 3 tháng 10 năm 2026',
     },
     details: {
       saveTheDate: 'Lưu ngày trọng đại',

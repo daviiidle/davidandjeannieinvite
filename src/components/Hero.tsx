@@ -1,99 +1,29 @@
-import { useEffect, useRef, useMemo } from 'react';
-import gsap from 'gsap';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
+import { Countdown } from './Countdown';
 
 interface HeroProps {
   groomName?: string;
   brideName?: string;
+  weddingDate?: string;
 }
 
 export function Hero({
   groomName,
   brideName,
+  weddingDate,
 }: HeroProps) {
   const { strings } = useLanguage();
-  const resolvedGroom = groomName ?? strings.hero.groomName;
-  const resolvedBride = brideName ?? strings.hero.brideName;
-  const backgroundImageUrl = 'https://images.unsplash.com/photo-1520854223477-08661d33a360?w=1600&auto=format&fit=crop&q=80';
-  // Refs for animation targets
-  const sectionRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const namesRef = useRef<HTMLDivElement>(null);
-
-  // Split names into letters for animation
-  const splitNames = useMemo(() => {
-    const splitText = (text: string) => text.split('').map((char, i) => ({
-      char: char === ' ' ? '\u00A0' : char, // Non-breaking space
-      key: `${text}-${i}`
-    }));
-
-    return {
-      groom: splitText(resolvedGroom),
-      ampersand: '&',
-      bride: splitText(resolvedBride)
-    };
-  }, [resolvedGroom, resolvedBride]);
-
-  // Animation on mount
-  useEffect(() => {
-    // Check for prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion) {
-      // Skip animation, show final state immediately
-      if (overlayRef.current) gsap.set(overlayRef.current, { opacity: 1 });
-      if (namesRef.current) gsap.set(namesRef.current.children, { opacity: 1 });
-      if (sectionRef.current) gsap.set(sectionRef.current, { scale: 1 });
-      return;
-    }
-
-    // Create GSAP timeline
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-    // 1. Fade in background overlay (0.8s)
-    tl.fromTo(
-      overlayRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.8 },
-      0
-    );
-
-    // Subtle background zoom (3s, runs in parallel)
-    tl.fromTo(
-      sectionRef.current,
-      { scale: 1.1 },
-      { scale: 1, duration: 3, ease: 'power2.out' },
-      0
-    );
-
-    // 2. Reveal couple names letter-by-letter (1.2s)
-    if (namesRef.current) {
-      const letters = namesRef.current.querySelectorAll('.letter');
-      tl.fromTo(
-        letters,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.05,
-          stagger: 0.03, // ~1.2s total for ~40 letters
-          ease: 'back.out(1.7)'
-        },
-        0.4 // Start after 0.4s
-      );
-    }
-
-    // Cleanup function
-    return () => {
-      tl.kill();
-    };
-  }, []); // Empty dependency array - runs ONCE on mount
+  const resolvedGroom = (groomName ?? strings.hero.groomName).trim();
+  const resolvedBride = (brideName ?? strings.hero.brideName).trim();
+  const resolvedDate = weddingDate ?? strings.hero.date;
+  const namesText = `${resolvedGroom} &\n${resolvedBride}`;
+  const backgroundImageUrl =
+    'https://images.unsplash.com/photo-1520854223477-08661d33a360?w=1600&auto=format&fit=crop&q=80';
 
   return (
     <section
-      ref={sectionRef}
-      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden hero-opener-root"
       style={{
         backgroundColor: theme.colors.background.white,
         backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
@@ -101,68 +31,63 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        transformOrigin: 'center center',
       }}
     >
-      {/* Background Overlay for fade-in effect */}
       <div
-        ref={overlayRef}
+        className="hero-opener__background"
+        aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(255, 255, 255, 0)',
-          opacity: 0,
-          pointerEvents: 'none',
+          inset: 0,
+          backgroundColor: 'rgba(255,255,255,0.3)',
         }}
       />
 
-      {/* Content Container */}
-      <div className="w-full max-w-5xl text-center relative z-10">
-
-        {/* Couple Names with letter-by-letter animation */}
-        <div
-          ref={namesRef}
-          className="font-serif mb-8 sm:mb-10 lg:mb-12"
+      <div className="w-full max-w-4xl text-center relative z-10 space-y-6">
+        <p
+          className="hero-opener__names font-serif"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+            fontSize: 'clamp(2rem, 7vw, 5rem)',
             fontWeight: theme.typography.fontWeight.bold,
             color: theme.colors.primary.dustyBlue,
-            lineHeight: theme.typography.lineHeight.tight,
             letterSpacing: '0.02em',
+            whiteSpace: 'pre-wrap',
+            lineHeight: 1.05,
+            textAlign: 'center',
           }}
         >
-          {/* Groom Name */}
-          {splitNames.groom.map(({ char, key }) => (
-            <span key={key} className="letter" style={{ display: 'inline-block', opacity: 0 }}>
-              {char}
-            </span>
-          ))}
+          {namesText}
+        </p>
 
-          {/* Ampersand */}
-          <span
-            className="letter"
+        <span
+          className="hero-opener__divider"
+          aria-hidden="true"
+          style={{
+            width: '80px',
+            height: '2px',
+            backgroundColor: theme.colors.primary.dustyBlue,
+            display: 'inline-block',
+          }}
+        />
+
+        <div className="space-y-6">
+          <p
+            className="hero-opener__date font-sans tracking-[0.3em]"
             style={{
-              display: 'inline-block',
-              opacity: 0,
-              fontWeight: theme.typography.fontWeight.normal,
-              margin: '0 0.2em'
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: 'clamp(0.85rem, 2vw, 1rem)',
+              fontWeight: theme.typography.fontWeight.medium,
+              color: theme.colors.secondary.slate,
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
             }}
           >
-            {splitNames.ampersand}
-          </span>
+            {resolvedDate}
+          </p>
 
-          {/* Bride Name */}
-          {splitNames.bride.map(({ char, key }) => (
-            <span key={key} className="letter" style={{ display: 'inline-block', opacity: 0 }}>
-              {char}
-            </span>
-          ))}
+          <Countdown />
         </div>
-
       </div>
     </section>
   );

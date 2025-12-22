@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
@@ -14,30 +14,6 @@ export function Details() {
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
   const orderedInfoSections = details.infoSections ?? [];
-  const targetDate = new Date('2026-10-03T00:00:00');
-
-  const calculateTimeRemaining = () => {
-    const total = targetDate.getTime() - Date.now();
-    if (total <= 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    }
-
-    const seconds = Math.floor((total / 1000) % 60);
-    const minutes = Math.floor((total / 1000 / 60) % 60);
-    const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-    const days = Math.floor(total / (1000 * 60 * 60 * 24));
-    return { days, hours, minutes, seconds };
-  };
-
-  const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setTimeRemaining(calculateTimeRemaining());
-    }, 1000);
-
-    return () => window.clearInterval(interval);
-  }, []);
 
   return (
     <section
@@ -54,81 +30,6 @@ export function Details() {
           margin: '0 auto',
         }}
       >
-        {/* Save the Date */}
-        <div
-          className="text-center mb-10"
-          style={{
-            fontFamily: theme.typography.fontFamily.serif,
-            color: theme.colors.primary.dustyBlue,
-          }}
-        >
-          <p
-            style={{
-              fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
-              fontWeight: theme.typography.fontWeight.semibold,
-              marginBottom: theme.spacing.xs,
-            }}
-          >
-            {details.saveTheDate}
-          </p>
-          <p
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {details.dateLabel}
-          </p>
-        </div>
-
-        {/* Countdown */}
-        <div
-          className="font-sans text-center mb-10"
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            color: theme.colors.primary.dustyBlue,
-          }}
-        >
-          <p
-            style={{
-              textTransform: 'uppercase',
-              letterSpacing: '0.2em',
-              fontSize: theme.typography.fontSize.sm,
-              marginBottom: theme.spacing.sm,
-            }}
-          >
-            {details.countdownTitle}
-          </p>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: theme.spacing.xl,
-              fontFamily: theme.typography.fontFamily.serif,
-              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-            }}
-          >
-            {(['days', 'hours', 'minutes', 'seconds'] as const).map((unit) => (
-              <div key={unit}>
-                <div>{String(timeRemaining[unit]).padStart(2, '0')}</div>
-                <div
-                  style={{
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.sm,
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    marginTop: theme.spacing.xs,
-                  }}
-                >
-                  {details.countdownUnits[unit]}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Parents */}
         <div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12"
@@ -260,27 +161,30 @@ export function Details() {
               >
                 {column.title}
               </p>
-              <p
-                style={{
-                  fontFamily: theme.typography.fontFamily.serif,
-                  fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-                  fontWeight: theme.typography.fontWeight.normal,
-                  color: theme.colors.primary.dustyBlue,
-                  marginBottom: theme.spacing.sm,
-                }}
-              >
-                {column.name}
+              <div style={{ textAlign: 'center', marginBottom: theme.spacing.sm }}>
+                <p
+                  style={{
+                    fontFamily: theme.typography.fontFamily.serif,
+                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+                    fontWeight: theme.typography.fontWeight.normal,
+                    color: theme.colors.primary.dustyBlue,
+                    display: 'inline-block',
+                    marginBottom: theme.spacing.xs,
+                  }}
+                >
+                  {column.name}
+                </p>
                 <span
                   style={{
                     display: 'block',
                     width: '60px',
                     height: '1px',
                     backgroundColor: theme.colors.primary.dustyBlue,
-                    margin: `${theme.spacing.sm} auto 0`,
+                    margin: '0 auto',
                     opacity: 0.4,
                   }}
                 />
-              </p>
+              </div>
               <p
                 className="font-sans text-center"
                 style={{

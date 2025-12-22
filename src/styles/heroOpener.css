@@ -1,0 +1,36 @@
+.hero-opener {
+  position: relative;
+}
+
+.hero-opener__letter,
+.hero-opener__date,
+.hero-opener__divider {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hero-opener-ready .hero-opener__letter,
+.hero-opener-ready .hero-opener__date {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(1.4em);
+}
+
+.hero-opener-ready .hero-opener__divider {
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+}
+
+.hero-opener-complete .hero-opener__letter,
+.hero-opener-complete .hero-opener__date,
+.hero-opener-complete .hero-opener__divider {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-opener__line-indent {
+  display: inline-block;
+  width: clamp(0.5rem, 2vw, 2.5rem);
+  height: 1px;
+  vertical-align: middle;
+}
