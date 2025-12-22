@@ -35,6 +35,9 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          VITE_UPLOADCARE_PUBLIC_KEY: ${{ vars.VITE_UPLOADCARE_PUBLIC_KEY }}
+          VITE_UPLOADCARE_PORTAL_URL: https://daviiidle.github.io/davidandjeannieinvite/photos
         run: npm run build
 
       - name: Disable Jekyll
