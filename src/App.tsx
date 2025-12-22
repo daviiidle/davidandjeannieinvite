@@ -6,6 +6,7 @@ import { Story } from './components/Story';
 import { SeatingLookup } from './components/SeatingLookup';
 import { RSVP } from './components/RSVP';
 import { Footer } from './components/Footer';
+import { Photos } from './components/Photos';
 
 type PageKey = 'home' | 'details' | 'seating' | 'photos' | 'not-found';
 
@@ -98,32 +99,7 @@ export default function App() {
 
         {page === 'seating' && <SeatingLookup />}
 
-        {page === 'photos' && (
-          <section
-            className="px-4 py-20 text-center"
-            style={{ maxWidth: '720px', margin: '0 auto' }}
-          >
-            <h1 className="font-serif mb-6 text-4xl text-primary">
-              Photo Album
-            </h1>
-            <p className="font-sans text-lg text-muted-foreground mb-10">
-              We’re preparing a shared gallery with QR codes so guests can upload
-              and browse the memories from the celebration. Stay tuned!
-            </p>
-            <div
-              style={{
-                borderRadius: '24px',
-                border: '1px dashed rgba(139,157,195,0.5)',
-                padding: '3rem',
-                background: 'rgba(139,157,195,0.05)',
-              }}
-            >
-              <p className="font-sans text-sm uppercase tracking-[0.3em] text-muted-foreground">
-                Coming Soon
-              </p>
-            </div>
-          </section>
-        )}
+        {page === 'photos' && <Photos />}
 
         {page === 'not-found' && (
           <section className="px-4 py-32 text-center">
