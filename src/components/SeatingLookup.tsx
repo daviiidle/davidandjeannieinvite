@@ -32,7 +32,7 @@ export function SeatingLookup() {
   useEffect(() => {
     const fetchGuests = async () => {
       try {
-        const response = await fetch('/seating.json');
+        const response = await fetch(`${import.meta.env.BASE_URL}seating.json`);
         if (response.ok) {
           const data: SeatingData = await response.json();
           setAllGuests(data.guests);
