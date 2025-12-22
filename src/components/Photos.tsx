@@ -1,23 +1,66 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 
-const albumUrl =
-  'https://www.dropbox.com/scl/fo/pf030gqg9tcw34jsln73e/AFYO7H95lXmsXk0l9KA5oAM?rlkey=dk1z5cyeq3nmtbye2cyjgictw&st=x9eegmm7&dl=0';
+declare global {
+  interface Window {
+    uploadcare?: {
+      Widget: (element: HTMLElement) => unknown;
+    };
+  }
+}
 
 export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
+  const uploadcarePublicKey = import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY ?? '';
+  const [uploadLink, setUploadLink] = useState('');
+  const uploaderRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const base = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
+    const path = base === '' || base === '/' ? '/photos#uploadcare-uploader' : `${base}/photos#uploadcare-uploader`;
+    setUploadLink(`${window.location.origin}${path}`);
+  }, []);
+
+  useEffect(() => {
+    if (!uploadcarePublicKey || !uploaderRef.current) return;
+
+    const initializeWidget = () => {
+      if (window.uploadcare && uploaderRef.current) {
+        window.uploadcare.Widget(uploaderRef.current);
+      }
+    };
+
+    if (window.uploadcare) {
+      initializeWidget();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js';
+    script.async = true;
+    script.dataset.uploadcare = 'true';
+    script.onload = initializeWidget;
+    document.body.appendChild(script);
+
+    return () => {
+      script.onload = null;
+    };
+  }, [uploadcarePublicKey]);
+
   const qrImageSrc = useMemo(() => {
+    if (!uploadLink) return '';
     const params = new URLSearchParams({
-      text: 'https://www.dropbox.com/scl/fo/pf030gqg9tcw34jsln73e/AFYO7H95lXmsXk0l9KA5oAM?rlkey=dk1z5cyeq3nmtbye2cyjgictw&st=x9eegmm7&dl=0',
+      text: uploadLink,
       size: '600',
       margin: '12',
       light: 'FAF9F6',
       dark: '7A8DB5',
     });
     return `https://quickchart.io/qr?${params.toString()}`;
-  }, []);
+  }, [uploadLink]);
 
   return (
     <section
@@ -143,9 +186,7 @@ export function Photos() {
             ))}
           </div>
           <a
-            href={albumUrl}
-            target="_blank"
-            rel="noreferrer"
+            href={uploadLink || '#uploadcare-uploader'}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -189,8 +230,8 @@ export function Photos() {
             }}
           >
             <img
-              src={qrImageSrc}
-              alt="QR code that opens the shared photo album"
+              src={qrImageSrc || undefined}
+              alt="QR code that opens the Uploadcare portal"
               style={{
                 width: '100%',
                 height: 'auto',
@@ -213,6 +254,77 @@ export function Photos() {
             {photos.qrCaption}
           </p>
         </div>
+      </div>
+
+      <div
+        id="uploadcare-uploader"
+        style={{
+          margin: `${theme.spacing['3xl']} auto 0`,
+          maxWidth: '720px',
+          backgroundColor: theme.colors.background.white,
+          borderRadius: theme.borderRadius['3xl'],
+          padding: theme.spacing['2xl'],
+          boxShadow: theme.shadows.lg,
+          textAlign: 'center',
+        }}
+      >
+        <p
+          className="font-serif"
+          style={{
+            fontFamily: theme.typography.fontFamily.serif,
+            fontSize: 'clamp(1.5rem, 4vw, 2.25rem)',
+            color: theme.colors.primary.dustyBlue,
+            marginBottom: theme.spacing.sm,
+          }}
+        >
+          {photos.widgetTitle}
+        </p>
+        <p
+          className="font-sans"
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.base,
+            color: theme.colors.text.secondary,
+            marginBottom: theme.spacing.lg,
+            lineHeight: theme.typography.lineHeight.relaxed,
+          }}
+        >
+          {photos.widgetDescription}
+        </p>
+
+        {uploadcarePublicKey ? (
+          <div
+            style={{
+              border: `1px dashed ${theme.colors.primary.dustyBlue}80`,
+              borderRadius: theme.borderRadius['2xl'],
+              padding: theme.spacing['2xl'],
+              backgroundColor: `${theme.colors.primary.dustyBlue}08`,
+            }}
+          >
+            <input
+              ref={uploaderRef}
+              type="hidden"
+              role="uploadcare-uploader"
+              data-public-key={uploadcarePublicKey}
+              data-multiple="true"
+              data-images-only="true"
+              data-tabs="file camera url"
+              data-clearable="true"
+              data-multiple-max="30"
+            />
+          </div>
+        ) : (
+          <p
+            className="font-sans"
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.base,
+              color: theme.colors.text.secondary,
+            }}
+          >
+            {photos.widgetUnavailable}
+          </p>
+        )}
       </div>
     </section>
   );

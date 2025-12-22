@@ -73,6 +73,9 @@ export interface TranslationContent {
     }>;
     ctaLabel: string;
     qrCaption: string;
+    widgetTitle: string;
+    widgetDescription: string;
+    widgetUnavailable: string;
   };
   seating: {
     heading: string;
@@ -280,13 +283,13 @@ export const translations: Record<Language, TranslationContent> = {
       sectionLabel: 'Shared Memories',
       heading: 'Photo & Video Album',
       intro:
-        'We created a shared Google Drive folder for all of the candid moments. Please use the QR code below to open the album, upload anything you captured, and explore the memories from every point of view.',
+        'We set up an Uploadcare portal for everyone to drop photos and short clips. Scan the QR code below to open the uploader, share what you captured, and explore the memories from every point of view.',
       stepsTitle: 'How it works',
       steps: [
         {
           title: 'Scan the code',
           description:
-            'Point your camera at the QR code to open our shared Google Drive album in your browser.',
+            'Point your camera at the QR code to launch the Uploadcare portal in your browser.',
         },
         {
           title: 'Add your memories',
@@ -299,8 +302,12 @@ export const translations: Record<Language, TranslationContent> = {
             'Browse the gallery, save your favorites, and share the highlight moments with family and friends.',
         },
       ],
-      ctaLabel: 'Open Album in Browser',
-      qrCaption: 'Scan to view & upload',
+      ctaLabel: 'Launch Upload Portal',
+      qrCaption: 'Scan to upload',
+      widgetTitle: 'Upload directly with Uploadcare',
+      widgetDescription:
+        'Use the uploader below to send photos or short clips straight to us—no app install required.',
+      widgetUnavailable: 'Upload portal is unavailable right now. Please email us if you need help sharing media.',
     },
     seating: {
       heading: 'Find Your Seat',
@@ -509,13 +516,13 @@ export const translations: Record<Language, TranslationContent> = {
       sectionLabel: 'Khoảnh khắc chung',
       heading: 'Album Ảnh & Video',
       intro:
-        'Chúng tôi đã tạo một thư mục Google Drive dùng chung. Hãy dùng mã QR bên dưới để mở album, tải lên những khoảnh khắc bạn ghi lại và cùng khám phá ký ức từ mọi góc nhìn.',
+        'Chúng tôi đã tạo cổng Uploadcare để mọi người dễ dàng gửi ảnh và video ngắn. Quét mã QR bên dưới để mở trình tải lên, chia sẻ khoảnh khắc của bạn và cùng gìn giữ ký ức.',
       stepsTitle: 'Cách thực hiện',
       steps: [
         {
           title: 'Quét mã',
           description:
-            'Mở camera và hướng vào mã QR để mở album Google Drive trên trình duyệt.',
+            'Mở camera và hướng vào mã QR để bật trình tải Uploadcare trên trình duyệt.',
         },
         {
           title: 'Chia sẻ khoảnh khắc',
@@ -528,8 +535,12 @@ export const translations: Record<Language, TranslationContent> = {
             'Duyệt bộ sưu tập, lưu mục yêu thích và gửi những khoảnh khắc nổi bật cho gia đình, bạn bè.',
         },
       ],
-      ctaLabel: 'Mở album trên trình duyệt',
-      qrCaption: 'Quét để xem & tải lên',
+      ctaLabel: 'Mở cổng Uploadcare',
+      qrCaption: 'Quét để tải ảnh',
+      widgetTitle: 'Tải trực tiếp qua Uploadcare',
+      widgetDescription:
+        'Dùng trình tải lên bên dưới để gửi ảnh hoặc video ngắn cho chúng tôi—không cần cài thêm ứng dụng.',
+      widgetUnavailable: 'Cổng tải lên đang tạm thời gián đoạn. Vui lòng email cho chúng tôi nếu cần hỗ trợ.',
     },
     seating: {
       heading: 'Tìm bàn của bạn',
