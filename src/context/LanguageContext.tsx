@@ -14,7 +14,7 @@ const LanguageContext = createContext<LanguageContextValue | undefined>(undefine
 
 const getStoredLanguage = (): Language | null => {
   if (typeof window === 'undefined') return null;
-  const stored = window.localStorage.getItem('preferredLanguage');
+  const stored = window.sessionStorage.getItem('preferredLanguage');
   return stored === 'en' || stored === 'vi' ? stored : null;
 };
 
@@ -38,7 +38,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   const selectLanguage = (lang: Language) => {
     setLanguageState(lang);
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem('preferredLanguage', lang);
+      window.sessionStorage.setItem('preferredLanguage', lang);
     }
     setHasConfirmedLanguage(true);
     setSelectorVisible(false);
