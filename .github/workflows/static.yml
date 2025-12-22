@@ -17,6 +17,9 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VITE_UPLOADCARE_PUBLIC_KEY: ${{ vars.VITE_UPLOADCARE_PUBLIC_KEY || secrets.VITE_UPLOADCARE_PUBLIC_KEY }}
+      VITE_UPLOADCARE_PORTAL_URL: https://daviiidle.github.io/davidandjeannieinvite/photos
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -35,9 +38,6 @@ jobs:
         run: npm ci
 
       - name: Build
-        env:
-          VITE_UPLOADCARE_PUBLIC_KEY: ${{ vars.VITE_UPLOADCARE_PUBLIC_KEY }}
-          VITE_UPLOADCARE_PORTAL_URL: https://daviiidle.github.io/davidandjeannieinvite/photos
         run: npm run build
 
       - name: Disable Jekyll
