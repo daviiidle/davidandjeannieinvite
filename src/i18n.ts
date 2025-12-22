@@ -62,6 +62,18 @@ export interface TranslationContent {
     viewPrompt: string;
     closeLabel: string;
   };
+  photos: {
+    sectionLabel: string;
+    heading: string;
+    intro: string;
+    stepsTitle: string;
+    steps: Array<{
+      title: string;
+      description: string;
+    }>;
+    ctaLabel: string;
+    qrCaption: string;
+  };
   seating: {
     heading: string;
     subtitle: string;
@@ -263,6 +275,32 @@ export const translations: Record<Language, TranslationContent> = {
       heading: 'Our Story',
       viewPrompt: 'Click to View',
       closeLabel: 'Close',
+    },
+    photos: {
+      sectionLabel: 'Shared Memories',
+      heading: 'Photo & Video Album',
+      intro:
+        'We created a shared Google Drive folder for all of the candid moments. Please use the QR code below to open the album, upload anything you captured, and explore the memories from every point of view.',
+      stepsTitle: 'How it works',
+      steps: [
+        {
+          title: 'Scan the code',
+          description:
+            'Point your camera at the QR code to open our shared Google Drive album in your browser.',
+        },
+        {
+          title: 'Add your memories',
+          description:
+            'Upload any photos or videos you capture so everyone can relive the celebration together.',
+        },
+        {
+          title: 'Download & share',
+          description:
+            'Browse the gallery, save your favorites, and share the highlight moments with family and friends.',
+        },
+      ],
+      ctaLabel: 'Open Album in Browser',
+      qrCaption: 'Scan to view & upload',
     },
     seating: {
       heading: 'Find Your Seat',
@@ -466,6 +504,32 @@ export const translations: Record<Language, TranslationContent> = {
       heading: 'Chuyện tình của chúng tôi',
       viewPrompt: 'Nhấn để xem',
       closeLabel: 'Đóng',
+    },
+    photos: {
+      sectionLabel: 'Khoảnh khắc chung',
+      heading: 'Album Ảnh & Video',
+      intro:
+        'Chúng tôi đã tạo một thư mục Google Drive dùng chung. Hãy dùng mã QR bên dưới để mở album, tải lên những khoảnh khắc bạn ghi lại và cùng khám phá ký ức từ mọi góc nhìn.',
+      stepsTitle: 'Cách thực hiện',
+      steps: [
+        {
+          title: 'Quét mã',
+          description:
+            'Mở camera và hướng vào mã QR để mở album Google Drive trên trình duyệt.',
+        },
+        {
+          title: 'Chia sẻ khoảnh khắc',
+          description:
+            'Tải lên mọi hình ảnh hoặc video để mọi người có thể cùng hồi tưởng và mỉm cười.',
+        },
+        {
+          title: 'Tải xuống & lan tỏa',
+          description:
+            'Duyệt bộ sưu tập, lưu mục yêu thích và gửi những khoảnh khắc nổi bật cho gia đình, bạn bè.',
+        },
+      ],
+      ctaLabel: 'Mở album trên trình duyệt',
+      qrCaption: 'Quét để xem & tải lên',
     },
     seating: {
       heading: 'Tìm bàn của bạn',

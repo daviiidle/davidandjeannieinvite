@@ -1,28 +1,13 @@
 import { useMemo } from 'react';
 import { theme } from '../theme';
+import { useLanguage } from '../context/LanguageContext';
 
 const albumUrl =
   'https://drive.google.com/drive/folders/150PrNYewxA1k3xeKzoOLS278EvkF62v6?usp=sharing';
 
-const infoSteps = [
-  {
-    title: 'Scan the code',
-    description:
-      'Point your camera at the QR code to open our shared Google Drive album in your browser.',
-  },
-  {
-    title: 'Add your memories',
-    description:
-      'Upload any photos or videos you capture so everyone can relive the celebration together.',
-  },
-  {
-    title: 'Download & share',
-    description:
-      'Browse the gallery, save your favorites, and share the highlight moments with family and friends.',
-  },
-];
-
 export function Photos() {
+  const { strings } = useLanguage();
+  const { photos } = strings;
   const qrImageSrc = useMemo(() => {
     const params = new URLSearchParams({
       text: albumUrl,
@@ -61,7 +46,7 @@ export function Photos() {
             marginBottom: theme.spacing.xs,
           }}
         >
-          Shared Memories
+          {photos.sectionLabel}
         </p>
         <h1
           id="photos-heading"
@@ -73,7 +58,7 @@ export function Photos() {
             marginBottom: theme.spacing.md,
           }}
         >
-          Photo & Video Album
+          {photos.heading}
         </h1>
         <p
           className="font-sans"
@@ -86,9 +71,7 @@ export function Photos() {
             margin: `0 auto ${theme.spacing['2xl']}`,
           }}
         >
-          We created a shared Google Drive folder for all of the candid moments.
-          Please use the QR code below to open the album, upload anything you
-          captured, and explore the memories from every point of view.
+          {photos.intro}
         </p>
       </div>
 
@@ -123,7 +106,7 @@ export function Photos() {
               textAlign: 'center',
             }}
           >
-            How it works
+            {photos.stepsTitle}
           </p>
           <div
             style={{
@@ -132,7 +115,7 @@ export function Photos() {
               gap: theme.spacing.lg,
             }}
           >
-            {infoSteps.map((step) => (
+            {photos.steps.map((step) => (
               <div key={step.title}>
                 <p
                   className="font-serif"
@@ -179,7 +162,7 @@ export function Photos() {
               transition: `background-color ${theme.transitions.base}, color ${theme.transitions.base}`,
             }}
           >
-            Open Album in Browser
+            {photos.ctaLabel}
           </a>
         </div>
 
@@ -227,7 +210,7 @@ export function Photos() {
               textAlign: 'center',
             }}
           >
-            Scan to view & upload
+            {photos.qrCaption}
           </p>
         </div>
       </div>
