@@ -6,6 +6,23 @@ import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext.tsx';
 import { initHeroOpener } from './heroOpener';
 
+const SPA_REDIRECT_KEY = 'spa:redirect-path';
+
+try {
+  const pendingPath = sessionStorage.getItem(SPA_REDIRECT_KEY);
+  if (pendingPath) {
+    sessionStorage.removeItem(SPA_REDIRECT_KEY);
+    if (
+      pendingPath !==
+      `${window.location.pathname}${window.location.search}${window.location.hash}`
+    ) {
+      window.history.replaceState({}, '', pendingPath);
+    }
+  }
+} catch (error) {
+  console.error('Unable to restore SPA redirect path', error);
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LanguageProvider>

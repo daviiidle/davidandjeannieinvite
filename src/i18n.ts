@@ -55,6 +55,7 @@ export interface TranslationContent {
       location?: string;
       address?: string;
       description?: string;
+      image?: string;
     }>;
   };
   story: {
@@ -259,13 +260,16 @@ export const translations: Record<Language, TranslationContent> = {
           location: 'Holy Family Parish',
           address: '46A Ballarat Rd, Maidstone VIC 3012',
           description: 'Please arrive 15 minutes early for seating',
+          image: 'images/ceremony.jpg',
         },
         {
           heading: 'Reception',
           time: '6:00 PM',
-          location: 'Ultima Function Centre',
+          location: 'Ultima Function Centre · Sketch Room',
           address: 'Corner of Ely Court, Keilor Park Dr, Keilor East VIC 3042',
-          description: 'Dinner, drinks, and dancing to follow',
+          description:
+            'Dinner, drinks, and dancing to follow. When entering the venue, please drive towards the left-hand side and look for the Sketch Room.',
+          image: 'images/reception.jpg',
         },
         {
           heading: 'Dress Code',
@@ -492,13 +496,16 @@ export const translations: Record<Language, TranslationContent> = {
           location: 'Nhà thờ Holy Family',
           address: '46A Ballarat Rd, Maidstone VIC 3012',
           description: 'Vui lòng đến sớm 15 phút để ổn định chỗ ngồi',
+          image: 'images/ceremony.jpg',
         },
         {
           heading: 'Tiệc cưới',
           time: '6:00 chiều',
-          location: 'Trung tâm Ultima Function',
+          location: 'Trung tâm Ultima Function · Sketch Room',
           address: 'Corner of Ely Court, Keilor Park Dr, Keilor East VIC 3042',
-          description: 'Tiệc tối, đồ uống và khiêu vũ sau buổi lễ',
+          description:
+            'Tiệc tối, đồ uống và khiêu vũ sau buổi lễ. Khi vào khuôn viên, hãy chạy xe về phía bên trái và tìm phòng mang tên “Sketch Room”.',
+          image: 'images/reception.jpg',
         },
         {
           heading: 'Trang phục',

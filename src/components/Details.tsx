@@ -256,6 +256,10 @@ export function Details() {
             const mapLink = card.address
               ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`
               : undefined;
+            const assetBase = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+            const imageSrc = card.image
+              ? `${assetBase}/${card.image.replace(/^\/+/, '')}`
+              : undefined;
 
             return (
               <div
@@ -263,6 +267,10 @@ export function Details() {
                 style={{
                   padding: theme.spacing['2xl'],
                   textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  height: '100%',
                 }}
               >
                 <p
@@ -358,6 +366,30 @@ export function Details() {
                   >
                     {card.description}
                   </p>
+                )}
+
+                {imageSrc && (
+                  <div
+                    style={{
+                      marginTop: 'auto',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    <img
+                      src={imageSrc}
+                      alt={`${card.heading} venue`}
+                      style={{
+                        width: '100%',
+                        maxWidth: '320px',
+                        height: '220px',
+                        borderRadius: theme.borderRadius['2xl'],
+                        boxShadow: theme.shadows.md,
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </div>
                 )}
               </div>
             );
