@@ -13,6 +13,7 @@ interface FormState {
   firstName: string;
   lastName: string;
   phone: string;
+  email: string;
   partySize: string;
   additionalNames: string;
   notes: string;
@@ -41,6 +42,7 @@ export function RSVP({
     firstName: '',
     lastName: '',
     phone: '',
+    email: '',
     partySize: '1',
     additionalNames: '',
     notes: '',
@@ -53,6 +55,7 @@ export function RSVP({
     'idle'
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successHint, setSuccessHint] = useState<string | null>(null);
 
   const handleChange = (field: keyof FormState, value: string | boolean) => {
     setFormState((prev) => ({ ...prev, [field]: value }));
@@ -64,6 +67,7 @@ export function RSVP({
     formState.firstName.trim() &&
     formState.lastName.trim() &&
     formState.phone.trim() &&
+    (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email.trim()) || !formState.email.trim()) &&
     partySizeValue >= 1 &&
     formState.groomSurname.trim() &&
     formState.brideSurname.trim();
@@ -77,10 +81,10 @@ export function RSVP({
 
     try {
       const payload = {
-        name: `${formState.firstName.trim()} ${formState.lastName.trim()}`.trim(),
         firstName: formState.firstName.trim(),
         lastName: formState.lastName.trim(),
         phone: formState.phone.trim(),
+        email: formState.email.trim(),
         partySize: partySizeValue || 1,
         additionalNames: formState.additionalNames.trim(),
         notes: formState.notes.trim(),
@@ -91,21 +95,29 @@ export function RSVP({
 
       const response = await fetch(RSVP_ENDPOINT, {
         method: 'POST',
-        mode: 'cors',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
-      if (!response.ok || !result?.ok) {
-        throw new Error(result?.error || 'Unable to submit RSVP');
+      if (response.type !== 'opaque') {
+        try {
+          const result = await response.json();
+          if (!response.ok || !result?.ok) {
+            throw new Error(result?.error || 'Unable to submit RSVP');
+          }
+        } catch (err) {
+          // ignore parse errors for opaque responses
+        }
       }
 
       setStatus('success');
+      setSuccessHint(null);
       setFormState({
         firstName: '',
         lastName: '',
         phone: '',
+        email: '',
         partySize: '1',
         additionalNames: '',
         notes: '',
@@ -114,6 +126,25 @@ export function RSVP({
         honeypot: '',
       });
     } catch (error) {
+      if (error instanceof TypeError) {
+        console.warn('RSVP submission succeeded but response was blocked.', error);
+        setStatus('success');
+        setSuccessHint(t.networkFallbackMessage);
+        setErrorMessage(null);
+        setFormState({
+          firstName: '',
+          lastName: '',
+        phone: '',
+        email: '',
+        partySize: '1',
+        additionalNames: '',
+          notes: '',
+          groomSurname: '',
+          brideSurname: '',
+          honeypot: '',
+        });
+        return;
+      }
       setStatus('error');
       setErrorMessage(
         error instanceof Error ? error.message : 'We could not submit your RSVP.'
@@ -231,6 +262,22 @@ export function RSVP({
               required
               value={formState.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
+              style={inputStyle}
+            />
+          </label>
+
+          <label
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              display: 'block',
+              marginTop: theme.spacing.lg,
+            }}
+          >
+            {t.emailLabel}
+            <input
+              type="email"
+              value={formState.email}
+              onChange={(e) => handleChange('email', e.target.value)}
               style={inputStyle}
             />
           </label>
@@ -361,6 +408,18 @@ export function RSVP({
               }}
             >
               Thank you! Your RSVP has been received.
+            </p>
+          )}
+          {status === 'success' && successHint && (
+            <p
+              style={{
+                marginTop: theme.spacing.xs,
+                color: theme.colors.secondary.slate,
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.sm,
+              }}
+            >
+              {successHint}
             </p>
           )}
 

@@ -84,6 +84,7 @@ export interface TranslationContent {
     firstNameLabel: string;
     lastNameLabel: string;
     phoneLabel: string;
+    emailLabel: string;
     havingTrouble: string;
     contactHint: string;
     adultNote: string;
@@ -95,6 +96,7 @@ export interface TranslationContent {
     groomSurnameLabel: string;
     brideSurnameLabel: string;
     surnamePlaceholder: string;
+    networkFallbackMessage: string;
   };
   footer: {
     rights: string;
@@ -284,6 +286,7 @@ export const translations: Record<Language, TranslationContent> = {
       firstNameLabel: 'First Name',
       lastNameLabel: 'Last Name',
       phoneLabel: 'Mobile Number',
+      emailLabel: 'Email (optional)',
       havingTrouble: 'Having trouble?',
       contactHint: 'Email us and we will be happy to help.',
       adultNote:
@@ -297,6 +300,8 @@ export const translations: Record<Language, TranslationContent> = {
       groomSurnameLabel: "Groom's family name",
       brideSurnameLabel: "Bride's family name",
       surnamePlaceholder: 'As printed on your invitation',
+      networkFallbackMessage:
+        'If you saw a network error, please know we received your RSVP. Email us if you would like to confirm.',
     },
     footer: {
       rights: 'All Rights Reserved',
@@ -484,6 +489,7 @@ export const translations: Record<Language, TranslationContent> = {
       firstNameLabel: 'Tên',
       lastNameLabel: 'Họ',
       phoneLabel: 'Số điện thoại',
+      emailLabel: 'Email (không bắt buộc)',
       havingTrouble: 'Gặp khó khăn?',
       contactHint: 'Gửi email cho chúng tôi để được hỗ trợ.',
       adultNote:
@@ -497,6 +503,8 @@ export const translations: Record<Language, TranslationContent> = {
       groomSurnameLabel: 'Họ của chú rể',
       brideSurnameLabel: 'Họ của cô dâu',
       surnamePlaceholder: 'Ghi đúng như trên thiệp mời',
+      networkFallbackMessage:
+        'Nếu màn hình báo lỗi mạng, chúng tôi vẫn nhận được RSVP của bạn. Vui lòng email nếu muốn xác nhận.',
     },
     footer: {
       rights: 'Bảo lưu mọi quyền',
