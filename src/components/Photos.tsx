@@ -10,11 +10,16 @@ declare global {
   }
 }
 
+const DEFAULT_UPLOADCARE_PUBLIC_KEY = '426af66042cf1f2c59f1';
+const DEFAULT_UPLOADCARE_PORTAL_URL = 'https://daviiidle.github.io/davidandjeannieinvite/photos';
+
 export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
-  const uploadcarePublicKey = import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY ?? '';
-  const envPortalUrl = import.meta.env.VITE_UPLOADCARE_PORTAL_URL ?? '';
+  const uploadcarePublicKey =
+    import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY || DEFAULT_UPLOADCARE_PUBLIC_KEY;
+  const envPortalUrl =
+    import.meta.env.VITE_UPLOADCARE_PORTAL_URL || DEFAULT_UPLOADCARE_PORTAL_URL;
   const normalizedEnvPortalUrl = envPortalUrl
     ? `${envPortalUrl}${envPortalUrl.includes('#') ? '' : '#uploadcare-uploader'}`
     : '';
