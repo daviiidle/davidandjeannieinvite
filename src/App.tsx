@@ -9,6 +9,8 @@ import { Footer } from './components/Footer';
 
 type PageKey = 'home' | 'details' | 'seating' | 'photos' | 'not-found';
 
+const BASE_PATH = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+
 const routeMap: Record<string, PageKey> = {
   '/': 'home',
   '/details': 'details',
@@ -23,8 +25,19 @@ const navLinks = [
   { path: '/photos', label: 'Photos' },
 ];
 
+const normalizeRelativePath = (pathname: string) => {
+  let relative = pathname;
+  if (BASE_PATH && relative.startsWith(BASE_PATH)) {
+    relative = relative.slice(BASE_PATH.length) || '/';
+  }
+  if (!relative.startsWith('/')) {
+    relative = `/${relative}`;
+  }
+  return relative || '/';
+};
+
 function usePathname() {
-  const getPath = () => window.location.pathname.replace(/\/+$/, '') || '/';
+  const getPath = () => normalizeRelativePath(window.location.pathname);
   const [path, setPath] = useState(getPath);
 
   useEffect(() => {
@@ -36,7 +49,9 @@ function usePathname() {
   const navigate = (nextPath: string) => {
     const normalized = nextPath.replace(/\/+$/, '') || '/';
     if (normalized === path) return;
-    window.history.pushState({}, '', normalized);
+    const fullPath =
+      (BASE_PATH || '') + (normalized === '/' ? '' : normalized);
+    window.history.pushState({}, '', fullPath || '/');
     setPath(normalized);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -47,6 +62,14 @@ function usePathname() {
 export default function App() {
   const { path, navigate } = usePathname();
   const page: PageKey = useMemo(() => routeMap[path] ?? 'not-found', [path]);
+
+  useEffect(() => {
+    if (BASE_PATH && !window.location.pathname.startsWith(BASE_PATH)) {
+      const target =
+        (BASE_PATH || '') + (path === '/' ? '' : path);
+      window.history.replaceState({}, '', target || '/');
+    }
+  }, [path]);
 
   return (
     <div>

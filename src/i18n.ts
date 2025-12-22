@@ -80,8 +80,21 @@ export interface TranslationContent {
     heading: string;
     deadline: string;
     button: string;
+    buttonSubmitting: string;
+    firstNameLabel: string;
+    lastNameLabel: string;
+    phoneLabel: string;
     havingTrouble: string;
     contactHint: string;
+    adultNote: string;
+    partySizeLabel: string;
+    partySizeHelper: string;
+    additionalNamesLabel: string;
+    additionalNamesPlaceholder: string;
+    notesLabel: string;
+    groomSurnameLabel: string;
+    brideSurnameLabel: string;
+    surnamePlaceholder: string;
   };
   footer: {
     rights: string;
@@ -266,9 +279,24 @@ export const translations: Record<Language, TranslationContent> = {
     rsvp: {
       heading: 'RSVP',
       deadline: 'Please respond by September 1st, 2026',
-      button: 'Complete RSVP Form',
+      button: 'Submit RSVP',
+      buttonSubmitting: 'Sending...',
+      firstNameLabel: 'First Name',
+      lastNameLabel: 'Last Name',
+      phoneLabel: 'Mobile Number',
       havingTrouble: 'Having trouble?',
       contactHint: 'Email us and we will be happy to help.',
+      adultNote:
+        'This celebration is adults-focused. Only children from our extended family will attend. Thank you for understanding.',
+      partySizeLabel: 'Total guests attending (including you)',
+      partySizeHelper:
+        'If you are bringing family or friends, let us know the total number so we can reserve seats.',
+      additionalNamesLabel: 'Other guest names (if known)',
+      additionalNamesPlaceholder: 'Optional',
+      notesLabel: 'Notes',
+      groomSurnameLabel: "Groom's family name",
+      brideSurnameLabel: "Bride's family name",
+      surnamePlaceholder: 'As printed on your invitation',
     },
     footer: {
       rights: 'All Rights Reserved',
@@ -451,9 +479,24 @@ export const translations: Record<Language, TranslationContent> = {
     rsvp: {
       heading: 'Phản hồi (RSVP)',
       deadline: 'Vui lòng phản hồi trước ngày 1 tháng 9 năm 2026',
-      button: 'Mở biểu mẫu RSVP',
+      button: 'Gửi phản hồi',
+      buttonSubmitting: 'Đang gửi...',
+      firstNameLabel: 'Tên',
+      lastNameLabel: 'Họ',
+      phoneLabel: 'Số điện thoại',
       havingTrouble: 'Gặp khó khăn?',
       contactHint: 'Gửi email cho chúng tôi để được hỗ trợ.',
+      adultNote:
+        'Buổi tiệc chủ yếu dành cho người lớn, chỉ các bé trong đại gia đình tham dự. Cảm ơn bạn đã thông cảm.',
+      partySizeLabel: 'Tổng số khách tham dự (tính luôn bạn)',
+      partySizeHelper:
+        'Nếu bạn dẫn theo gia đình/bạn bè, hãy cho chúng tôi biết tổng số người để sắp xếp chỗ ngồi.',
+      additionalNamesLabel: 'Tên khách khác (nếu đã biết)',
+      additionalNamesPlaceholder: 'Không bắt buộc',
+      notesLabel: 'Ghi chú',
+      groomSurnameLabel: 'Họ của chú rể',
+      brideSurnameLabel: 'Họ của cô dâu',
+      surnamePlaceholder: 'Ghi đúng như trên thiệp mời',
     },
     footer: {
       rights: 'Bảo lưu mọi quyền',

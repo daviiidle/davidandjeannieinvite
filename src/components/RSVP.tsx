@@ -13,8 +13,8 @@ interface FormState {
   firstName: string;
   lastName: string;
   phone: string;
-  plusOne: boolean;
-  plusOneName: string;
+  partySize: string;
+  additionalNames: string;
   notes: string;
   groomSurname: string;
   brideSurname: string;
@@ -23,7 +23,7 @@ interface FormState {
 
 const RSVP_ENDPOINT =
   import.meta.env.VITE_RSVP_ENDPOINT ??
-  'https://script.google.com/macros/s/AKfycbwN6KaSDGUpwSwR8kHMoKcuG256iHX_g-7i8pRwiyqmuID89sKSir_-VsHYbXLtqck21g/exec';
+  'https://script.google.com/macros/s/AKfycbyyVWbCnx90jFTdsIgy5elOe5_Fs2fXM0MkFt0Pp_i3x3Q4qhypBdj-wc9OFtoy3IRYlA/exec';
 
 export function RSVP({
   heading,
@@ -35,13 +35,14 @@ export function RSVP({
   const { strings } = useLanguage();
   const headingText = heading ?? strings.rsvp.heading;
   const deadlineText = deadline ?? strings.rsvp.deadline;
+  const t = strings.rsvp;
 
   const [formState, setFormState] = useState<FormState>({
     firstName: '',
     lastName: '',
     phone: '',
-    plusOne: false,
-    plusOneName: '',
+    partySize: '1',
+    additionalNames: '',
     notes: '',
     groomSurname: '',
     brideSurname: '',
@@ -57,10 +58,13 @@ export function RSVP({
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
+  const partySizeValue = Number(formState.partySize);
+
   const canSubmit =
     formState.firstName.trim() &&
     formState.lastName.trim() &&
     formState.phone.trim() &&
+    partySizeValue >= 1 &&
     formState.groomSurname.trim() &&
     formState.brideSurname.trim();
 
@@ -74,8 +78,11 @@ export function RSVP({
     try {
       const payload = {
         name: `${formState.firstName.trim()} ${formState.lastName.trim()}`.trim(),
+        firstName: formState.firstName.trim(),
+        lastName: formState.lastName.trim(),
         phone: formState.phone.trim(),
-        plusOneName: formState.plusOne ? formState.plusOneName.trim() : '',
+        partySize: partySizeValue || 1,
+        additionalNames: formState.additionalNames.trim(),
         notes: formState.notes.trim(),
         groomSurname: formState.groomSurname.trim(),
         brideSurname: formState.brideSurname.trim(),
@@ -99,8 +106,8 @@ export function RSVP({
         firstName: '',
         lastName: '',
         phone: '',
-        plusOne: false,
-        plusOneName: '',
+        partySize: '1',
+        additionalNames: '',
         notes: '',
         groomSurname: '',
         brideSurname: '',
@@ -152,10 +159,22 @@ export function RSVP({
             fontSize: theme.typography.fontSize.lg,
             fontWeight: theme.typography.fontWeight.medium,
             color: theme.colors.text.secondary,
-            marginBottom: theme.spacing['2xl'],
+            marginBottom: theme.spacing.md,
           }}
         >
           {deadlineText}
+        </p>
+
+        <p
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.sm,
+            color: theme.colors.secondary.slate,
+            marginBottom: theme.spacing['2xl'],
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {t.adultNote}
         </p>
 
         <form
@@ -178,7 +197,7 @@ export function RSVP({
             }}
           >
             <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              First Name
+              {t.firstNameLabel}
               <input
                 type="text"
                 required
@@ -188,7 +207,7 @@ export function RSVP({
               />
             </label>
             <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              Last Name
+              {t.lastNameLabel}
               <input
                 type="text"
                 required
@@ -206,7 +225,7 @@ export function RSVP({
               marginTop: theme.spacing.lg,
             }}
           >
-            Mobile Number
+            {t.phoneLabel}
             <input
               type="tel"
               required
@@ -218,43 +237,49 @@ export function RSVP({
 
           <label
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing.sm,
-              marginTop: theme.spacing.lg,
               fontFamily: theme.typography.fontFamily.sans,
+              display: 'block',
+              marginTop: theme.spacing.lg,
             }}
           >
+            {t.partySizeLabel}
             <input
-              type="checkbox"
-              checked={formState.plusOne}
-              onChange={(e) => handleChange('plusOne', e.target.checked)}
+              type="number"
+              min={1}
+              max={12}
+              required
+              value={formState.partySize}
+              onChange={(e) => handleChange('partySize', e.target.value)}
+              style={inputStyle}
             />
-            Bringing a plus one?
-          </label>
-
-          {formState.plusOne && (
-            <label
+            <span
               style={{
-                fontFamily: theme.typography.fontFamily.sans,
                 display: 'block',
-                marginTop: theme.spacing.sm,
+                fontSize: theme.typography.fontSize.xs,
+                color: theme.colors.text.secondary,
+                marginTop: theme.spacing.xs,
               }}
             >
-              Plus One Name
-              <input
-                type="text"
-                value={formState.plusOneName}
-                onChange={(e) => handleChange('plusOneName', e.target.value)}
-                style={inputStyle}
-              />
-            </label>
-          )}
+              {t.partySizeHelper}
+            </span>
+          </label>
 
           <label
             style={{ fontFamily: theme.typography.fontFamily.sans, display: 'block', marginTop: theme.spacing.lg }}
           >
-            Notes (dietary or other)
+            {t.additionalNamesLabel}
+            <textarea
+              value={formState.additionalNames}
+              onChange={(e) => handleChange('additionalNames', e.target.value)}
+              style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
+              placeholder={t.additionalNamesPlaceholder}
+            />
+          </label>
+
+          <label
+            style={{ fontFamily: theme.typography.fontFamily.sans, display: 'block', marginTop: theme.spacing.lg }}
+          >
+            {t.notesLabel}
             <textarea
               value={formState.notes}
               onChange={(e) => handleChange('notes', e.target.value)}
@@ -270,24 +295,24 @@ export function RSVP({
             }}
           >
             <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              Groom&apos;s last name? (Họ chú rể)
+              {t.groomSurnameLabel}
               <input
                 type="text"
                 required
                 value={formState.groomSurname}
                 onChange={(e) => handleChange('groomSurname', e.target.value)}
-                placeholder="Ví dụ: Le"
+                placeholder={t.surnamePlaceholder}
                 style={inputStyle}
               />
             </label>
             <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              Bride&apos;s last name? (Họ cô dâu)
+              {t.brideSurnameLabel}
               <input
                 type="text"
                 required
                 value={formState.brideSurname}
                 onChange={(e) => handleChange('brideSurname', e.target.value)}
-                placeholder="Ví dụ: Chiu"
+                placeholder={t.surnamePlaceholder}
                 style={inputStyle}
               />
             </label>
@@ -324,7 +349,7 @@ export function RSVP({
               opacity: status === 'submitting' ? 0.7 : 1,
             }}
           >
-            {status === 'submitting' ? 'Sending...' : 'Submit RSVP'}
+            {status === 'submitting' ? t.buttonSubmitting : t.button}
           </button>
 
           {status === 'success' && (
