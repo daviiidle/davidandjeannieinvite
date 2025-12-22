@@ -3,14 +3,14 @@ import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 
 const albumUrl =
-  'https://drive.google.com/drive/folders/150PrNYewxA1k3xeKzoOLS278EvkF62v6?usp=sharing';
+  'https://www.dropbox.com/scl/fo/pf030gqg9tcw34jsln73e/AFYO7H95lXmsXk0l9KA5oAM?rlkey=dk1z5cyeq3nmtbye2cyjgictw&st=x9eegmm7&dl=0';
 
 export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
   const qrImageSrc = useMemo(() => {
     const params = new URLSearchParams({
-      text: albumUrl,
+      text: 'https://www.dropbox.com/scl/fo/pf030gqg9tcw34jsln73e/AFYO7H95lXmsXk0l9KA5oAM?rlkey=dk1z5cyeq3nmtbye2cyjgictw&st=x9eegmm7&dl=0',
       size: '600',
       margin: '12',
       light: 'FAF9F6',
