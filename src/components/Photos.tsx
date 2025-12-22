@@ -14,15 +14,20 @@ export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
   const uploadcarePublicKey = import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY ?? '';
-  const [uploadLink, setUploadLink] = useState('');
+  const envPortalUrl = import.meta.env.VITE_UPLOADCARE_PORTAL_URL ?? '';
+  const normalizedEnvPortalUrl = envPortalUrl
+    ? `${envPortalUrl}${envPortalUrl.includes('#') ? '' : '#uploadcare-uploader'}`
+    : '';
+  const [uploadLink, setUploadLink] = useState(normalizedEnvPortalUrl);
   const uploaderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (uploadLink) return;
     if (typeof window === 'undefined') return;
     const base = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
     const path = base === '' || base === '/' ? '/photos#uploadcare-uploader' : `${base}/photos#uploadcare-uploader`;
     setUploadLink(`${window.location.origin}${path}`);
-  }, []);
+  }, [uploadLink]);
 
   useEffect(() => {
     if (!uploadcarePublicKey || !uploaderRef.current) return;
