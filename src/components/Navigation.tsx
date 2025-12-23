@@ -1,10 +1,16 @@
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 
+interface NavigationLink {
+  path: string;
+  label: string;
+  targetId?: string;
+}
+
 interface NavigationProps {
   currentPath: string;
-  links: Array<{ path: string; label: string }>;
-  onNavigate: (path: string) => void;
+  links: NavigationLink[];
+  onNavigate: (path: string, targetId?: string) => void;
 }
 
 export function Navigation({ currentPath, links, onNavigate }: NavigationProps) {
@@ -40,7 +46,7 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
             <button
               key={link.path}
               type="button"
-              onClick={() => onNavigate(link.path)}
+              onClick={() => onNavigate(link.path, link.targetId)}
               style={{
                 fontFamily: theme.typography.fontFamily.sans,
                 fontSize: theme.typography.fontSize.sm,

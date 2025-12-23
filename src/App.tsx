@@ -14,13 +14,15 @@ const BASE_PATH = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 
 const routeMap: Record<string, PageKey> = {
   '/': 'home',
+  '/rsvp': 'home',
   '/details': 'details',
   '/seating': 'seating',
   '/photos': 'photos',
 };
 
 const navLinks = [
-  { path: '/', label: 'RSVP' },
+  { path: '/', label: 'Home', targetId: 'hero' },
+  { path: '/rsvp', label: 'RSVP', targetId: 'rsvp' },
   { path: '/details', label: 'Details' },
   { path: '/seating', label: 'Seating' },
   { path: '/photos', label: 'Photos' },
@@ -63,6 +65,8 @@ function usePathname() {
 export default function App() {
   const { path, navigate } = usePathname();
   const page: PageKey = useMemo(() => routeMap[path] ?? 'not-found', [path]);
+  const [initialPathHandled, setInitialPathHandled] = useState(false);
+  const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
 
   useEffect(() => {
     if (BASE_PATH && !window.location.pathname.startsWith(BASE_PATH)) {
@@ -72,20 +76,53 @@ export default function App() {
     }
   }, [path]);
 
+  useEffect(() => {
+    if (!pendingScrollId) return;
+    if (page !== 'home') return;
+    const el = document.getElementById(pendingScrollId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setPendingScrollId(null);
+    }
+  }, [pendingScrollId, page]);
+
+  useEffect(() => {
+    if (initialPathHandled) return;
+    if (page !== 'home') return;
+    if (path === '/rsvp') {
+      setPendingScrollId('rsvp');
+    }
+    setInitialPathHandled(true);
+  }, [initialPathHandled, page, path]);
+
   return (
     <div>
       <Navigation
         currentPath={path}
         links={navLinks}
-        onNavigate={(href) => {
-          navigate(href);
+        onNavigate={(href, targetId) => {
+          if (href !== path) {
+            navigate(href);
+            setPendingScrollId(targetId ?? null);
+            return;
+          }
+          if (targetId) {
+            const el = document.getElementById(targetId);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              return;
+            }
+          }
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
       />
 
       <main>
         {page === 'home' && (
           <>
-            <Hero />
+            <div id="hero">
+              <Hero />
+            </div>
             <RSVP />
           </>
         )}
