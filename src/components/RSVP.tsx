@@ -9,22 +9,39 @@ interface RSVPProps {
   emails?: string[];
 }
 
+type AttendanceValue = 'YES' | 'NO' | '';
+
 interface FormState {
   firstName: string;
   lastName: string;
+  householdName: string;
   phone: string;
   email: string;
+  attendance: AttendanceValue;
   partySize: string;
-  additionalNames: string;
+  otherGuestNames: string;
   notes: string;
-  groomSurname: string;
-  brideSurname: string;
   honeypot: string;
 }
 
+const createDefaultFormState = (): FormState => ({
+  firstName: '',
+  lastName: '',
+  householdName: '',
+  phone: '',
+  email: '',
+  attendance: '',
+  partySize: '1',
+  otherGuestNames: '',
+  notes: '',
+  honeypot: '',
+});
+
 const RSVP_ENDPOINT =
   import.meta.env.VITE_RSVP_ENDPOINT ??
-  'https://script.google.com/macros/s/AKfycbyyVWbCnx90jFTdsIgy5elOe5_Fs2fXM0MkFt0Pp_i3x3Q4qhypBdj-wc9OFtoy3IRYlA/exec';
+  'https://script.google.com/macros/s/AKfycbzpvrFs98nHA8XGM_h0R8qz-cwoIqIAIb4RuxOIeLGuaJzlYGfxyRgD43MOsDqpefwqlw/exec';
+
+const errorColor = '#B3261E';
 
 export function RSVP({
   heading,
@@ -33,47 +50,74 @@ export function RSVP({
 }: RSVPProps) {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef, { duration: 0.7 });
-  const { strings } = useLanguage();
+  const { strings, language } = useLanguage();
   const headingText = heading ?? strings.rsvp.heading;
   const deadlineText = deadline ?? strings.rsvp.deadline;
   const t = strings.rsvp;
+  const hiddenLanguageValue = language === 'vi' ? 'VI' : 'EN';
 
-  const [formState, setFormState] = useState<FormState>({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    email: '',
-    partySize: '1',
-    additionalNames: '',
-    notes: '',
-    groomSurname: '',
-    brideSurname: '',
-    honeypot: '',
-  });
+  const [formState, setFormState] = useState<FormState>(createDefaultFormState());
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>(
     'idle'
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successHint, setSuccessHint] = useState<string | null>(null);
+  const [showValidation, setShowValidation] = useState(false);
 
-  const handleChange = (field: keyof FormState, value: string | boolean) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof FormState, value: string) => {
+    setFormState((prev) => {
+      if (field === 'attendance') {
+        const nextAttendance = value as AttendanceValue;
+        const nextPartySize =
+          nextAttendance === 'YES'
+            ? prev.partySize && prev.partySize !== '0'
+              ? prev.partySize
+              : '1'
+            : '0';
+        return {
+          ...prev,
+          attendance: nextAttendance,
+          partySize: nextPartySize,
+          otherGuestNames: nextAttendance === 'YES' ? prev.otherGuestNames : '',
+        };
+      }
+      return { ...prev, [field]: value };
+    });
   };
 
-  const partySizeValue = Number(formState.partySize);
+  const phoneSanitized = formState.phone.replace(/[^\d+]/g, '');
+  const isPhoneValid = /^(\+61\d{9}|61\d{9}|04\d{8})$/.test(phoneSanitized);
+  const emailValue = formState.email.trim();
+  const isEmailValid =
+    !emailValue || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+
+  const isAttending = formState.attendance === 'YES';
+  const partySizeValue = isAttending ? Number(formState.partySize || '0') : 0;
+  const isPartySizeValid =
+    !isAttending ||
+    (!Number.isNaN(partySizeValue) && partySizeValue >= 0 && partySizeValue <= 10);
 
   const canSubmit =
     formState.firstName.trim() &&
     formState.lastName.trim() &&
-    formState.phone.trim() &&
-    (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email.trim()) || !formState.email.trim()) &&
-    partySizeValue >= 1 &&
-    formState.groomSurname.trim() &&
-    formState.brideSurname.trim();
+    isPhoneValid &&
+    formState.attendance &&
+    isPartySizeValid &&
+    isEmailValid;
+
+  const firstNameError = showValidation && !formState.firstName.trim() ? t.firstNameError : null;
+  const lastNameError = showValidation && !formState.lastName.trim() ? t.lastNameError : null;
+  const phoneError = showValidation && !isPhoneValid ? t.phoneError : null;
+  const attendanceError = showValidation && !formState.attendance ? t.attendanceError : null;
+  const partySizeError = showValidation && !isPartySizeValid ? t.partySizeError : null;
+  const emailError = showValidation && !isEmailValid ? t.emailError : null;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!showValidation) {
+      setShowValidation(true);
+    }
     if (!canSubmit || status === 'submitting') return;
 
     setStatus('submitting');
@@ -83,13 +127,14 @@ export function RSVP({
       const payload = {
         firstName: formState.firstName.trim(),
         lastName: formState.lastName.trim(),
-        phone: formState.phone.trim(),
+        householdName: formState.householdName.trim(),
+        phone: phoneSanitized,
         email: formState.email.trim(),
-        partySize: partySizeValue || 1,
-        additionalNames: formState.additionalNames.trim(),
+        language: hiddenLanguageValue,
+        attendance: formState.attendance || 'NO',
+        partySize: isAttending ? partySizeValue : 0,
+        otherGuestNames: isAttending ? formState.otherGuestNames.trim() : '',
         notes: formState.notes.trim(),
-        groomSurname: formState.groomSurname.trim(),
-        brideSurname: formState.brideSurname.trim(),
         honeypot: formState.honeypot,
       };
 
@@ -113,36 +158,16 @@ export function RSVP({
 
       setStatus('success');
       setSuccessHint(null);
-      setFormState({
-        firstName: '',
-        lastName: '',
-        phone: '',
-        email: '',
-        partySize: '1',
-        additionalNames: '',
-        notes: '',
-        groomSurname: '',
-        brideSurname: '',
-        honeypot: '',
-      });
+      setShowValidation(false);
+      setFormState(createDefaultFormState());
     } catch (error) {
       if (error instanceof TypeError) {
         console.warn('RSVP submission succeeded but response was blocked.', error);
         setStatus('success');
         setSuccessHint(t.networkFallbackMessage);
         setErrorMessage(null);
-        setFormState({
-          firstName: '',
-          lastName: '',
-        phone: '',
-        email: '',
-        partySize: '1',
-        additionalNames: '',
-          notes: '',
-          groomSurname: '',
-          brideSurname: '',
-          honeypot: '',
-        });
+        setShowValidation(false);
+        setFormState(createDefaultFormState());
         return;
       }
       setStatus('error');
@@ -220,6 +245,7 @@ export function RSVP({
             marginBottom: theme.spacing['2xl'],
           }}
         >
+          <input type="hidden" name="language" value={hiddenLanguageValue} readOnly />
           <div
             style={{
               display: 'grid',
@@ -236,6 +262,19 @@ export function RSVP({
                 onChange={(e) => handleChange('firstName', e.target.value)}
                 style={inputStyle}
               />
+              {firstNameError && (
+                <span
+                  style={{
+                    color: errorColor,
+                    fontFamily: theme.typography.fontFamily.sans,
+                    fontSize: theme.typography.fontSize.xs,
+                    marginTop: theme.spacing.xs,
+                    display: 'block',
+                  }}
+                >
+                  {firstNameError}
+                </span>
+              )}
             </label>
             <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
               {t.lastNameLabel}
@@ -246,8 +285,38 @@ export function RSVP({
                 onChange={(e) => handleChange('lastName', e.target.value)}
                 style={inputStyle}
               />
+              {lastNameError && (
+                <span
+                  style={{
+                    color: errorColor,
+                    fontFamily: theme.typography.fontFamily.sans,
+                    fontSize: theme.typography.fontSize.xs,
+                    marginTop: theme.spacing.xs,
+                    display: 'block',
+                  }}
+                >
+                  {lastNameError}
+                </span>
+              )}
             </label>
           </div>
+
+          <label
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              display: 'block',
+              marginTop: theme.spacing.lg,
+            }}
+          >
+            {t.householdNameLabel}
+            <input
+              type="text"
+              placeholder={t.householdNamePlaceholder}
+              value={formState.householdName}
+              onChange={(e) => handleChange('householdName', e.target.value)}
+              style={inputStyle}
+            />
+          </label>
 
           <label
             style={{
@@ -264,7 +333,104 @@ export function RSVP({
               onChange={(e) => handleChange('phone', e.target.value)}
               style={inputStyle}
             />
+            <span
+              style={{
+                display: 'block',
+                fontSize: theme.typography.fontSize.xs,
+                color: theme.colors.text.secondary,
+                marginTop: theme.spacing.xs,
+              }}
+            >
+              {t.phoneHelper}
+            </span>
+            {phoneError && (
+              <span
+                style={{
+                  color: errorColor,
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.xs,
+                  marginTop: theme.spacing.xs,
+                  display: 'block',
+                }}
+              >
+                {phoneError}
+              </span>
+            )}
           </label>
+
+          <div
+            style={{
+              marginTop: theme.spacing['2xl'],
+            }}
+          >
+            <p
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontWeight: theme.typography.fontWeight.medium,
+                marginBottom: theme.spacing.sm,
+                color: theme.colors.text.primary,
+              }}
+            >
+              {t.attendanceQuestion}
+            </p>
+            {attendanceError && (
+              <p
+                style={{
+                  fontFamily: theme.typography.fontFamily.sans,
+                  color: errorColor,
+                  fontSize: theme.typography.fontSize.xs,
+                  marginBottom: theme.spacing.sm,
+                }}
+              >
+                {attendanceError}
+              </p>
+            )}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing.sm,
+              }}
+            >
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: theme.spacing.sm,
+                  fontFamily: theme.typography.fontFamily.sans,
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  name="attendance"
+                  value="YES"
+                  required
+                  checked={formState.attendance === 'YES'}
+                  onChange={(e) => handleChange('attendance', e.target.value)}
+                />
+                <span>{t.attendanceYes}</span>
+              </label>
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: theme.spacing.sm,
+                  fontFamily: theme.typography.fontFamily.sans,
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="radio"
+                  name="attendance"
+                  value="NO"
+                  checked={formState.attendance === 'NO'}
+                  onChange={(e) => handleChange('attendance', e.target.value)}
+                />
+                <span>{t.attendanceNo}</span>
+              </label>
+            </div>
+          </div>
 
           <label
             style={{
@@ -280,48 +446,81 @@ export function RSVP({
               onChange={(e) => handleChange('email', e.target.value)}
               style={inputStyle}
             />
+            {emailError && (
+              <span
+                style={{
+                  color: errorColor,
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.xs,
+                  marginTop: theme.spacing.xs,
+                  display: 'block',
+                }}
+              >
+                {emailError}
+              </span>
+            )}
           </label>
 
-          <label
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              display: 'block',
-              marginTop: theme.spacing.lg,
-            }}
-          >
-            {t.partySizeLabel}
-            <input
-              type="number"
-              min={1}
-              max={12}
-              required
-              value={formState.partySize}
-              onChange={(e) => handleChange('partySize', e.target.value)}
-              style={inputStyle}
-            />
-            <span
-              style={{
-                display: 'block',
-                fontSize: theme.typography.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginTop: theme.spacing.xs,
-              }}
-            >
-              {t.partySizeHelper}
-            </span>
-          </label>
+          {isAttending && (
+            <>
+              <label
+                style={{
+                  fontFamily: theme.typography.fontFamily.sans,
+                  display: 'block',
+                  marginTop: theme.spacing.lg,
+                }}
+              >
+                {t.partySizeLabel}
+                <input
+                  type="number"
+                  min={0}
+                  max={10}
+                  value={formState.partySize}
+                  onChange={(e) => handleChange('partySize', e.target.value)}
+                  style={inputStyle}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    fontSize: theme.typography.fontSize.xs,
+                    color: theme.colors.text.secondary,
+                    marginTop: theme.spacing.xs,
+                  }}
+                >
+                  {t.partySizeHelper}
+                </span>
+                {partySizeError && (
+                  <span
+                    style={{
+                      color: errorColor,
+                      fontFamily: theme.typography.fontFamily.sans,
+                      fontSize: theme.typography.fontSize.xs,
+                      marginTop: theme.spacing.xs,
+                      display: 'block',
+                    }}
+                  >
+                    {partySizeError}
+                  </span>
+                )}
+              </label>
 
-          <label
-            style={{ fontFamily: theme.typography.fontFamily.sans, display: 'block', marginTop: theme.spacing.lg }}
-          >
-            {t.additionalNamesLabel}
-            <textarea
-              value={formState.additionalNames}
-              onChange={(e) => handleChange('additionalNames', e.target.value)}
-              style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
-              placeholder={t.additionalNamesPlaceholder}
-            />
-          </label>
+              <label
+                style={{
+                  fontFamily: theme.typography.fontFamily.sans,
+                  display: 'block',
+                  marginTop: theme.spacing.lg,
+                }}
+              >
+                {t.otherGuestNamesLabel}
+                <textarea
+                  value={formState.otherGuestNames}
+                  onChange={(e) => handleChange('otherGuestNames', e.target.value)}
+                  style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
+                  placeholder={t.otherGuestNamesPlaceholder}
+                />
+              </label>
+            </>
+          )}
 
           <label
             style={{ fontFamily: theme.typography.fontFamily.sans, display: 'block', marginTop: theme.spacing.lg }}
@@ -334,42 +533,13 @@ export function RSVP({
             />
           </label>
 
-          <div
-            style={{
-              display: 'grid',
-              gap: theme.spacing.sm,
-              marginTop: theme.spacing['2xl'],
-            }}
-          >
-            <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              {t.groomSurnameLabel}
-              <input
-                type="text"
-                required
-                value={formState.groomSurname}
-                onChange={(e) => handleChange('groomSurname', e.target.value)}
-                placeholder={t.surnamePlaceholder}
-                style={inputStyle}
-              />
-            </label>
-            <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              {t.brideSurnameLabel}
-              <input
-                type="text"
-                required
-                value={formState.brideSurname}
-                onChange={(e) => handleChange('brideSurname', e.target.value)}
-                placeholder={t.surnamePlaceholder}
-                style={inputStyle}
-              />
-            </label>
-          </div>
-
-          <div style={{ display: 'none' }}>
+          <div style={{ display: 'none' }} aria-hidden="true">
             <label>
-              Leave this blank
+              Do not fill this field
               <input
                 type="text"
+                tabIndex={-1}
+                autoComplete="off"
                 value={formState.honeypot}
                 onChange={(e) => handleChange('honeypot', e.target.value)}
               />
@@ -406,8 +576,9 @@ export function RSVP({
                 color: theme.colors.primary.dustyBlue,
                 fontFamily: theme.typography.fontFamily.sans,
               }}
+              aria-live="polite"
             >
-              Thank you! Your RSVP has been received.
+              {t.successMessage}
             </p>
           )}
           {status === 'success' && successHint && (

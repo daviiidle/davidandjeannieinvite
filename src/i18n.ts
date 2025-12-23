@@ -99,20 +99,30 @@ export interface TranslationContent {
     buttonSubmitting: string;
     firstNameLabel: string;
     lastNameLabel: string;
+    householdNameLabel: string;
+    householdNamePlaceholder: string;
     phoneLabel: string;
     emailLabel: string;
+    attendanceQuestion: string;
+    attendanceYes: string;
+    attendanceNo: string;
     havingTrouble: string;
     contactHint: string;
     adultNote: string;
     partySizeLabel: string;
     partySizeHelper: string;
-    additionalNamesLabel: string;
-    additionalNamesPlaceholder: string;
+    otherGuestNamesLabel: string;
+    otherGuestNamesPlaceholder: string;
     notesLabel: string;
-    groomSurnameLabel: string;
-    brideSurnameLabel: string;
-    surnamePlaceholder: string;
     networkFallbackMessage: string;
+    successMessage: string;
+    phoneHelper: string;
+    phoneError: string;
+    emailError: string;
+    attendanceError: string;
+    partySizeError: string;
+    firstNameError: string;
+    lastNameError: string;
   };
   footer: {
     rights: string;
@@ -334,23 +344,33 @@ export const translations: Record<Language, TranslationContent> = {
       buttonSubmitting: 'Sending...',
       firstNameLabel: 'First Name',
       lastNameLabel: 'Last Name',
+      householdNameLabel: 'Household name (optional)',
+      householdNamePlaceholder: 'e.g. The Nguyen Family',
       phoneLabel: 'Mobile Number',
       emailLabel: 'Email (optional)',
+      attendanceQuestion: 'Will you be attending?',
+      attendanceYes: 'Yes, we will be there',
+      attendanceNo: 'No, we cannot attend',
       havingTrouble: 'Having trouble?',
       contactHint: 'Email us and we will be happy to help.',
       adultNote:
         'This celebration is adults-focused. Only children from our extended family will attend. Thank you for understanding.',
       partySizeLabel: 'Total guests attending (including you)',
       partySizeHelper:
-        'If you are bringing family or friends, let us know the total number so we can reserve seats.',
-      additionalNamesLabel: 'Other guest names (if known)',
-      additionalNamesPlaceholder: 'Optional',
+        'Please only include guests listed on your invitation.',
+      otherGuestNamesLabel: 'Other guest names',
+      otherGuestNamesPlaceholder: 'e.g. Jane Nguyen, Tom Nguyen',
       notesLabel: 'Notes',
-      groomSurnameLabel: "Groom's family name",
-      brideSurnameLabel: "Bride's family name",
-      surnamePlaceholder: 'As printed on your invitation',
       networkFallbackMessage:
         'If you saw a network error, please know we received your RSVP. Email us if you would like to confirm.',
+      successMessage: 'Thank you — we’ve received your RSVP.',
+      phoneHelper: 'Australian mobile only (e.g. 0412 345 678 or +61 412 345 678).',
+      phoneError: 'Enter an Australian mobile number such as 0412 345 678 or +61 412 345 678.',
+      emailError: 'Enter a valid email address or leave the field blank.',
+      attendanceError: 'Please select whether you will attend.',
+      partySizeError: 'Guest count must be between 0 and 10.',
+      firstNameError: 'First name is required.',
+      lastNameError: 'Last name is required.',
     },
     footer: {
       rights: 'All Rights Reserved',
@@ -570,23 +590,33 @@ export const translations: Record<Language, TranslationContent> = {
       buttonSubmitting: 'Đang gửi...',
       firstNameLabel: 'Tên',
       lastNameLabel: 'Họ',
+      householdNameLabel: 'Tên gia đình (không bắt buộc)',
+      householdNamePlaceholder: 'Ví dụ: Gia đình Nguyễn',
       phoneLabel: 'Số điện thoại',
       emailLabel: 'Email (không bắt buộc)',
+      attendanceQuestion: 'Bạn có tham dự được không?',
+      attendanceYes: 'Có, chúng tôi sẽ tham dự',
+      attendanceNo: 'Rất tiếc, chúng tôi không đến được',
       havingTrouble: 'Gặp khó khăn?',
       contactHint: 'Gửi email cho chúng tôi để được hỗ trợ.',
       adultNote:
         'Buổi tiệc chủ yếu dành cho người lớn, chỉ các bé trong đại gia đình tham dự. Cảm ơn bạn đã thông cảm.',
       partySizeLabel: 'Tổng số khách tham dự (tính luôn bạn)',
       partySizeHelper:
-        'Nếu bạn dẫn theo gia đình/bạn bè, hãy cho chúng tôi biết tổng số người để sắp xếp chỗ ngồi.',
-      additionalNamesLabel: 'Tên khách khác (nếu đã biết)',
-      additionalNamesPlaceholder: 'Không bắt buộc',
+        'Vui lòng chỉ bao gồm những người được ghi tên trên thiệp mời.',
+      otherGuestNamesLabel: 'Tên khách khác',
+      otherGuestNamesPlaceholder: 'Ví dụ: Jane Nguyen, Tom Nguyen',
       notesLabel: 'Ghi chú',
-      groomSurnameLabel: 'Họ của chú rể',
-      brideSurnameLabel: 'Họ của cô dâu',
-      surnamePlaceholder: 'Ghi đúng như trên thiệp mời',
       networkFallbackMessage:
         'Nếu màn hình báo lỗi mạng, chúng tôi vẫn nhận được RSVP của bạn. Vui lòng email nếu muốn xác nhận.',
+      successMessage: 'Cảm ơn bạn — tụi con đã nhận được phản hồi.',
+      phoneHelper: 'Chỉ nhận số di động Úc (ví dụ 0412 345 678 hoặc +61 412 345 678).',
+      phoneError: 'Vui lòng nhập số di động Úc hợp lệ (0412… hoặc +61…).',
+      emailError: 'Nhập email hợp lệ hoặc để trống.',
+      attendanceError: 'Vui lòng chọn Có hoặc Không.',
+      partySizeError: 'Số khách phải từ 0 đến 10.',
+      firstNameError: 'Vui lòng nhập tên.',
+      lastNameError: 'Vui lòng nhập họ.',
     },
     footer: {
       rights: 'Bảo lưu mọi quyền',
