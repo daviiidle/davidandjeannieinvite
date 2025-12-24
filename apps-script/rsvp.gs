@@ -55,6 +55,8 @@ const OUTBOX_HEADERS = ['Timestamp', 'Type', 'To', 'Body', 'Status', 'Error', 'T
 const MAX_REMINDERS = 3;
 const REMINDER_INTERVAL_HOURS = 24;
 const ONE_HOUR_MS = 60 * 60 * 1000;
+const SMS_MAX_CHAR_LENGTH = 160;
+const TWILIO_TRIAL_PREFIX_LENGTH = 40;
 const REMINDER_TEMPLATES = {
   EN: [
     (name, link) => 'Hi ' + name + ', we\'re finalising wedding RSVPs—could you reply when you have a moment? ' + link,
@@ -92,6 +94,36 @@ const CONFIRMATION_TEMPLATES = {
       '. Hẹn gặp bạn. Nếu cần cập nhật vui lòng dùng lại số điện thoại này.',
     NO: (name) =>
       'Cảm ơn ' + name + '! Đã nhận RSVP. Hẹn gặp bạn dịp khác. Nếu cần cập nhật vui lòng dùng lại số này.',
+  },
+};
+const CONFIRMATION_DETAIL_LABELS = {
+  EN: {
+    detailsPrefix: 'Details:',
+    household: 'Household',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    phone: 'Phone',
+    email: 'Email',
+    language: 'Language',
+    attendance: 'Attendance',
+    partySize: 'Party Size',
+    otherGuests: 'Other Guests',
+    notes: 'Notes',
+    noneValue: 'n/a',
+  },
+  VI: {
+    detailsPrefix: 'Chi tiết:',
+    household: 'Gia đình',
+    firstName: 'Tên',
+    lastName: 'Họ',
+    phone: 'Điện thoại',
+    email: 'Email',
+    language: 'Ngôn ngữ',
+    attendance: 'Tham dự',
+    partySize: 'Số khách',
+    otherGuests: 'Khách khác',
+    notes: 'Ghi chú',
+    noneValue: 'không có',
   },
 };
 
@@ -458,12 +490,6 @@ function maybeSendConfirmation_({ sheet, rowNumber, rowValues, indexMap, payload
     return;
   }
 
-  const priorConfirmationValue =
-    (existingRow && existingRow[indexMap.confirmationSentAt]) || rowValues[indexMap.confirmationSentAt];
-  if (!isNewRow && priorConfirmationValue) {
-    return;
-  }
-
   const smsOptOutValue = typeof indexMap.smsOptOut === 'number' ? rowValues[indexMap.smsOptOut] : false;
   if (isSmsOptedOut_(smsOptOutValue)) {
     return;
@@ -580,9 +606,56 @@ function buildConfirmationMessage_(payload) {
   const templateSet = CONFIRMATION_TEMPLATES[langKey] || CONFIRMATION_TEMPLATES.EN;
   const attendanceKey = payload.attendance === 'YES' ? 'YES' : 'NO';
   const formatter = templateSet[attendanceKey] || CONFIRMATION_TEMPLATES.EN[attendanceKey];
-  return attendanceKey === 'YES'
-    ? formatter(firstName, payload.partySize)
-    : formatter(firstName);
+  const baseMessage =
+    attendanceKey === 'YES' ? formatter(firstName, payload.partySize) : formatter(firstName);
+  const allowance =
+    SMS_MAX_CHAR_LENGTH - TWILIO_TRIAL_PREFIX_LENGTH - baseMessage.length - 1; // 1 for space separator
+  if (allowance <= 0) {
+    return baseMessage;
+  }
+  const summary = buildConfirmationSummary_(payload, langKey, allowance);
+  return summary ? baseMessage + ' ' + summary : baseMessage;
+}
+
+function buildConfirmationSummary_(payload, langKey, maxLength) {
+  const labels = CONFIRMATION_DETAIL_LABELS[langKey] || CONFIRMATION_DETAIL_LABELS.EN;
+  const summaryParts = [
+    payload.attendance ? labels.attendance + ': ' + payload.attendance : '',
+    typeof payload.partySize === 'number' && payload.attendance === 'YES'
+      ? labels.partySize + ': ' + payload.partySize
+      : '',
+    payload.otherGuestNames ? labels.otherGuests + ': ' + payload.otherGuestNames : '',
+    payload.notes ? labels.notes + ': ' + truncateText_(payload.notes, 60) : '',
+  ].filter(Boolean);
+
+  if (!summaryParts.length) {
+    return '';
+  }
+
+  let summary = summaryParts.join(', ');
+  const prefix = labels.detailsPrefix + ' ';
+
+  if (maxLength <= prefix.length + 1) {
+    return '';
+  }
+
+  let fullText = prefix + summary;
+  if (fullText.length <= maxLength) {
+    return fullText;
+  }
+
+  const available = maxLength - prefix.length - 1;
+  summary = summary.substring(0, Math.max(0, available)) + '…';
+  fullText = prefix + summary;
+  return fullText.length > maxLength ? fullText.substring(0, maxLength) : fullText;
+}
+
+function truncateText_(text, maxLength) {
+  const safe = sanitizeString_(text);
+  if (safe.length <= maxLength) {
+    return safe;
+  }
+  return safe.substring(0, Math.max(0, maxLength - 1)) + '…';
 }
 
 function buildReminderMessage_(reminderNumber, name, link, language) {
