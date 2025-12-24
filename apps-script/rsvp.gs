@@ -56,8 +56,6 @@ const DEFAULT_EVENT_DATE = new Date('2026-09-01T00:00:00');
 const DEFAULT_REMINDER_SCHEDULE_DAYS = [21, 10, 2];
 const TEST_EVENT_DATE_PROPERTY = 'TEST_REMINDER_EVENT_DATE';
 const TEST_OFFSETS_PROPERTY = 'TEST_REMINDER_OFFSETS_SECONDS';
-const REMINDER_TEST_EVENT_CACHE_KEY = 'REMINDER_TEST_EVENT_CACHE_KEY';
-const REMINDER_TEST_OFFSETS_CACHE_KEY = 'REMINDER_TEST_OFFSETS_CACHE_KEY';
 const ONE_HOUR_MS = 60 * 60 * 1000;
 const ONE_DAY_MS = 24 * ONE_HOUR_MS;
 const SMS_MAX_CHAR_LENGTH = 160;
@@ -79,6 +77,7 @@ const REMINDER_TEMPLATES = {
       name + ', nhắc lần cuối RSVP hôm nay để bọn mình chốt số lượng nha. Cảm ơn bạn! ' + link,
   ],
 };
+const MAX_REMINDER_TEMPLATE_COUNT = Math.max(REMINDER_TEMPLATES.EN.length, REMINDER_TEMPLATES.VI.length);
 const CONFIRMATION_TEMPLATES = {
   EN: {
     YES: (name, partySize) =>
@@ -402,8 +401,16 @@ function sendReminders() {
   return sendRemindersWithConfig_();
 }
 
+function sendRemindersManual() {
+  return sendRemindersWithConfig_({ forceSend: true, manualTrigger: true });
+}
+
 function sendRemindersTest() {
-  const overrideConfig = getOrCreateReminderTestConfig_();
+  const overrideConfig = {
+    eventDate: new Date(),
+    offsetsMs: [0, 0, 0],
+    forceSend: true,
+  };
   return sendRemindersWithConfig_(overrideConfig);
 }
 
@@ -427,15 +434,20 @@ function sendRemindersWithConfig_(overrideConfig) {
     if (!rsvpLink) {
       throw new Error('Missing RSVP_LINK script property.');
     }
-    const reminderConfig = overrideConfig || getReminderConfig_(props);
+    const defaultConfig = getReminderConfig_(props);
+    const reminderConfig = overrideConfig ? Object.assign({}, defaultConfig, overrideConfig) : defaultConfig;
+    const manualMode = Boolean(overrideConfig && overrideConfig.manualTrigger);
     Logger.log(
       'Reminder config -> eventDate: %s, offsetsMs: %s',
       reminderConfig.eventDate,
       JSON.stringify(reminderConfig.offsetsMs)
     );
     const scheduleOffsets = reminderConfig.offsetsMs || [];
+    const scheduleCount = scheduleOffsets.length || MAX_REMINDER_TEMPLATE_COUNT;
+    const reminderColumnIndex = typeof indexMap.reminderCount === 'number' ? indexMap.reminderCount : null;
+    const lastReminderColumnIndex = typeof indexMap.lastReminderAt === 'number' ? indexMap.lastReminderAt : null;
 
-    let remindersSent = 0;
+    const eligibleEntries = [];
     rows.forEach((row, idx) => {
       const attendanceValue = sanitizeString_(row[indexMap.attendance]).toUpperCase();
       if (attendanceValue) {
@@ -449,13 +461,9 @@ function sendRemindersWithConfig_(overrideConfig) {
       if (isSmsOptedOut_(smsOptOutValue)) {
         return;
       }
-      let reminderCount = Number(row[indexMap.reminderCount]) || 0;
-      const scheduleCount = scheduleOffsets.length;
-      if (reminderCount >= scheduleCount) {
-        return;
-      }
-      const now = new Date();
-      if (!isReminderWindowOpen_(reminderCount, now, reminderConfig)) {
+      const reminderCount =
+        reminderColumnIndex === null ? 0 : Number(row[reminderColumnIndex]) || 0;
+      if (scheduleCount && reminderCount >= scheduleCount) {
         return;
       }
       const displayName =
@@ -463,20 +471,69 @@ function sendRemindersWithConfig_(overrideConfig) {
         sanitizeString_(row[indexMap.householdName]) ||
         'friend';
       const languageValue = getLanguageCode_(row[indexMap.language]);
-      const body = buildReminderMessage_(reminderCount + 1, displayName, rsvpLink, languageValue);
+      eligibleEntries.push({
+        rowIndex: idx,
+        reminderCount,
+        phone,
+        displayName,
+        languageValue,
+      });
+    });
+
+    if (!eligibleEntries.length) {
+      Logger.log('sendReminders: no eligible rows to process');
+      return 0;
+    }
+
+    let manualTargetCount = null;
+    let manualEligibleCount = 0;
+    if (manualMode) {
+      manualTargetCount = eligibleEntries.reduce((min, entry) => {
+        return entry.reminderCount < min ? entry.reminderCount : min;
+      }, Infinity);
+      if (!isFinite(manualTargetCount)) {
+        Logger.log('sendReminders: manual run skipped (no pending reminders)');
+        return 0;
+      }
+      manualEligibleCount = eligibleEntries.filter((entry) => entry.reminderCount === manualTargetCount).length;
+      if (!manualEligibleCount) {
+        Logger.log('sendReminders: manual run skipped (no rows matching target reminder count %s)', manualTargetCount);
+        return 0;
+      }
+      Logger.log(
+        'sendRemindersManual targeting reminder #%s for %s recipient(s).',
+        manualTargetCount + 1,
+        manualEligibleCount
+      );
+    }
+
+    let remindersSent = 0;
+    eligibleEntries.forEach((entry) => {
+      if (manualMode && entry.reminderCount !== manualTargetCount) {
+        return;
+      }
+      const now = new Date();
+      if (!manualMode && !isReminderWindowOpen_(entry.reminderCount, now, reminderConfig)) {
+        return;
+      }
+      const body = buildReminderMessage_(entry.reminderCount + 1, entry.displayName, rsvpLink, entry.languageValue);
       const result = sendSmsWithLogging_({
         type: 'REMINDER',
-        to: phone,
+        to: entry.phone,
         body,
         rethrowOnError: false,
       });
       if (result.status === 'FAILED' || result.status === 'DRY_RUN') {
         return;
       }
-      reminderCount += 1;
-      const rowNumber = idx + 2;
-      sheet.getRange(rowNumber, indexMap.lastReminderAt + 1).setValue(result.attemptAt);
-      sheet.getRange(rowNumber, indexMap.reminderCount + 1).setValue(reminderCount);
+      const updatedReminderCount = entry.reminderCount + 1;
+      const rowNumber = entry.rowIndex + 2;
+      if (lastReminderColumnIndex !== null) {
+        sheet.getRange(rowNumber, lastReminderColumnIndex + 1).setValue(result.attemptAt);
+      }
+      if (reminderColumnIndex !== null) {
+        sheet.getRange(rowNumber, reminderColumnIndex + 1).setValue(updatedReminderCount);
+      }
       remindersSent += 1;
     });
 
@@ -850,6 +907,9 @@ function resolveReminderOffsets_(props) {
 }
 
 function isReminderWindowOpen_(reminderCount, now, reminderConfig) {
+  if (reminderConfig && reminderConfig.forceSend) {
+    return true;
+  }
   const config = reminderConfig || {};
   const eventDate = config.eventDate;
   const offsets = config.offsetsMs;
@@ -895,35 +955,3 @@ function canonicalizePhoneValue_(value) {
   }
   return raw;
 }
-
-function getOrCreateReminderTestConfig_() {
-  const cache = CacheService.getScriptCache();
-  let eventIso = cache.get(REMINDER_TEST_EVENT_CACHE_KEY);
-  let eventDate = eventIso ? new Date(eventIso) : null;
-  if (!eventDate || isNaN(eventDate.getTime())) {
-    eventDate = new Date(Date.now() + 5 * 60 * 1000);
-    cache.put(REMINDER_TEST_EVENT_CACHE_KEY, eventDate.toISOString(), 600);
-  }
-  let offsetsValue = cache.get(REMINDER_TEST_OFFSETS_CACHE_KEY);
-  let offsetsMs = [];
-  if (offsetsValue) {
-    offsetsMs = offsetsValue
-      .split(',')
-      .map((part) => Number(part.trim()))
-      .filter((value) => Number.isFinite(value) && value >= 0)
-      .map((seconds) => seconds * 1000);
-  }
-  if (!offsetsMs.length) {
-    const offsetsSeconds = [180, 60, 30];
-    offsetsMs = offsetsSeconds.map((seconds) => seconds * 1000);
-    cache.put(REMINDER_TEST_OFFSETS_CACHE_KEY, offsetsSeconds.join(','), 600);
-  }
-  return { eventDate, offsetsMs };
-}
-
-function clearReminderTestCache() {
-  const cache = CacheService.getScriptCache();
-  cache.remove(REMINDER_TEST_EVENT_CACHE_KEY);
-  cache.remove(REMINDER_TEST_OFFSETS_CACHE_KEY);
-}
-

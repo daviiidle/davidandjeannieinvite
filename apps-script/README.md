@@ -1,30 +1,313 @@
-# RSVP Webhook (Google Apps Script)
+# Wedding RSVP Google Apps Script
 
-This folder keeps the Apps Script code that receives RSVP submissions from the website. The script upserts rows in a Google Sheet by normalising phone numbers to E.164 and deduplicating on that value.
+A modular, production-ready Google Apps Script system for managing wedding RSVPs with SMS notifications via Twilio.
 
-## Setup
+## Features
 
-1. **Create/identify the spreadsheet**
-   - Use the sheet that already contains your RSVP columns (Timestamp, Updated At, Source, Household Name, First Name, Last Name, Phone, Phone E164, Email, Language, Attendance, Party Size, Other Guest Names, Notes, Invite Side, Priority, Last Reminder At, Reminder Count, SMS Opt Out).  
-   - Copy the spreadsheet ID from the URL (`https://docs.google.com/spreadsheets/d/<SPREADSHEET_ID>/edit`).
+- **RSVP Form Webhook** - Processes POST requests from web forms
+- **Phone Deduplication** - Prevents duplicate entries by E.164 phone number
+- **SMS Confirmations** - Sends instant confirmation messages after RSVP
+- **Automated Reminders** - Scheduled SMS reminders for non-responders
+- **Bilingual Support** - English and Vietnamese message templates
+- **Audit Trail** - All SMS logged to OUTBOX sheet
+- **Honeypot Spam Protection** - Filters spam submissions
 
-2. **Create or open the Apps Script project**
-   - Open [script.google.com](https://script.google.com) and either open the project that backs your sheet or create a new standalone project.
-   - Add the contents of `rsvp.gs` to the project.
-   - Replace `REPLACE_WITH_YOUR_SHEET_ID` with the ID from step 1. Update `SHEET_NAME` if your tab is not `Sheet1`.
+## Architecture
 
-3. **Deploy as a web app**
-   - `Deploy` → `New deployment` → `Select type: Web app`.
-   - Set *Execute as* to `Me`.
-   - Set *Who has access* to `Anyone` (or `Anyone with the link`).
-   - Click `Deploy`, authorize if prompted, and copy the web app URL.
+The codebase is refactored into **11 modular files** following senior engineering best practices:
 
-4. **Point the frontend to the webhook**
-   - In this repo, set `VITE_RSVP_ENDPOINT=<your_web_app_url>` inside `.env` (create it next to `package.json` if it does not exist).
-   - Rebuild/redeploy the site so it uses the new environment variable.
+### Core Files
+
+| File | Purpose | Key Responsibilities |
+|------|---------|---------------------|
+| **Config.gs** | Configuration & Constants | All templates, headers, settings |
+| **HttpHandlers.gs** | Webhook Entry Points | doPost, doGet, doOptions handlers |
+| **Validation.gs** | Request Validation | Payload parsing and validation |
+| **SheetOperations.gs** | Spreadsheet Management | Read/write operations, header management |
+| **SmsService.gs** | SMS Integration | Twilio API calls and logging |
+| **ConfirmationService.gs** | Confirmation Messages | Build and send confirmation SMS |
+| **ReminderService.gs** | Reminder Scheduling | Automated reminder logic |
+| **OutboxLogger.gs** | SMS Audit Logging | OUTBOX sheet management |
+| **PhoneUtils.gs** | Phone Utilities | E.164 formatting, canonicalization |
+| **StringUtils.gs** | String Utilities | Sanitization, truncation |
+| **HttpUtils.gs** | HTTP Utilities | JSON responses, error handling |
+
+### Design Principles
+
+✅ **Single Responsibility** - Each module has one clear purpose
+✅ **Loose Coupling** - Minimal dependencies between modules
+✅ **High Cohesion** - Related functions grouped together
+✅ **Easy to Test** - Functions can be tested independently
+✅ **Apps Script Compatible** - Works with global namespace
+
+## Setup Instructions
+
+### 1. Create a New Apps Script Project
+
+1. Go to [script.google.com](https://script.google.com)
+2. Click **New Project**
+3. Name it: "Wedding RSVP Webhook"
+
+### 2. Add All Script Files
+
+Copy each `.gs` file from this directory to your Apps Script project **in this order**:
+
+1. `Config.gs` - Must be first (defines constants)
+2. `StringUtils.gs`
+3. `PhoneUtils.gs`
+4. `HttpUtils.gs`
+5. `OutboxLogger.gs`
+6. `SheetOperations.gs`
+7. `Validation.gs`
+8. `SmsService.gs`
+9. `ConfirmationService.gs`
+10. `ReminderService.gs`
+11. `HttpHandlers.gs` - Must be last (defines doPost/doGet)
+
+**Important:** Delete the default `Code.gs` file that Apps Script creates.
+
+### 3. Configure Settings
+
+#### Update Spreadsheet ID
+
+In `Config.gs`, update the `SPREADSHEET_ID`:
+
+```javascript
+const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
+```
+
+To find your spreadsheet ID:
+- Open your Google Sheet
+- Copy the ID from the URL: `https://docs.google.com/spreadsheets/d/[THIS_IS_THE_ID]/edit`
+
+#### Set Script Properties
+
+Go to **Project Settings** > **Script Properties** and add:
+
+| Property | Value | Description |
+|----------|-------|-------------|
+| `SMS_MODE` | `DRY_RUN` or `LIVE` | Set to `LIVE` to send real SMS |
+| `TWILIO_ACCOUNT_SID` | Your Twilio SID | From Twilio console |
+| `TWILIO_AUTH_TOKEN` | Your Twilio token | From Twilio console |
+| `TWILIO_FROM_NUMBER` | Your Twilio phone | E.164 format: +61... |
+| `RSVP_LINK` | Your RSVP URL | For reminder messages |
+| `TWILIO_TEST_TO` | Your test phone | For testing SMS |
+
+### 4. Deploy as Web App
+
+1. Click **Deploy** > **New deployment**
+2. Click **Select type** > **Web app**
+3. Fill in settings:
+   - **Description:** "RSVP Webhook v1"
+   - **Execute as:** Me (your email)
+   - **Who has access:** Anyone
+4. Click **Deploy**
+5. Copy the **Web app URL** - this is your webhook endpoint
+
+### 5. Update Frontend
+
+Update your React app's `RSVP_ENDPOINT` to use the deployed URL:
+
+```typescript
+const RSVP_ENDPOINT = 'YOUR_DEPLOYED_WEB_APP_URL';
+```
+
+## Usage
+
+### Processing RSVP Submissions
+
+The webhook automatically:
+1. Validates the payload
+2. Checks for spam (honeypot)
+3. Finds duplicates by phone number
+4. Updates or creates spreadsheet row
+5. Sends confirmation SMS
+
+### Sending Reminder SMS
+
+#### Automated (Scheduled)
+
+Set up a time-based trigger:
+
+1. Go to **Triggers** (clock icon)
+2. Click **Add Trigger**
+3. Choose:
+   - Function: `sendReminders`
+   - Event source: Time-driven
+   - Type: Day timer
+   - Time: Pick your preferred time
+4. Save
+
+The system will automatically send reminders based on:
+- `DEFAULT_REMINDER_SCHEDULE_DAYS` in `Config.gs` (default: 21, 10, 2 days before event)
+- `DEFAULT_EVENT_DATE` in `Config.gs`
+
+#### Manual Execution
+
+Run these functions directly from Apps Script:
+
+- **`sendRemindersManual()`** - Send next batch of reminders immediately
+- **`sendRemindersTest()`** - Test with override event date (now)
+- **`testSendSmsToMe()`** - Send test SMS to configured number
+
+### Testing
+
+1. **Health Check:** Visit your web app URL in browser - should return `{"ok":true,"message":"RSVP webhook is running"}`
+2. **SMS Test:** Run `testSendSmsToMe()` - sends test SMS to `TWILIO_TEST_TO`
+3. **Dry Run:** Keep `SMS_MODE=DRY_RUN` until ready for production
+
+## Spreadsheet Structure
+
+### Main Sheet (Sheet1)
+
+The script auto-creates these columns:
+
+| Column | Type | Description |
+|--------|------|-------------|
+| Timestamp | Date | First submission time |
+| Updated At | Date | Last update time |
+| Source | Text | "WEBSITE" |
+| Household Name | Text | Optional household name |
+| First Name | Text | Required |
+| Last Name | Text | Optional |
+| Phone | Text | Original phone format |
+| Phone E164 | Text | Normalized E.164 format |
+| Email | Text | Optional |
+| Language | Text | EN or VI |
+| Attendance | Text | YES or NO |
+| Party Size | Number | Number of guests |
+| Other Guest Names | Text | Names of additional guests |
+| Notes | Text | Special requests |
+| Invite Side | Text | Bride/Groom (manual) |
+| Priority | Text | NORMAL (default) |
+| Last Reminder At | Date | Last reminder sent |
+| Reminder Count | Number | Number of reminders sent |
+| SMS Opt Out | Boolean | If true, no SMS sent |
+| Confirmation Sent At | Date | Confirmation timestamp |
+
+### OUTBOX Sheet
+
+Auto-created for SMS audit trail:
+
+| Column | Description |
+|--------|-------------|
+| Timestamp | When SMS was sent |
+| Type | REMINDER, CONFIRMATION, TEST |
+| To | Recipient phone number |
+| Body | Full message text |
+| Status | SENT, FAILED, DRY_RUN |
+| Error | Error message if failed |
+| TwilioSid | Twilio message SID |
+
+## Advanced Configuration
+
+### Custom Reminder Schedule
+
+Edit `Config.gs`:
+
+```javascript
+// Days before event to send reminders
+const DEFAULT_REMINDER_SCHEDULE_DAYS = [21, 10, 2];
+```
+
+### Test Mode Reminders
+
+Set script properties:
+
+- `TEST_REMINDER_EVENT_DATE` - Override event date (ISO format)
+- `TEST_REMINDER_OFFSETS_SECONDS` - Override offsets in seconds (comma-separated)
+
+Example:
+```
+TEST_REMINDER_EVENT_DATE = 2026-09-01T00:00:00
+TEST_REMINDER_OFFSETS_SECONDS = 60,120,180
+```
+
+### Customize Message Templates
+
+Edit templates in `Config.gs`:
+
+- `REMINDER_TEMPLATES` - Reminder message functions
+- `CONFIRMATION_TEMPLATES` - Confirmation message functions
+- `CONFIRMATION_DETAIL_LABELS` - Detail labels for summaries
 
 ## Troubleshooting
 
-- If submissions fail, check the Apps Script executions dashboard for server-side errors.
-- Ensure the sheet still includes the columns listed above; the script validates them and will return HTTP 500 if any are missing.
-- If the web app was deployed before editing the script, redeploy to publish the latest code and update the URL in your frontend if it changed.
+### SMS Not Sending
+
+1. Check `SMS_MODE` is set to `LIVE`
+2. Verify Twilio credentials in Script Properties
+3. Check OUTBOX sheet for error messages
+4. Verify phone numbers are in E.164 format (+61...)
+
+### Duplicate Entries
+
+The system prevents duplicates by E.164 phone number. If you're seeing duplicates:
+- Check that phone numbers are being normalized correctly
+- Review `PhoneUtils.gs` logic for your country code
+
+### Webhook Not Responding
+
+1. Verify deployment settings: "Execute as: Me" and "Who has access: Anyone"
+2. Check execution logs: **Executions** tab in Apps Script
+3. Test with browser GET request to verify it's running
+
+### Permission Errors
+
+Grant the script permission to:
+- Access Google Sheets
+- Make external HTTP requests (Twilio)
+- Access script properties
+
+## Maintenance
+
+### Updating the Code
+
+1. Make changes in Apps Script editor
+2. Click **Deploy** > **Manage deployments**
+3. Click pencil icon on active deployment
+4. Update version description
+5. Click **Deploy**
+
+The web app URL remains the same, so no frontend changes needed.
+
+### Monitoring
+
+- Review **OUTBOX** sheet regularly for failed SMS
+- Check **Executions** tab for runtime errors
+- Monitor Twilio console for delivery issues
+
+## Security Considerations
+
+- ✅ Honeypot field prevents spam
+- ✅ Script lock prevents concurrent writes
+- ✅ E.164 validation prevents invalid phones
+- ✅ SMS opt-out respected
+- ✅ CORS headers configured
+- ⚠️ No rate limiting (consider adding if needed)
+- ⚠️ Webhook is public (use honeypot + validation)
+
+## License
+
+This code is part of a wedding invitation project. Feel free to adapt for your own use.
+
+## Support
+
+For issues with:
+- **Apps Script:** Check [Apps Script documentation](https://developers.google.com/apps-script)
+- **Twilio:** Check [Twilio SMS documentation](https://www.twilio.com/docs/sms)
+- **This code:** Review execution logs and OUTBOX sheet for debugging
+
+## Migration from Original rsvp.gs
+
+If you're migrating from the original monolithic `rsvp.gs`:
+
+1. Back up your existing script
+2. Copy all script properties (they're preserved)
+3. Deploy this refactored version as a new deployment
+4. Test thoroughly in DRY_RUN mode
+5. Update frontend to new webhook URL
+6. Switch to LIVE mode
+7. Delete old deployment
+
+All functionality is preserved - this is purely a refactor for maintainability.
