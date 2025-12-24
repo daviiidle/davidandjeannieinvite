@@ -52,8 +52,12 @@ const REQUIRED_COLUMN_KEYS = HEADER_CONFIG.map((cfg) => cfg.key);
 
 const OUTBOX_SHEET_NAME = 'OUTBOX';
 const OUTBOX_HEADERS = ['Timestamp', 'Type', 'To', 'Body', 'Status', 'Error', 'TwilioSid'];
-const EVENT_DATE = new Date('2026-09-01T00:00:00');
-const REMINDER_SCHEDULE_DAYS = [21, 10, 2];
+const DEFAULT_EVENT_DATE = new Date('2026-09-01T00:00:00');
+const DEFAULT_REMINDER_SCHEDULE_DAYS = [21, 10, 2];
+const TEST_EVENT_DATE_PROPERTY = 'TEST_REMINDER_EVENT_DATE';
+const TEST_OFFSETS_PROPERTY = 'TEST_REMINDER_OFFSETS_SECONDS';
+const REMINDER_TEST_EVENT_CACHE_KEY = 'REMINDER_TEST_EVENT_CACHE_KEY';
+const REMINDER_TEST_OFFSETS_CACHE_KEY = 'REMINDER_TEST_OFFSETS_CACHE_KEY';
 const ONE_HOUR_MS = 60 * 60 * 1000;
 const ONE_DAY_MS = 24 * ONE_HOUR_MS;
 const SMS_MAX_CHAR_LENGTH = 160;
@@ -395,6 +399,15 @@ function buildRowValues_({ payload, indexMap, existingRow, columnCount }) {
 }
 
 function sendReminders() {
+  return sendRemindersWithConfig_();
+}
+
+function sendRemindersTest() {
+  const overrideConfig = getOrCreateReminderTestConfig_();
+  return sendRemindersWithConfig_(overrideConfig);
+}
+
+function sendRemindersWithConfig_(overrideConfig) {
   let lock;
   let locked = false;
   try {
@@ -414,6 +427,13 @@ function sendReminders() {
     if (!rsvpLink) {
       throw new Error('Missing RSVP_LINK script property.');
     }
+    const reminderConfig = overrideConfig || getReminderConfig_(props);
+    Logger.log(
+      'Reminder config -> eventDate: %s, offsetsMs: %s',
+      reminderConfig.eventDate,
+      JSON.stringify(reminderConfig.offsetsMs)
+    );
+    const scheduleOffsets = reminderConfig.offsetsMs || [];
 
     let remindersSent = 0;
     rows.forEach((row, idx) => {
@@ -430,12 +450,12 @@ function sendReminders() {
         return;
       }
       let reminderCount = Number(row[indexMap.reminderCount]) || 0;
-      const scheduleCount = REMINDER_SCHEDULE_DAYS.length;
+      const scheduleCount = scheduleOffsets.length;
       if (reminderCount >= scheduleCount) {
         return;
       }
       const now = new Date();
-      if (!isReminderWindowOpen_(reminderCount, now)) {
+      if (!isReminderWindowOpen_(reminderCount, now, reminderConfig)) {
         return;
       }
       const displayName =
@@ -796,19 +816,55 @@ function getLanguageCode_(value) {
   return normalized === 'VI' ? 'VI' : 'EN';
 }
 
-function isReminderWindowOpen_(reminderCount, now) {
-  if (!(EVENT_DATE instanceof Date) || isNaN(EVENT_DATE.getTime())) {
+function getReminderConfig_(props) {
+  const properties = props || getScriptProperties_();
+  return {
+    eventDate: resolveReminderEventDate_(properties),
+    offsetsMs: resolveReminderOffsets_(properties),
+  };
+}
+
+function resolveReminderEventDate_(props) {
+  const overrideRaw = sanitizeString_(props && props[TEST_EVENT_DATE_PROPERTY]);
+  if (overrideRaw) {
+    const parsed = new Date(overrideRaw);
+    if (!isNaN(parsed.getTime())) {
+      return parsed;
+    }
+  }
+  return DEFAULT_EVENT_DATE;
+}
+
+function resolveReminderOffsets_(props) {
+  const overrideRaw = sanitizeString_(props && props[TEST_OFFSETS_PROPERTY]);
+  if (overrideRaw) {
+    const seconds = overrideRaw
+      .split(',')
+      .map((part) => Number(part.trim()))
+      .filter((value) => Number.isFinite(value) && value >= 0);
+    if (seconds.length) {
+      return seconds.map((value) => value * 1000);
+    }
+  }
+  return DEFAULT_REMINDER_SCHEDULE_DAYS.map((days) => Math.max(0, days) * ONE_DAY_MS);
+}
+
+function isReminderWindowOpen_(reminderCount, now, reminderConfig) {
+  const config = reminderConfig || {};
+  const eventDate = config.eventDate;
+  const offsets = config.offsetsMs;
+  if (!(eventDate instanceof Date) || isNaN(eventDate.getTime())) {
     return true;
   }
-  const scheduleDays = REMINDER_SCHEDULE_DAYS[reminderCount];
-  if (typeof scheduleDays !== 'number') {
+  const offsetMs = Array.isArray(offsets) ? offsets[reminderCount] : undefined;
+  if (typeof offsetMs !== 'number') {
     return false;
   }
-  const eventTime = EVENT_DATE.getTime();
+  const eventTime = eventDate.getTime();
   if (now.getTime() > eventTime) {
     return false;
   }
-  const targetTime = eventTime - scheduleDays * ONE_DAY_MS;
+  const targetTime = eventTime - offsetMs;
   return now.getTime() >= targetTime;
 }
 
@@ -838,4 +894,35 @@ function canonicalizePhoneValue_(value) {
     return digitsOnly.startsWith('61') ? '+' + digitsOnly : digitsOnly;
   }
   return raw;
+}
+
+function getOrCreateReminderTestConfig_() {
+  const cache = CacheService.getScriptCache();
+  let eventIso = cache.get(REMINDER_TEST_EVENT_CACHE_KEY);
+  let eventDate = eventIso ? new Date(eventIso) : null;
+  if (!eventDate || isNaN(eventDate.getTime())) {
+    eventDate = new Date(Date.now() + 5 * 60 * 1000);
+    cache.put(REMINDER_TEST_EVENT_CACHE_KEY, eventDate.toISOString(), 600);
+  }
+  let offsetsValue = cache.get(REMINDER_TEST_OFFSETS_CACHE_KEY);
+  let offsetsMs = [];
+  if (offsetsValue) {
+    offsetsMs = offsetsValue
+      .split(',')
+      .map((part) => Number(part.trim()))
+      .filter((value) => Number.isFinite(value) && value >= 0)
+      .map((seconds) => seconds * 1000);
+  }
+  if (!offsetsMs.length) {
+    const offsetsSeconds = [180, 60, 30];
+    offsetsMs = offsetsSeconds.map((seconds) => seconds * 1000);
+    cache.put(REMINDER_TEST_OFFSETS_CACHE_KEY, offsetsSeconds.join(','), 600);
+  }
+  return { eventDate, offsetsMs };
+}
+
+function clearReminderTestCache() {
+  const cache = CacheService.getScriptCache();
+  cache.remove(REMINDER_TEST_EVENT_CACHE_KEY);
+  cache.remove(REMINDER_TEST_OFFSETS_CACHE_KEY);
 }
