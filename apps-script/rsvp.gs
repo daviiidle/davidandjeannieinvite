@@ -144,7 +144,8 @@ function doPost(e) {
 
     const { rows, indexMap, columnCount } = readSheet_(sheet);
     const duplicateRowIndex = rows.findIndex((row) => {
-      return (row[indexMap.phoneE164] || '').toString().trim() === payload.phoneE164;
+      const existingPhone = getCanonicalPhoneFromRow_(row, indexMap);
+      return existingPhone && existingPhone === payload.phoneE164;
     });
     const existingRow = duplicateRowIndex >= 0 ? rows[duplicateRowIndex] : null;
     const isNewRow = duplicateRowIndex < 0;
@@ -419,7 +420,7 @@ function sendReminders() {
       if (attendanceValue) {
         return;
       }
-      const phone = sanitizeString_(row[indexMap.phoneE164]);
+      const phone = getCanonicalPhoneFromRow_(row, indexMap);
       if (!phone) {
         return;
       }
@@ -792,4 +793,32 @@ function jsonResponse_(status, obj) {
 function getLanguageCode_(value) {
   const normalized = sanitizeString_(value).toUpperCase();
   return normalized === 'VI' ? 'VI' : 'EN';
+}
+
+function getCanonicalPhoneFromRow_(row, indexMap) {
+  if (!row || !indexMap) return '';
+  const e164Value = canonicalizePhoneValue_(row[indexMap.phoneE164]);
+  if (e164Value) {
+    return e164Value;
+  }
+  return canonicalizePhoneValue_(row[indexMap.phone]);
+}
+
+function canonicalizePhoneValue_(value) {
+  const raw = sanitizeString_(value);
+  if (!raw) {
+    return '';
+  }
+  const canonical = toE164AU_(raw);
+  if (canonical) {
+    return canonical;
+  }
+  if (raw.startsWith('+')) {
+    return raw;
+  }
+  const digitsOnly = raw.replace(/[^\d]/g, '');
+  if (digitsOnly) {
+    return digitsOnly.startsWith('61') ? '+' + digitsOnly : digitsOnly;
+  }
+  return raw;
 }
