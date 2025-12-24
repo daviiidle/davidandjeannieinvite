@@ -926,3 +926,4 @@ function clearReminderTestCache() {
   cache.remove(REMINDER_TEST_EVENT_CACHE_KEY);
   cache.remove(REMINDER_TEST_OFFSETS_CACHE_KEY);
 }
+
