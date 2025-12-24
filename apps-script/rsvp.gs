@@ -52,9 +52,10 @@ const REQUIRED_COLUMN_KEYS = HEADER_CONFIG.map((cfg) => cfg.key);
 
 const OUTBOX_SHEET_NAME = 'OUTBOX';
 const OUTBOX_HEADERS = ['Timestamp', 'Type', 'To', 'Body', 'Status', 'Error', 'TwilioSid'];
-const MAX_REMINDERS = 3;
-const REMINDER_INTERVAL_HOURS = 24;
+const EVENT_DATE = new Date('2026-09-01T00:00:00');
+const REMINDER_SCHEDULE_DAYS = [21, 10, 2];
 const ONE_HOUR_MS = 60 * 60 * 1000;
+const ONE_DAY_MS = 24 * ONE_HOUR_MS;
 const SMS_MAX_CHAR_LENGTH = 160;
 const TWILIO_TRIAL_PREFIX_LENGTH = 40;
 const REMINDER_TEMPLATES = {
@@ -429,12 +430,12 @@ function sendReminders() {
         return;
       }
       let reminderCount = Number(row[indexMap.reminderCount]) || 0;
-      if (reminderCount >= MAX_REMINDERS) {
+      const scheduleCount = REMINDER_SCHEDULE_DAYS.length;
+      if (reminderCount >= scheduleCount) {
         return;
       }
-      const lastReminderAt = valueToDate_(row[indexMap.lastReminderAt]);
       const now = new Date();
-      if (lastReminderAt && now.getTime() - lastReminderAt.getTime() < REMINDER_INTERVAL_HOURS * ONE_HOUR_MS) {
+      if (!isReminderWindowOpen_(reminderCount, now)) {
         return;
       }
       const displayName =
@@ -793,6 +794,22 @@ function jsonResponse_(status, obj) {
 function getLanguageCode_(value) {
   const normalized = sanitizeString_(value).toUpperCase();
   return normalized === 'VI' ? 'VI' : 'EN';
+}
+
+function isReminderWindowOpen_(reminderCount, now) {
+  if (!(EVENT_DATE instanceof Date) || isNaN(EVENT_DATE.getTime())) {
+    return true;
+  }
+  const scheduleDays = REMINDER_SCHEDULE_DAYS[reminderCount];
+  if (typeof scheduleDays !== 'number') {
+    return false;
+  }
+  const eventTime = EVENT_DATE.getTime();
+  if (now.getTime() > eventTime) {
+    return false;
+  }
+  const targetTime = eventTime - scheduleDays * ONE_DAY_MS;
+  return now.getTime() >= targetTime;
 }
 
 function getCanonicalPhoneFromRow_(row, indexMap) {
