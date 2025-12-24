@@ -39,7 +39,7 @@ const createDefaultFormState = (): FormState => ({
 
 const RSVP_ENDPOINT =
   import.meta.env.VITE_RSVP_ENDPOINT ??
-  'https://script.google.com/macros/s/AKfycbzpvrFs98nHA8XGM_h0R8qz-cwoIqIAIb4RuxOIeLGuaJzlYGfxyRgD43MOsDqpefwqlw/exec';
+  'https://script.google.com/macros/s/AKfycbyjQw5j5lYh5ZUPJ13kk4mfJ6AXPqs93haPmKI5W9lzhMCdYI5p-gU5QVQz8tuWyuRITw/exec';
 
 const errorColor = '#B3261E';
 
