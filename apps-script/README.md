@@ -125,29 +125,44 @@ The webhook automatically:
 
 ### Sending Reminder SMS
 
-#### Automated (Scheduled)
+Reminders follow **strict cooldown rules** to prevent spam.
 
-Set up a time-based trigger:
+#### Cooldown Rules (Strictly Enforced)
 
-1. Go to **Triggers** (clock icon)
-2. Click **Add Trigger**
-3. Choose:
-   - Function: `sendReminders`
-   - Event source: Time-driven
-   - Type: Day timer
-   - Time: Pick your preferred time
-4. Save
+| State | Reminder Count | Can Send? | Cooldown Requirement |
+|-------|----------------|-----------|---------------------|
+| **NONE** | 0 | ✅ Yes, anytime | No cooldown |
+| **FIRST_SENT** | 1 | ⏳ Only after cooldown | Must wait **10 full days** |
+| **SECOND_SENT** | 2 | ⏳ Only after cooldown | Must wait **8 full days** |
+| **FINAL_SENT** | 3 | ❌ Never | No more reminders allowed |
 
-The system will automatically send reminders based on:
-- `DEFAULT_REMINDER_SCHEDULE_DAYS` in `Config.gs` (default: 21, 10, 2 days before event)
-- `DEFAULT_EVENT_DATE` in `Config.gs`
+**Example Timeline:**
+- **Day 1**: Send reminder #1 → Guest state becomes FIRST_SENT
+- **Days 2-10**: If you run `sendReminders()` → **"DO NOT SEND — cooldown not satisfied"**
+- **Day 11+**: Send reminder #2 → Guest state becomes SECOND_SENT
+- **Days 12-18**: If you run `sendReminders()` → **"DO NOT SEND — cooldown not satisfied"**
+- **Day 19+**: Send reminder #3 → Guest state becomes FINAL_SENT
+- **Forever after**: No more reminders allowed
 
 #### Manual Execution
 
-Run these functions directly from Apps Script:
+Run `sendReminders()` manually when you want to send reminders:
 
-- **`sendRemindersManual()`** - Send next batch of reminders immediately
-- **`sendRemindersTest()`** - Test with override event date (now)
+1. In Apps Script, select `sendReminders` from the function dropdown
+2. Click **Run**
+3. Check execution logs to see results
+
+**How it works:**
+- Finds all eligible guests (no response, has phone, not opted out, < 3 reminders)
+- Groups by Reminder Count and targets the **lowest count** first
+- For each guest, checks cooldown rules:
+  - If cooldown satisfied → Sends reminder
+  - If cooldown NOT satisfied → Skips with reason logged
+- Updates "Reminder Count" and "Last Reminder At" after sending
+
+#### Other Functions
+
+- **`sendRemindersManual()`** - Bypass ALL cooldown checks (⚠️ use with extreme caution!)
 - **`testSendSmsToMe()`** - Send test SMS to configured number
 
 ### Testing
@@ -201,27 +216,16 @@ Auto-created for SMS audit trail:
 
 ## Advanced Configuration
 
-### Custom Reminder Schedule
+### Cooldown Periods
 
-Edit `Config.gs`:
+Cooldown periods are configured in `Config.gs`:
 
 ```javascript
-// Days before event to send reminders
-const DEFAULT_REMINDER_SCHEDULE_DAYS = [21, 10, 2];
+const REMINDER_COOLDOWN_AFTER_FIRST = 10;  // Wait 10 days after reminder #1
+const REMINDER_COOLDOWN_AFTER_SECOND = 8;   // Wait 8 days after reminder #2
 ```
 
-### Test Mode Reminders
-
-Set script properties:
-
-- `TEST_REMINDER_EVENT_DATE` - Override event date (ISO format)
-- `TEST_REMINDER_OFFSETS_SECONDS` - Override offsets in seconds (comma-separated)
-
-Example:
-```
-TEST_REMINDER_EVENT_DATE = 2026-09-01T00:00:00
-TEST_REMINDER_OFFSETS_SECONDS = 60,120,180
-```
+To change cooldown periods, edit these values in `Config.gs`.
 
 ### Customize Message Templates
 

@@ -51,14 +51,12 @@ const REQUIRED_COLUMN_KEYS = HEADER_CONFIG.map((cfg) => cfg.key);
 
 const OUTBOX_HEADERS = ['Timestamp', 'Type', 'To', 'Body', 'Status', 'Error', 'TwilioSid'];
 
-const DEFAULT_EVENT_DATE = new Date('2026-09-01T00:00:00');
-const DEFAULT_REMINDER_SCHEDULE_DAYS = [21, 10, 2];
-
-const TEST_EVENT_DATE_PROPERTY = 'TEST_REMINDER_EVENT_DATE';
-const TEST_OFFSETS_PROPERTY = 'TEST_REMINDER_OFFSETS_SECONDS';
-
 const ONE_HOUR_MS = 60 * 60 * 1000;
 const ONE_DAY_MS = 24 * ONE_HOUR_MS;
+
+// Reminder cooldown periods (days)
+const REMINDER_COOLDOWN_AFTER_FIRST = 10;  // Wait 10 days after reminder #1
+const REMINDER_COOLDOWN_AFTER_SECOND = 8;   // Wait 8 days after reminder #2
 
 const SMS_MAX_CHAR_LENGTH = 160;
 const TWILIO_TRIAL_PREFIX_LENGTH = 40;
@@ -80,11 +78,6 @@ const REMINDER_TEMPLATES = {
       name + ', nhắc lần cuối RSVP hôm nay để bọn mình chốt số lượng nha. Cảm ơn bạn! ' + link,
   ],
 };
-
-const MAX_REMINDER_TEMPLATE_COUNT = Math.max(
-  REMINDER_TEMPLATES.EN.length,
-  REMINDER_TEMPLATES.VI.length
-);
 
 const CONFIRMATION_TEMPLATES = {
   EN: {
