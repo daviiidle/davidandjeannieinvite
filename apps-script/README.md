@@ -24,6 +24,7 @@ The codebase is refactored into **11 modular files** following senior engineerin
 | **HttpHandlers.gs** | Webhook Entry Points | doPost, doGet, doOptions handlers |
 | **Validation.gs** | Request Validation | Payload parsing and validation |
 | **SheetOperations.gs** | Spreadsheet Management | Read/write operations, header management |
+| **RsvpAccessService.gs** | Token Flow | Token generation, view/edit serialization |
 | **SmsService.gs** | SMS Integration | Twilio API calls and logging |
 | **ConfirmationService.gs** | Confirmation Messages | Build and send confirmation SMS |
 | **ReminderService.gs** | Reminder Scheduling | Automated reminder logic |
@@ -58,11 +59,12 @@ Copy each `.gs` file from this directory to your Apps Script project **in this o
 4. `HttpUtils.gs`
 5. `OutboxLogger.gs`
 6. `SheetOperations.gs`
-7. `Validation.gs`
-8. `SmsService.gs`
-9. `ConfirmationService.gs`
-10. `ReminderService.gs`
-11. `HttpHandlers.gs` - Must be last (defines doPost/doGet)
+7. `RsvpAccessService.gs`
+8. `Validation.gs`
+9. `SmsService.gs`
+10. `ConfirmationService.gs`
+11. `ReminderService.gs`
+12. `HttpHandlers.gs` - Must be last (defines doPost/doGet)
 
 **Important:** Delete the default `Code.gs` file that Apps Script creates.
 

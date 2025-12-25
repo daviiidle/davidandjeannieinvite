@@ -12,62 +12,17 @@ const ConfirmationService = (function () {
    * @param {Object} payload - The RSVP payload
    * @return {string} Confirmation message
    */
-  function buildConfirmationMessage(payload) {
-    const firstName = payload.firstName || payload.householdName || 'friend';
-    const langKey = getLanguageCode_(payload.language);
-    const templateSet = CONFIRMATION_TEMPLATES[langKey] || CONFIRMATION_TEMPLATES.EN;
-    const attendanceKey = payload.attendance === 'YES' ? 'YES' : 'NO';
-    const formatter = templateSet[attendanceKey] || CONFIRMATION_TEMPLATES.EN[attendanceKey];
-    const baseMessage =
-      attendanceKey === 'YES' ? formatter(firstName, payload.partySize) : formatter(firstName);
-    const allowance =
-      SMS_MAX_CHAR_LENGTH - TWILIO_TRIAL_PREFIX_LENGTH - baseMessage.length - 1;
-    if (allowance <= 0) {
-      return baseMessage;
+  function buildConfirmationMessage(payload, viewUrl) {
+    const partySize = payload.attendance === 'YES' ? Number(payload.partySize) || 0 : 0;
+    const base =
+      partySize > 0 ? 'RSVP saved for ' + partySize + '.' : 'RSVP saved.';
+    const linkSegment = viewUrl ? ' View/edit: ' + viewUrl : '';
+    const optOut = ' Reply STOP to opt out.';
+    let message = base + linkSegment;
+    if (message.length + optOut.length <= SMS_MAX_CHAR_LENGTH) {
+      message += optOut;
     }
-    const summary = buildConfirmationSummary(payload, langKey, allowance);
-    return summary ? baseMessage + ' ' + summary : baseMessage;
-  }
-
-  /**
-   * Builds a summary of RSVP details to append to confirmation message.
-   *
-   * @param {Object} payload - The RSVP payload
-   * @param {string} langKey - Language code (EN or VI)
-   * @param {number} maxLength - Maximum length allowed
-   * @return {string} Summary string or empty if it won't fit
-   */
-  function buildConfirmationSummary(payload, langKey, maxLength) {
-    const labels = CONFIRMATION_DETAIL_LABELS[langKey] || CONFIRMATION_DETAIL_LABELS.EN;
-    const summaryParts = [
-      payload.attendance ? labels.attendance + ': ' + payload.attendance : '',
-      typeof payload.partySize === 'number' && payload.attendance === 'YES'
-        ? labels.partySize + ': ' + payload.partySize
-        : '',
-      payload.otherGuestNames ? labels.otherGuests + ': ' + payload.otherGuestNames : '',
-      payload.notes ? labels.notes + ': ' + StringUtils.truncate(payload.notes, 60) : '',
-    ].filter(Boolean);
-
-    if (!summaryParts.length) {
-      return '';
-    }
-
-    let summary = summaryParts.join(', ');
-    const prefix = labels.detailsPrefix + ' ';
-
-    if (maxLength <= prefix.length + 1) {
-      return '';
-    }
-
-    let fullText = prefix + summary;
-    if (fullText.length <= maxLength) {
-      return fullText;
-    }
-
-    const available = maxLength - prefix.length - 1;
-    summary = summary.substring(0, Math.max(0, available)) + '…';
-    fullText = prefix + summary;
-    return fullText.length > maxLength ? fullText.substring(0, maxLength) : fullText;
+    return message;
   }
 
   /**
@@ -96,7 +51,14 @@ const ConfirmationService = (function () {
       return;
     }
 
-    const message = buildConfirmationMessage(payload);
+    const token =
+      typeof indexMap.token === 'number' ? StringUtils.sanitize(rowValues[indexMap.token]) : '';
+    const viewUrl = RsvpAccessService.buildViewUrl(token);
+    if (!viewUrl) {
+      return;
+    }
+
+    const message = buildConfirmationMessage(payload, viewUrl);
     const result = SmsService.sendSmsWithLogging({
       type: 'CONFIRMATION',
       to: payload.phoneE164,
@@ -104,7 +66,13 @@ const ConfirmationService = (function () {
       rethrowOnError: false,
     });
 
-    sheet.getRange(rowNumber, indexMap.confirmationSentAt + 1).setValue(result.attemptAt);
+    const timestamp = result.attemptAt;
+    if (typeof indexMap.confirmationSentAt === 'number') {
+      sheet.getRange(rowNumber, indexMap.confirmationSentAt + 1).setValue(timestamp);
+    }
+    if (typeof indexMap.lastSmsSentAt === 'number') {
+      sheet.getRange(rowNumber, indexMap.lastSmsSentAt + 1).setValue(timestamp);
+    }
   }
 
   return {

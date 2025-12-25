@@ -7,8 +7,9 @@ import { SeatingLookup } from './components/SeatingLookup';
 import { RSVP } from './components/RSVP';
 import { Footer } from './components/Footer';
 import { Photos } from './components/Photos';
+import { RsvpAccessPage } from './components/RsvpAccessPage';
 
-type PageKey = 'home' | 'details' | 'seating' | 'photos' | 'not-found';
+type PageKey = 'home' | 'details' | 'seating' | 'photos' | 'view' | 'not-found';
 
 const BASE_PATH = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 
@@ -64,7 +65,14 @@ function usePathname() {
 
 export default function App() {
   const { path, navigate } = usePathname();
-  const page: PageKey = useMemo(() => routeMap[path] ?? 'not-found', [path]);
+  const viewToken = useMemo(() => {
+    const match = path.match(/^\/r\/([^/]+)$/);
+    return match ? match[1] : null;
+  }, [path]);
+  const page: PageKey = useMemo(() => {
+    if (viewToken) return 'view';
+    return routeMap[path] ?? 'not-found';
+  }, [path, viewToken]);
   const [initialPathHandled, setInitialPathHandled] = useState(false);
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
 
@@ -137,6 +145,8 @@ export default function App() {
         {page === 'seating' && <SeatingLookup />}
 
         {page === 'photos' && <Photos />}
+
+        {page === 'view' && viewToken && <RsvpAccessPage token={viewToken} />}
 
         {page === 'not-found' && (
           <section className="px-4 py-32 text-center">

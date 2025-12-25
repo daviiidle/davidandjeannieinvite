@@ -41,8 +41,33 @@ const HttpUtils = (function () {
     return output;
   }
 
+  /**
+   * Resolves the normalized request path from the event object.
+   *
+   * @param {Object} e - The doGet/doPost event
+   * @return {string} Normalized path starting with /
+   */
+  function getRequestPath(e) {
+    const rawPath = e && typeof e.pathInfo === 'string' ? e.pathInfo : '';
+    let normalized = rawPath ? '/' + rawPath.replace(/^\/+/, '') : '/';
+    normalized = normalized.replace(/\/+$/, '') || '/';
+
+    if (normalized === '/' && e && e.parameter && e.parameter.action) {
+      let action = e.parameter.action;
+      if (Array.isArray(action)) {
+        action = action[0];
+      }
+      if (action) {
+        normalized = '/' + String(action).replace(/^\/+/, '').replace(/\/+$/, '');
+      }
+    }
+
+    return normalized || '/';
+  }
+
   return {
     createError: createError,
     jsonResponse: jsonResponse,
+    getRequestPath: getRequestPath,
   };
 })();

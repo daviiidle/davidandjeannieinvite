@@ -11,6 +11,8 @@ const SPREADSHEET_ID = '10JrN7JVnGNO3Za4TNpwX7yfEhkaLghv8o9m-_0WVtlo';
 const SHEET_NAME = 'Sheet1';
 const SOURCE_LABEL = 'WEBSITE';
 const OUTBOX_SHEET_NAME = 'OUTBOX';
+const BASE_SITE_URL = 'https://your-site.example.com';
+const TOKEN_BYTE_LENGTH = 24;
 
 const HEADER_CONFIG = [
   { key: 'timestamp', header: 'Timestamp' },
@@ -33,6 +35,10 @@ const HEADER_CONFIG = [
   { key: 'reminderCount', header: 'Reminder Count' },
   { key: 'smsOptOut', header: 'SMS Opt Out' },
   { key: 'confirmationSentAt', header: 'Confirmation Sent At' },
+  { key: 'token', header: 'Token' },
+  { key: 'tokenUpdatedAt', header: 'Token Updated At' },
+  { key: 'lastSmsSentAt', header: 'Last SMS Sent At' },
+  { key: 'editCount', header: 'Edit Count' },
 ];
 
 const CANONICAL_HEADERS = HEADER_CONFIG.map((cfg) => cfg.header);

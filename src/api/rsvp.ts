@@ -1,0 +1,45 @@
+const DEFAULT_RSVP_BASE =
+  'https://script.google.com/macros/s/AKfycbyLGVq4ncTykrqeYcHRyQoe1WSDgdfyNNvlrxz57Mp41JLxgCF8-pH55uIaomepYAJwbg/exec';
+
+const rawBase =
+  (import.meta.env.VITE_RSVP_ENDPOINT as string | undefined) ?? DEFAULT_RSVP_BASE;
+
+const RSVP_API_BASE_URL = normalizeBaseUrl(rawBase);
+
+function normalizeBaseUrl(value: string) {
+  if (!value) return '';
+  return value.trim().replace(/\/+$/, '');
+}
+
+const withAction = (action: string) => {
+  if (!RSVP_API_BASE_URL) {
+    return '';
+  }
+  const separator = RSVP_API_BASE_URL.includes('?') ? '&' : '?';
+  return `${RSVP_API_BASE_URL}${separator}action=${encodeURIComponent(action)}`;
+};
+
+export const RSVP_ENDPOINTS = {
+  submit: withAction('rsvp'),
+  fetch: withAction('rsvp'),
+  update: withAction('rsvp.update'),
+};
+
+export function withQueryParams(
+  url: string,
+  params: Record<string, string | number | undefined>
+): string {
+  const entries = Object.entries(params).filter(
+    ([, value]) => value !== undefined && value !== ''
+  );
+  if (!entries.length) {
+    return url;
+  }
+  const queryString = entries
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+    .join('&');
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}${queryString}`;
+}
+
+export { RSVP_API_BASE_URL };

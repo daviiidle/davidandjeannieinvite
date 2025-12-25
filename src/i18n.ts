@@ -166,7 +166,7 @@ export const translations: Record<Language, TranslationContent> = {
       infoTitle: 'Wedding Etiquette & Important Information',
       parents: {
         groomTitle: 'Parents of the Groom',
-        groomNames: 'Ken Do & Hanh Nguyen',
+        groomNames: 'Khen Do & Hanh Nguyen',
         brideTitle: 'Parents of the Bride',
         brideNames: 'Annie McHale & Anthony McHale',
       },
@@ -176,7 +176,7 @@ export const translations: Record<Language, TranslationContent> = {
             title: 'Best Man',
             name: 'Best Man Name',
             groupTitle: 'Groomsmen',
-            members: ['Daniel Le', 'Viet Vu', 'Brian Nguyen'],
+            members: ['Viet Tien Vu', 'Groomsman Name', 'Groomsman Name'],
           },
           {
             title: 'Maid of Honor',
@@ -412,7 +412,7 @@ export const translations: Record<Language, TranslationContent> = {
       infoTitle: 'Nghi thức & thông tin quan trọng',
       parents: {
         groomTitle: 'Ba mẹ chú rể',
-        groomNames: 'Ken Do & Hanh Nguyen',
+        groomNames: 'Khen Do & Hanh Nguyen',
         brideTitle: 'Ba mẹ cô dâu',
         brideNames: 'Annie McHale & Anthony McHale',
       },
@@ -422,7 +422,7 @@ export const translations: Record<Language, TranslationContent> = {
             title: 'Phù rể chính',
             name: 'Tên phù rể chính',
             groupTitle: 'Phù rể',
-            members: ['Daniel Le', 'Viet Vu', 'Brian Nguyen'],
+            members: ['Viet Tien Vu', 'Groomsman Name', 'Groomsman Name'],
           },
           {
             title: 'Phù dâu chính',

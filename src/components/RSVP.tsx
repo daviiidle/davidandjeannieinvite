@@ -2,6 +2,7 @@ import { useRef, useState, type CSSProperties } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
+import { RSVP_ENDPOINTS } from '../api/rsvp';
 
 interface RSVPProps {
   heading?: string;
@@ -36,10 +37,6 @@ const createDefaultFormState = (): FormState => ({
   notes: '',
   honeypot: '',
 });
-
-const RSVP_ENDPOINT =
-  import.meta.env.VITE_RSVP_ENDPOINT ??
-  'https://script.google.com/macros/s/AKfycbyjQw5j5lYh5ZUPJ13kk4mfJ6AXPqs93haPmKI5W9lzhMCdYI5p-gU5QVQz8tuWyuRITw/exec';
 
 const errorColor = '#B3261E';
 
@@ -138,38 +135,22 @@ export function RSVP({
         honeypot: formState.honeypot,
       };
 
-      const response = await fetch(RSVP_ENDPOINT, {
+      const response = await fetch(RSVP_ENDPOINTS.submit, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),
       });
 
-      if (response.type !== 'opaque') {
-        try {
-          const result = await response.json();
-          if (!response.ok || !result?.ok) {
-            throw new Error(result?.error || 'Unable to submit RSVP');
-          }
-        } catch (err) {
-          // ignore parse errors for opaque responses
-        }
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.ok) {
+        throw new Error(result?.error || 'Unable to submit RSVP');
       }
 
       setStatus('success');
-      setSuccessHint(null);
+      setSuccessHint('We just sent a private View/Edit link via SMS.');
       setShowValidation(false);
       setFormState(createDefaultFormState());
     } catch (error) {
-      if (error instanceof TypeError) {
-        console.warn('RSVP submission succeeded but response was blocked.', error);
-        setStatus('success');
-        setSuccessHint(t.networkFallbackMessage);
-        setErrorMessage(null);
-        setShowValidation(false);
-        setFormState(createDefaultFormState());
-        return;
-      }
       setStatus('error');
       setErrorMessage(
         error instanceof Error ? error.message : 'We could not submit your RSVP.'

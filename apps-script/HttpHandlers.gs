@@ -24,6 +24,43 @@
  * @return {GoogleAppsScript.Content.TextOutput} JSON response
  */
 function doPost(e) {
+  const path = HttpUtils.getRequestPath(e);
+  if (path === '/rsvp/update') {
+    return handleRsvpUpdate_(e);
+  }
+  if (path === '/rsvp' || path === '/') {
+    return handleRsvpSubmission_(e);
+  }
+  return HttpUtils.jsonResponse(404, { ok: false, error: 'Not found' });
+}
+
+/**
+ * Handles GET requests.
+ * Used as a health check to verify the webhook is running.
+ *
+ * @return {GoogleAppsScript.Content.TextOutput} JSON response
+ */
+function doGet(e) {
+  const path = HttpUtils.getRequestPath(e);
+  if (path === '/rsvp') {
+    return handleRsvpFetch_(e);
+  }
+  return HttpUtils.jsonResponse(200, {
+    ok: true,
+    message: 'RSVP webhook is running',
+  });
+}
+
+/**
+ * Handles OPTIONS requests for CORS preflight.
+ *
+ * @return {GoogleAppsScript.Content.TextOutput} Empty 204 response
+ */
+function doOptions() {
+  return HttpUtils.jsonResponse(204, {});
+}
+
+function handleRsvpSubmission_(e) {
   let lock;
   let locked = false;
   try {
@@ -54,6 +91,7 @@ function doPost(e) {
       existingRow: existingRow,
       columnCount: columnCount,
     });
+    const tokenResult = RsvpAccessService.ensureRowToken(newRowValues, indexMap);
 
     const targetRowNumber = SheetOperations.upsertRow(sheet, duplicateRowIndex, newRowValues);
 
@@ -67,7 +105,9 @@ function doPost(e) {
       isNewRow: isNewRow,
     });
 
-    return HttpUtils.jsonResponse(200, { ok: true });
+    const token = tokenResult.token;
+    const viewUrl = RsvpAccessService.buildViewUrl(token);
+    return HttpUtils.jsonResponse(200, { ok: true, token: token, viewUrl: viewUrl });
   } catch (err) {
     const status = err?.statusCode || 500;
     Logger.log('Error: %s', err && err.stack ? err.stack : err);
@@ -82,24 +122,69 @@ function doPost(e) {
   }
 }
 
-/**
- * Handles GET requests.
- * Used as a health check to verify the webhook is running.
- *
- * @return {GoogleAppsScript.Content.TextOutput} JSON response
- */
-function doGet() {
-  return HttpUtils.jsonResponse(200, {
-    ok: true,
-    message: 'RSVP webhook is running',
-  });
+function handleRsvpFetch_(e) {
+  try {
+    const token = Validation.parseTokenQuery(e);
+    const sheet = SheetOperations.resolveSheet();
+    const { rows, indexMap } = SheetOperations.readSheet(sheet);
+    const { row } = SheetOperations.findRowByToken(rows, indexMap, token);
+    if (!row) {
+      throw HttpUtils.createError(404, 'RSVP not found');
+    }
+    const response = RsvpAccessService.rowToResponse(row, indexMap);
+    return HttpUtils.jsonResponse(200, { ok: true, rsvp: response });
+  } catch (err) {
+    const status = err?.statusCode || 500;
+    Logger.log('Error fetching RSVP: %s', err && err.message ? err.message : err);
+    return HttpUtils.jsonResponse(status, {
+      ok: false,
+      error: err?.message || String(err),
+    });
+  }
 }
 
-/**
- * Handles OPTIONS requests for CORS preflight.
- *
- * @return {GoogleAppsScript.Content.TextOutput} Empty 204 response
- */
-function doOptions() {
-  return HttpUtils.jsonResponse(204, {});
+function handleRsvpUpdate_(e) {
+  let lock;
+  let locked = false;
+  try {
+    const payload = Validation.parseUpdatePayload(e);
+    const sheet = SheetOperations.resolveSheet();
+    lock = LockService.getScriptLock();
+    lock.waitLock(30 * 1000);
+    locked = true;
+
+    const { rows, indexMap } = SheetOperations.readSheet(sheet);
+    const { rowIndex, row } = SheetOperations.findRowByToken(rows, indexMap, payload.token);
+    if (rowIndex < 0 || !row) {
+      throw HttpUtils.createError(404, 'RSVP not found');
+    }
+
+    const rowValues = row.slice();
+    const updateResult = RsvpAccessService.applyEditableUpdates({
+      rowValues: rowValues,
+      indexMap: indexMap,
+      updates: payload,
+    });
+
+    const rowNumber = rowIndex + 2;
+    sheet.getRange(rowNumber, 1, 1, updateResult.rowValues.length).setValues([updateResult.rowValues]);
+
+    return HttpUtils.jsonResponse(200, {
+      ok: true,
+      updatedAt: updateResult.updatedAt ? updateResult.updatedAt.toISOString() : null,
+      attendance: updateResult.attendance,
+      partySize: updateResult.partySize,
+    });
+  } catch (err) {
+    const status = err?.statusCode || 500;
+    Logger.log('Error updating RSVP: %s', err && err.message ? err.message : err);
+    return HttpUtils.jsonResponse(status, {
+      ok: false,
+      error: err?.message || String(err),
+    });
+  } finally {
+    if (lock && locked) {
+      lock.releaseLock();
+    }
+  }
 }

@@ -188,12 +188,28 @@ const SheetOperations = (function () {
       row[indexMap.reminderCount] = existingRow ? row[indexMap.reminderCount] || 0 : 0;
     }
 
-    if (typeof indexMap.smsOptOut === 'number') {
-      row[indexMap.smsOptOut] = existingRow ? row[indexMap.smsOptOut] || false : false;
-    }
-
-    return row;
+  if (typeof indexMap.smsOptOut === 'number') {
+    row[indexMap.smsOptOut] = existingRow ? row[indexMap.smsOptOut] || false : false;
   }
+
+  if (typeof indexMap.token === 'number' && !row[indexMap.token]) {
+    row[indexMap.token] = '';
+  }
+
+  if (typeof indexMap.tokenUpdatedAt === 'number' && !row[indexMap.tokenUpdatedAt]) {
+    row[indexMap.tokenUpdatedAt] = '';
+  }
+
+  if (typeof indexMap.lastSmsSentAt === 'number' && !row[indexMap.lastSmsSentAt]) {
+    row[indexMap.lastSmsSentAt] = '';
+  }
+
+  if (typeof indexMap.editCount === 'number') {
+    row[indexMap.editCount] = existingRow ? Number(row[indexMap.editCount]) || 0 : 0;
+  }
+
+  return row;
+}
 
   /**
    * Finds an existing row by phone number (E.164).
@@ -210,6 +226,22 @@ const SheetOperations = (function () {
     });
     const existingRow = duplicateRowIndex >= 0 ? rows[duplicateRowIndex] : null;
     return { duplicateRowIndex, existingRow };
+  }
+
+  /**
+   * Finds an existing row by secure token.
+   *
+   * @param {Array<Array>} rows - All data rows
+   * @param {Object} indexMap - Column index mapping
+   * @param {string} token - Token value
+   * @return {Object} Object with rowIndex and row values
+   */
+  function findRowByToken(rows, indexMap, token) {
+    if (!token || typeof indexMap.token !== 'number') {
+      return { rowIndex: -1, row: null };
+    }
+    const target = rows.findIndex((row) => String(row[indexMap.token] || '') === token);
+    return { rowIndex: target, row: target >= 0 ? rows[target] : null };
   }
 
   /**
@@ -240,6 +272,7 @@ const SheetOperations = (function () {
     readSheet: readSheet,
     buildRowValues: buildRowValues,
     findDuplicateByPhone: findDuplicateByPhone,
+    findRowByToken: findRowByToken,
     upsertRow: upsertRow,
   };
 })();
