@@ -1,5 +1,5 @@
 const DEFAULT_RSVP_BASE =
-  'https://script.google.com/macros/s/AKfycbxDELldQq1mzRyhCf-BAu5EgsJhSwlSCMh2unmut6fPiHBWXF48lgFcEZ4PAF3Y_Bpz5g/exec';
+  'https://script.google.com/macros/s/AKfycbywfwlEOj9Jq_6CAqykndkQ117WMa_U3Vjov2O6JTbYDVdzew0qIqTvV6YQBGoQNCMywQ/exec';
 
 const rawBase =
   (import.meta.env.VITE_RSVP_ENDPOINT as string | undefined) ?? DEFAULT_RSVP_BASE;
@@ -25,6 +25,12 @@ export const RSVP_ENDPOINTS = {
   update: withAction('rsvp.update'),
   intent: withAction('intent'),
 };
+
+const rawSaveTheDate =
+  (import.meta.env.VITE_SAVE_THE_DATE_WEBHOOK_URL as string | undefined)?.trim();
+
+export const SAVE_THE_DATE_WEBHOOK_URL =
+  rawSaveTheDate && rawSaveTheDate.length > 0 ? rawSaveTheDate : RSVP_ENDPOINTS.intent;
 
 export function withQueryParams(
   url: string,

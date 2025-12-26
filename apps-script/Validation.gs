@@ -140,6 +140,45 @@ const Validation = (function () {
   }
 
   /**
+   * Parses payload for Save the Date submissions.
+   *
+   * @param {Object} e - The doPost event object
+   * @return {Object} Validated payload for Save the Date sheet
+   */
+  function parseSaveTheDatePayload(e) {
+    const body = parseJsonBody_(e);
+    const firstName = StringUtils.sanitize(body.firstName);
+    const lastName = StringUtils.sanitize(body.lastName);
+    const phoneRaw = StringUtils.sanitize(body.phone);
+    const likelyRaw = StringUtils.sanitize(body.likelyToAttend).toUpperCase();
+
+    if (!firstName || !lastName || !phoneRaw) {
+      throw HttpUtils.createError(400, 'Missing required fields: firstName, lastName, phone');
+    }
+
+    let likelyToAttend = '';
+    if (likelyRaw) {
+      if (likelyRaw !== 'YES' && likelyRaw !== 'MAYBE') {
+        throw HttpUtils.createError(400, 'likelyToAttend must be YES or MAYBE');
+      }
+      likelyToAttend = likelyRaw;
+    }
+
+    const phoneE164 = PhoneUtils.toE164AU(phoneRaw);
+    if (!phoneE164) {
+      throw HttpUtils.createError(400, 'Invalid phone number');
+    }
+
+    return {
+      firstName: firstName,
+      lastName: lastName,
+      phoneRaw: phoneRaw,
+      phoneE164: phoneE164,
+      likelyToAttend: likelyToAttend,
+    };
+  }
+
+  /**
    * Reads a token from a GET query string.
    *
    * @param {Object} e - doGet event
@@ -176,5 +215,6 @@ const Validation = (function () {
     parsePayload: parsePayload,
     parseUpdatePayload: parseUpdatePayload,
     parseTokenQuery: parseTokenQuery,
+    parseSaveTheDatePayload: parseSaveTheDatePayload,
   };
 })();

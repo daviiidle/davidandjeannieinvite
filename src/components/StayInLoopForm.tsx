@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { theme } from '../theme';
-import { RSVP_ENDPOINTS } from '../api/rsvp';
+import { SAVE_THE_DATE_WEBHOOK_URL } from '../api/rsvp';
 import {
   FormCard,
   FormField,
@@ -30,7 +30,6 @@ const initialState: FormState = {
 };
 
 const sanitizePhone = (value: string) => value.replace(/[^\d+]/g, '');
-const normalizePhone = (value: string) => value.replace(/[^\d]/g, '');
 
 export function StayInLoopForm() {
   const [formState, setFormState] = useState<FormState>(initialState);
@@ -72,7 +71,7 @@ export function StayInLoopForm() {
       return;
     }
 
-    if (!RSVP_ENDPOINTS.intent) {
+    if (!SAVE_THE_DATE_WEBHOOK_URL) {
       setSubmitError('Unable to send right now. Please try again later.');
       return;
     }
@@ -81,18 +80,15 @@ export function StayInLoopForm() {
     setSubmitError(null);
 
     try {
-      const phoneSanitized = sanitizePhone(formState.phone.trim());
+      const phoneRaw = formState.phone.trim();
       const payload = {
         firstName: formState.firstName.trim(),
         lastName: formState.lastName.trim(),
-        phone: phoneSanitized,
-        phoneNormalized: normalizePhone(phoneSanitized),
+        phone: phoneRaw,
         likelyToAttend: formState.likely || undefined,
-        source: 'SAVE_THE_DATE',
-        timestamp: new Date().toISOString(),
       };
 
-      const response = await fetch(RSVP_ENDPOINTS.intent, {
+      const response = await fetch(SAVE_THE_DATE_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),

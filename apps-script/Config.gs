@@ -10,6 +10,19 @@
 const SPREADSHEET_ID = '10JrN7JVnGNO3Za4TNpwX7yfEhkaLghv8o9m-_0WVtlo';
 const SHEET_NAME = 'Sheet1';
 const SOURCE_LABEL = 'WEBSITE';
+const SAVE_THE_DATE_SHEET_NAME = 'Save the date';
+const SAVE_THE_DATE_SOURCE_LABEL = 'SAVE_THE_DATE';
+const SAVE_THE_DATE_HEADERS = [
+  'Timestamp',
+  'Updated At',
+  'Source',
+  'First Name',
+  'Last Name',
+  'Mobile (Raw)',
+  'Mobile (E164)',
+  'Likely To Attend',
+  'Notes',
+];
 const OUTBOX_SHEET_NAME = 'OUTBOX';
 const BASE_SITE_URL = 'https://daviiidle.github.io/davidandjeannieinvite';
 const TOKEN_BYTE_LENGTH = 24;

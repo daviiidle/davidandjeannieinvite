@@ -28,6 +28,9 @@ function doPost(e) {
   if (path === '/rsvp/update') {
     return handleRsvpUpdate_(e);
   }
+  if (path === '/intent' || path === '/save-the-date') {
+    return handleSaveTheDateSubmission_(e);
+  }
   if (path === '/rsvp' || path === '/') {
     return handleRsvpSubmission_(e);
   }
@@ -111,6 +114,34 @@ function handleRsvpSubmission_(e) {
   } catch (err) {
     const status = err?.statusCode || 500;
     Logger.log('Error: %s', err && err.stack ? err.stack : err);
+    return HttpUtils.jsonResponse(status, {
+      ok: false,
+      error: err?.message || String(err),
+    });
+  } finally {
+    if (lock && locked) {
+      lock.releaseLock();
+    }
+  }
+}
+
+function handleSaveTheDateSubmission_(e) {
+  let lock;
+  let locked = false;
+  try {
+    const payload = Validation.parseSaveTheDatePayload(e);
+    lock = LockService.getScriptLock();
+    lock.waitLock(30 * 1000);
+    locked = true;
+
+    const result = SaveTheDateService.upsert(payload);
+    return HttpUtils.jsonResponse(200, {
+      ok: true,
+      action: result.action,
+    });
+  } catch (err) {
+    const status = err?.statusCode || 500;
+    Logger.log('Error saving Save the Date submission: %s', err && err.stack ? err.stack : err);
     return HttpUtils.jsonResponse(status, {
       ok: false,
       error: err?.message || String(err),
