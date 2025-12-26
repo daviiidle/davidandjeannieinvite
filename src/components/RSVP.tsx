@@ -1,8 +1,21 @@
-import { useRef, useState, type CSSProperties } from 'react';
+import { useRef, useState } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import { RSVP_ENDPOINTS } from '../api/rsvp';
+import {
+  FORM_ERROR_COLOR,
+  FormCard,
+  FormField,
+  FormGrid,
+  FormHelperText,
+  FormInput,
+  FormLegend,
+  FormTextarea,
+  PrimaryButton,
+  RadioOption,
+  FormErrorText,
+} from './FormPrimitives';
 
 interface RSVPProps {
   heading?: string;
@@ -38,7 +51,7 @@ const createDefaultFormState = (): FormState => ({
   honeypot: '',
 });
 
-const errorColor = '#B3261E';
+const errorColor = FORM_ERROR_COLOR;
 
 export function RSVP({
   heading,
@@ -164,13 +177,13 @@ export function RSVP({
       ref={sectionRef}
       aria-labelledby="rsvp-heading"
       style={{
-        backgroundColor: theme.colors.background.offWhite,
+        backgroundColor: theme.colors.background.white,
         padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
       }}
     >
       <div
         style={{
-          maxWidth: '800px',
+          maxWidth: '760px',
           margin: '0 auto',
           textAlign: 'center',
         }}
@@ -190,13 +203,13 @@ export function RSVP({
         </h2>
 
         <p
-          className="font-sans"
           style={{
             fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.lg,
-            fontWeight: theme.typography.fontWeight.medium,
-            color: theme.colors.text.secondary,
-            marginBottom: theme.spacing.md,
+            fontSize: theme.typography.fontSize.sm,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: theme.colors.primary.dustyBlue,
+            marginBottom: theme.spacing.sm,
           }}
         >
           {deadlineText}
@@ -205,8 +218,10 @@ export function RSVP({
         <p
           style={{
             fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.sm,
-            color: theme.colors.secondary.slate,
+            fontSize: theme.typography.fontSize.xs,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: theme.colors.text.secondary,
             marginBottom: theme.spacing['2xl'],
             whiteSpace: 'pre-wrap',
           }}
@@ -214,449 +229,233 @@ export function RSVP({
           {t.adultNote}
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            textAlign: 'left',
-            backgroundColor: theme.colors.background.white,
-            borderRadius: theme.borderRadius['2xl'],
-            padding: theme.spacing['2xl'],
-            boxShadow: theme.shadows.md,
-            border: `1px solid ${theme.colors.primary.dustyBlue}20`,
-            marginBottom: theme.spacing['2xl'],
-          }}
-        >
-          <input type="hidden" name="language" value={hiddenLanguageValue} readOnly />
-          <div
+        <FormCard style={{ marginBottom: theme.spacing['2xl'] }}>
+          <form
+            onSubmit={handleSubmit}
             style={{
-              display: 'grid',
+              display: 'flex',
+              flexDirection: 'column',
               gap: theme.spacing.lg,
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             }}
           >
-            <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              {t.firstNameLabel}
-              <input
-                type="text"
+            <input type="hidden" name="language" value={hiddenLanguageValue} readOnly />
+            <FormGrid>
+              <FormField
+                label={t.firstNameLabel}
+                htmlFor="rsvp-first-name"
                 required
-                value={formState.firstName}
-                onChange={(e) => handleChange('firstName', e.target.value)}
-                style={inputStyle}
-              />
-              {firstNameError && (
-                <span
-                  style={{
-                    color: errorColor,
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.xs,
-                    marginTop: theme.spacing.xs,
-                    display: 'block',
-                  }}
-                >
-                  {firstNameError}
-                </span>
-              )}
-            </label>
-            <label style={{ fontFamily: theme.typography.fontFamily.sans }}>
-              {t.lastNameLabel}
-              <input
-                type="text"
+                error={firstNameError}
+              >
+                <FormInput
+                  id="rsvp-first-name"
+                  required
+                  value={formState.firstName}
+                  onChange={(e) => handleChange('firstName', e.target.value)}
+                  hasError={Boolean(firstNameError)}
+                />
+              </FormField>
+              <FormField
+                label={t.lastNameLabel}
+                htmlFor="rsvp-last-name"
                 required
-                value={formState.lastName}
-                onChange={(e) => handleChange('lastName', e.target.value)}
-                style={inputStyle}
+                error={lastNameError}
+              >
+                <FormInput
+                  id="rsvp-last-name"
+                  required
+                  value={formState.lastName}
+                  onChange={(e) => handleChange('lastName', e.target.value)}
+                  hasError={Boolean(lastNameError)}
+                />
+              </FormField>
+            </FormGrid>
+
+            <FormField label={t.householdNameLabel} htmlFor="rsvp-household">
+              <FormInput
+                id="rsvp-household"
+                placeholder={t.householdNamePlaceholder}
+                value={formState.householdName}
+                onChange={(e) => handleChange('householdName', e.target.value)}
               />
-              {lastNameError && (
-                <span
-                  style={{
-                    color: errorColor,
-                    fontFamily: theme.typography.fontFamily.sans,
-                    fontSize: theme.typography.fontSize.xs,
-                    marginTop: theme.spacing.xs,
-                    display: 'block',
-                  }}
-                >
-                  {lastNameError}
-                </span>
-              )}
-            </label>
-          </div>
+            </FormField>
 
-          <label
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              display: 'block',
-              marginTop: theme.spacing.lg,
-            }}
-          >
-            {t.householdNameLabel}
-            <input
-              type="text"
-              placeholder={t.householdNamePlaceholder}
-              value={formState.householdName}
-              onChange={(e) => handleChange('householdName', e.target.value)}
-              style={inputStyle}
-            />
-          </label>
-
-          <label
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              display: 'block',
-              marginTop: theme.spacing.lg,
-            }}
-          >
-            {t.phoneLabel}
-            <input
-              type="tel"
+            <FormField
+              label={t.phoneLabel}
+              htmlFor="rsvp-phone"
               required
-              value={formState.phone}
-              onChange={(e) => handleChange('phone', e.target.value)}
-              style={inputStyle}
-            />
-            <span
-              style={{
-                display: 'block',
-                fontSize: theme.typography.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginTop: theme.spacing.xs,
-              }}
+              helperText={t.phoneHelper}
+              error={phoneError}
             >
-              {t.phoneHelper}
-            </span>
-            {phoneError && (
-              <span
-                style={{
-                  color: errorColor,
-                  fontFamily: theme.typography.fontFamily.sans,
-                  fontSize: theme.typography.fontSize.xs,
-                  marginTop: theme.spacing.xs,
-                  display: 'block',
-                }}
-              >
-                {phoneError}
-              </span>
-            )}
-          </label>
+              <FormInput
+                id="rsvp-phone"
+                type="tel"
+                required
+                value={formState.phone}
+                onChange={(e) => handleChange('phone', e.target.value)}
+                hasError={Boolean(phoneError)}
+              />
+            </FormField>
 
-          <div
-            style={{
-              marginTop: theme.spacing['2xl'],
-            }}
-          >
-            <p
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontWeight: theme.typography.fontWeight.medium,
-                marginBottom: theme.spacing.sm,
-                color: theme.colors.text.primary,
-              }}
-            >
-              {t.attendanceQuestion}
-            </p>
-            {attendanceError && (
-              <p
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  color: errorColor,
-                  fontSize: theme.typography.fontSize.xs,
-                  marginBottom: theme.spacing.sm,
-                }}
-              >
-                {attendanceError}
-              </p>
-            )}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: theme.spacing.sm,
-              }}
-            >
-              <label
+            <div style={{ marginTop: theme.spacing.xl }}>
+              <FormLegend>{t.attendanceQuestion}</FormLegend>
+              {attendanceError && <FormErrorText>{attendanceError}</FormErrorText>}
+              <div
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
+                  flexDirection: 'column',
                   gap: theme.spacing.sm,
-                  fontFamily: theme.typography.fontFamily.sans,
-                  cursor: 'pointer',
                 }}
               >
-                <input
-                  type="radio"
+                <RadioOption
                   name="attendance"
                   value="YES"
                   required
                   checked={formState.attendance === 'YES'}
                   onChange={(e) => handleChange('attendance', e.target.value)}
-                />
-                <span>{t.attendanceYes}</span>
-              </label>
-              <label
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: theme.spacing.sm,
-                  fontFamily: theme.typography.fontFamily.sans,
-                  cursor: 'pointer',
-                }}
-              >
-                <input
-                  type="radio"
+                >
+                  {t.attendanceYes}
+                </RadioOption>
+                <RadioOption
                   name="attendance"
                   value="NO"
                   checked={formState.attendance === 'NO'}
                   onChange={(e) => handleChange('attendance', e.target.value)}
+                >
+                  {t.attendanceNo}
+                </RadioOption>
+              </div>
+            </div>
+
+            <FormField label={t.emailLabel} htmlFor="rsvp-email" error={emailError}>
+              <FormInput
+                id="rsvp-email"
+                type="email"
+                value={formState.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+                hasError={Boolean(emailError)}
+              />
+            </FormField>
+
+            {isAttending && (
+              <>
+                <FormField
+                  label={t.partySizeLabel}
+                  htmlFor="rsvp-party-size"
+                  helperText={t.partySizeHelper}
+                  error={partySizeError}
+                >
+                  <FormInput
+                    id="rsvp-party-size"
+                    type="number"
+                    min={0}
+                    max={10}
+                    value={formState.partySize}
+                    onChange={(e) => handleChange('partySize', e.target.value)}
+                    hasError={Boolean(partySizeError)}
+                  />
+                </FormField>
+
+                <FormField
+                  label={t.otherGuestNamesLabel}
+                  htmlFor="rsvp-other-guests"
+                >
+                  <FormTextarea
+                    id="rsvp-other-guests"
+                    value={formState.otherGuestNames}
+                    onChange={(e) => handleChange('otherGuestNames', e.target.value)}
+                    placeholder={t.otherGuestNamesPlaceholder}
+                    style={{ minHeight: '80px' }}
+                  />
+                </FormField>
+              </>
+            )}
+
+            <FormField label={t.notesLabel} htmlFor="rsvp-notes">
+              <FormTextarea
+                id="rsvp-notes"
+                value={formState.notes}
+                onChange={(e) => handleChange('notes', e.target.value)}
+              />
+            </FormField>
+
+            <div style={{ display: 'none' }} aria-hidden="true">
+              <label>
+                Do not fill this field
+                <input
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formState.honeypot}
+                  onChange={(e) => handleChange('honeypot', e.target.value)}
                 />
-                <span>{t.attendanceNo}</span>
               </label>
             </div>
-          </div>
 
-          <label
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              display: 'block',
-              marginTop: theme.spacing.lg,
-            }}
-          >
-            {t.emailLabel}
-            <input
-              type="email"
-              value={formState.email}
-              onChange={(e) => handleChange('email', e.target.value)}
-              style={inputStyle}
-            />
-            {emailError && (
-              <span
+            <PrimaryButton type="submit" disabled={!canSubmit || status === 'submitting'} fullWidth>
+              {status === 'submitting' ? t.buttonSubmitting : t.button}
+            </PrimaryButton>
+
+            {status === 'success' && (
+              <p
                 style={{
-                  color: errorColor,
+                  color: theme.colors.primary.dustyBlue,
                   fontFamily: theme.typography.fontFamily.sans,
-                  fontSize: theme.typography.fontSize.xs,
-                  marginTop: theme.spacing.xs,
-                  display: 'block',
                 }}
+                aria-live="polite"
               >
-                {emailError}
-              </span>
+                {t.successMessage}
+              </p>
             )}
-          </label>
+            {status === 'success' && successHint && (
+              <FormHelperText>{successHint}</FormHelperText>
+            )}
 
-          {isAttending && (
-            <>
-              <label
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  display: 'block',
-                  marginTop: theme.spacing.lg,
-                }}
-              >
-                {t.partySizeLabel}
-                <input
-                  type="number"
-                  min={0}
-                  max={10}
-                  value={formState.partySize}
-                  onChange={(e) => handleChange('partySize', e.target.value)}
-                  style={inputStyle}
-                />
-                <span
-                  style={{
-                    display: 'block',
-                    fontSize: theme.typography.fontSize.xs,
-                    color: theme.colors.text.secondary,
-                    marginTop: theme.spacing.xs,
-                  }}
-                >
-                  {t.partySizeHelper}
-                </span>
-                {partySizeError && (
-                  <span
-                    style={{
-                      color: errorColor,
-                      fontFamily: theme.typography.fontFamily.sans,
-                      fontSize: theme.typography.fontSize.xs,
-                      marginTop: theme.spacing.xs,
-                      display: 'block',
-                    }}
-                  >
-                    {partySizeError}
-                  </span>
-                )}
-              </label>
-
-              <label
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  display: 'block',
-                  marginTop: theme.spacing.lg,
-                }}
-              >
-                {t.otherGuestNamesLabel}
-                <textarea
-                  value={formState.otherGuestNames}
-                  onChange={(e) => handleChange('otherGuestNames', e.target.value)}
-                  style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
-                  placeholder={t.otherGuestNamesPlaceholder}
-                />
-              </label>
-            </>
-          )}
-
-          <label
-            style={{ fontFamily: theme.typography.fontFamily.sans, display: 'block', marginTop: theme.spacing.lg }}
-          >
-            {t.notesLabel}
-            <textarea
-              value={formState.notes}
-              onChange={(e) => handleChange('notes', e.target.value)}
-              style={{ ...inputStyle, minHeight: '100px', resize: 'vertical' }}
-            />
-          </label>
-
-          <div style={{ display: 'none' }} aria-hidden="true">
-            <label>
-              Do not fill this field
-              <input
-                type="text"
-                tabIndex={-1}
-                autoComplete="off"
-                value={formState.honeypot}
-                onChange={(e) => handleChange('honeypot', e.target.value)}
-              />
-            </label>
-          </div>
-
-          <button
-            type="submit"
-            disabled={!canSubmit || status === 'submitting'}
-            style={{
-              marginTop: theme.spacing['2xl'],
-              width: '100%',
-              padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-              borderRadius: theme.borderRadius.xl,
-              border: 'none',
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              fontWeight: theme.typography.fontWeight.semibold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              backgroundColor: theme.colors.primary.dustyBlue,
-              color: theme.colors.text.inverse,
-              cursor: canSubmit ? 'pointer' : 'not-allowed',
-              opacity: status === 'submitting' ? 0.7 : 1,
-            }}
-          >
-            {status === 'submitting' ? t.buttonSubmitting : t.button}
-          </button>
-
-          {status === 'success' && (
-            <p
-              style={{
-                marginTop: theme.spacing.md,
-                color: theme.colors.primary.dustyBlue,
-                fontFamily: theme.typography.fontFamily.sans,
-              }}
-              aria-live="polite"
-            >
-              {t.successMessage}
-            </p>
-          )}
-          {status === 'success' && successHint && (
-            <p
-              style={{
-                marginTop: theme.spacing.xs,
-                color: theme.colors.secondary.slate,
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.sm,
-              }}
-            >
-              {successHint}
-            </p>
-          )}
-
-          {status === 'error' && (
-            <p
-              style={{
-                marginTop: theme.spacing.md,
-                color: theme.colors.secondary.slate,
-                fontFamily: theme.typography.fontFamily.sans,
-              }}
-            >
-              {errorMessage ?? 'We could not submit your RSVP. Please email us.'}
-            </p>
-          )}
-        </form>
+            {status === 'error' && (
+              <FormErrorText>
+                {errorMessage ?? 'We could not submit your RSVP. Please email us.'}
+              </FormErrorText>
+            )}
+          </form>
+        </FormCard>
 
         <div
           style={{
             marginTop: theme.spacing['2xl'],
             paddingTop: theme.spacing.xl,
             borderTop: `1px solid ${theme.colors.primary.dustyBlue}30`,
+            textAlign: 'center',
           }}
         >
+          <FormHelperText>{strings.rsvp.havingTrouble}</FormHelperText>
           <p
-            className="font-sans"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              fontWeight: theme.typography.fontWeight.normal,
+              fontSize: theme.typography.fontSize.sm,
               color: theme.colors.text.secondary,
               marginBottom: theme.spacing.sm,
             }}
           >
-            {strings.rsvp.havingTrouble}
+            {strings.rsvp.contactHint}
           </p>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: theme.spacing.xs,
-              alignItems: 'center',
-            }}
-          >
-            <p
-              className="font-sans"
+          {emails.map((email) => (
+            <a
+              key={email}
+              href={`mailto:${email}`}
+              className="link-hover"
               style={{
                 fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.sm,
-                fontWeight: theme.typography.fontWeight.normal,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing.sm,
+                fontSize: theme.typography.fontSize.base,
+                fontWeight: theme.typography.fontWeight.medium,
+                color: theme.colors.primary.dustyBlue,
+                display: 'inline-block',
               }}
             >
-              {strings.rsvp.contactHint}
-            </p>
-            {emails.map((email) => (
-              <a
-                key={email}
-                href={`mailto:${email}`}
-                className="link-hover"
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  fontSize: theme.typography.fontSize.base,
-                  fontWeight: theme.typography.fontWeight.medium,
-                  color: theme.colors.primary.dustyBlue,
-                  display: 'inline-block',
-                }}
-              >
-                {email}
-              </a>
-            ))}
-          </div>
+              {email}
+            </a>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-const inputStyle: CSSProperties = {
-  width: '100%',
-  marginTop: '0.5rem',
-  padding: '0.75rem 1rem',
-  borderRadius: '14px',
-  border: '1px solid rgba(139,157,195,0.4)',
-  fontSize: '1rem',
-  fontFamily: 'inherit',
-  backgroundColor: '#fff',
-};

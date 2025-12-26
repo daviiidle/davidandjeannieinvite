@@ -1,6 +1,16 @@
 import { useMemo, useState } from 'react';
 import { theme } from '../theme';
 import { RSVP_ENDPOINTS } from '../api/rsvp';
+import {
+  FormCard,
+  FormField,
+  FormGrid,
+  FormInput,
+  FormSelect,
+  FormHelperText,
+  FormErrorText,
+  PrimaryButton,
+} from './FormPrimitives';
 
 type LikelyValue = '' | 'YES' | 'MAYBE';
 
@@ -18,8 +28,6 @@ const initialState: FormState = {
   phone: '',
   likely: '',
 };
-
-const errorColor = '#B3261E';
 
 const sanitizePhone = (value: string) => value.replace(/[^\d+]/g, '');
 const normalizePhone = (value: string) => value.replace(/[^\d]/g, '');
@@ -107,16 +115,9 @@ export function StayInLoopForm() {
   };
 
   return (
-    <section
+    <FormCard
       className="hero-opener__fade-item"
-      style={{
-        border: `1px solid ${theme.colors.primary.dustyBlue}30`,
-        borderRadius: theme.borderRadius['2xl'],
-        padding: theme.spacing['2xl'],
-        backgroundColor: theme.colors.background.white,
-        marginTop: theme.spacing['3xl'],
-        textAlign: 'left',
-      }}
+      style={{ marginTop: theme.spacing['3xl'], textAlign: 'left' }}
     >
       <div
         style={{
@@ -155,109 +156,75 @@ export function StayInLoopForm() {
           gap: theme.spacing.lg,
         }}
       >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: theme.spacing.lg,
-          }}
-        >
+        <FormGrid>
           <FormField
             label="First name"
-            id="intent-first-name"
-            value={formState.firstName}
-            onChange={(value) => handleChange('firstName', value)}
+            htmlFor="intent-first-name"
             required
             error={errors.firstName}
-          />
+          >
+            <FormInput
+              id="intent-first-name"
+              value={formState.firstName}
+              onChange={(event) => handleChange('firstName', event.target.value)}
+              required
+              hasError={Boolean(errors.firstName)}
+            />
+          </FormField>
           <FormField
             label="Last name"
-            id="intent-last-name"
-            value={formState.lastName}
-            onChange={(value) => handleChange('lastName', value)}
+            htmlFor="intent-last-name"
             required
             error={errors.lastName}
-          />
-        </div>
+          >
+            <FormInput
+              id="intent-last-name"
+              value={formState.lastName}
+              onChange={(event) => handleChange('lastName', event.target.value)}
+              required
+              hasError={Boolean(errors.lastName)}
+            />
+          </FormField>
+        </FormGrid>
 
         <FormField
           label="Mobile number"
-          id="intent-phone"
-          type="tel"
-          inputMode="tel"
-          value={formState.phone}
-          onChange={(value) => handleChange('phone', value)}
+          htmlFor="intent-phone"
           required
           error={errors.phone}
-          placeholder="04XX XXX XXX"
-        />
-
-        <label
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.sm,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: theme.colors.secondary.slate,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: theme.spacing.xs,
-          }}
+          helperText="Use an Australian mobile number"
         >
-          Likely to attend? (optional)
-          <select
+          <FormInput
+            id="intent-phone"
+            type="tel"
+            inputMode="tel"
+            placeholder="04XX XXX XXX"
+            value={formState.phone}
+            onChange={(event) => handleChange('phone', event.target.value)}
+            hasError={Boolean(errors.phone)}
+            required
+          />
+        </FormField>
+
+        <FormField label="Likely to attend? (optional)" htmlFor="intent-likely">
+          <FormSelect
+            id="intent-likely"
             value={formState.likely}
             onChange={(event) => handleChange('likely', event.target.value as LikelyValue)}
-            style={{
-              borderRadius: theme.borderRadius.lg,
-              border: `1px solid ${theme.colors.primary.dustyBlue}40`,
-              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              color: theme.colors.text.primary,
-              backgroundColor: theme.colors.background.white,
-            }}
           >
             <option value="">Select one (optional)</option>
             <option value="YES">Yes</option>
             <option value="MAYBE">Maybe</option>
-          </select>
-        </label>
+          </FormSelect>
+        </FormField>
 
-        <button
-          type="submit"
-          disabled={status === 'submitting'}
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.sm,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            padding: `${theme.spacing.sm} ${theme.spacing['2xl']}`,
-            borderRadius: theme.borderRadius.full,
-            border: 'none',
-            backgroundColor: theme.colors.primary.dustyBlue,
-            color: theme.colors.text.inverse,
-            cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
-            minHeight: '44px',
-            transition: `opacity ${theme.transitions.base}`,
-            opacity: status === 'submitting' ? 0.7 : 1,
-          }}
-        >
+        <PrimaryButton type="submit" disabled={status === 'submitting'}>
           {status === 'submitting' ? 'Sending…' : 'Send me updates'}
-        </button>
+        </PrimaryButton>
 
-        <p
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.xs,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: theme.colors.secondary.slate,
-            textAlign: 'center',
-          }}
-        >
+        <FormHelperText>
           We’ll only use your details for wedding updates.
-        </p>
+        </FormHelperText>
 
         <div aria-live="polite">
           {status === 'success' && (
@@ -272,96 +239,9 @@ export function StayInLoopForm() {
               Thanks! We’ll keep you posted.
             </p>
           )}
-          {submitError && (
-            <p
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.sm,
-                color: errorColor,
-                textAlign: 'center',
-              }}
-            >
-              {submitError}
-            </p>
-          )}
+          {submitError && <FormErrorText>{submitError}</FormErrorText>}
         </div>
       </form>
-    </section>
-  );
-}
-
-interface FormFieldProps {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  type?: string;
-  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
-  required?: boolean;
-  error?: string;
-  placeholder?: string;
-}
-
-function FormField({
-  id,
-  label,
-  value,
-  onChange,
-  type = 'text',
-  inputMode,
-  required,
-  error,
-  placeholder,
-}: FormFieldProps) {
-  return (
-    <label
-      htmlFor={id}
-      style={{
-        fontFamily: theme.typography.fontFamily.sans,
-        fontSize: theme.typography.fontSize.sm,
-        letterSpacing: '0.15em',
-        textTransform: 'uppercase',
-        color: theme.colors.secondary.slate,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: theme.spacing.xs,
-      }}
-    >
-      <span>
-        {label}
-        {required ? ' *' : ''}
-      </span>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        inputMode={inputMode}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        required={required}
-        placeholder={placeholder}
-        style={{
-          borderRadius: theme.borderRadius.lg,
-          border: `1px solid ${error ? errorColor : `${theme.colors.primary.dustyBlue}40`}`,
-          padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-          fontFamily: theme.typography.fontFamily.sans,
-          fontSize: theme.typography.fontSize.base,
-          color: theme.colors.text.primary,
-          outline: 'none',
-        }}
-      />
-      {error && (
-        <span
-          style={{
-            color: errorColor,
-            fontSize: theme.typography.fontSize.xs,
-            letterSpacing: '0.05em',
-            textTransform: 'none',
-          }}
-        >
-          {error}
-        </span>
-      )}
-    </label>
+    </FormCard>
   );
 }

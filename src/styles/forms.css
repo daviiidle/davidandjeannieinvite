@@ -1,0 +1,27 @@
+.form-input,
+.form-textarea,
+.form-select {
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.form-input:focus-visible,
+.form-textarea:focus-visible,
+.form-select:focus-visible {
+  outline: none;
+  border-color: #8b9dc3;
+  box-shadow: 0 0 0 3px rgba(139, 157, 195, 0.25);
+}
+
+.form-primary-button {
+  transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease;
+}
+
+.form-primary-button:focus-visible {
+  outline: 2px solid #8b9dc3;
+  outline-offset: 3px;
+}
+
+.form-primary-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
