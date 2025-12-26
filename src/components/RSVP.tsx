@@ -4,7 +4,6 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import { RSVP_ENDPOINTS } from '../api/rsvp';
 import {
-  FORM_ERROR_COLOR,
   FormCard,
   FormField,
   FormGrid,
@@ -50,8 +49,6 @@ const createDefaultFormState = (): FormState => ({
   notes: '',
   honeypot: '',
 });
-
-const errorColor = FORM_ERROR_COLOR;
 
 export function RSVP({
   heading,
