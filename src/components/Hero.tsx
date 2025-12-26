@@ -93,7 +93,7 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        paddingTop: theme.spacing['3xl'],
+        paddingTop: 'clamp(4rem, 12vw, 5rem)',
       }}
     >
       <div
