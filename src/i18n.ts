@@ -13,6 +13,13 @@ export interface TranslationContent {
     groomName: string;
     brideName: string;
     date: string;
+    locationLine: string;
+    invitationLine: string;
+    rsvpStatus: string;
+    calendar: {
+      googleLabel: string;
+      appleLabel: string;
+    };
   };
   details: {
     saveTheDate: string;
@@ -151,6 +158,13 @@ export const translations: Record<Language, TranslationContent> = {
       groomName: 'David',
       brideName: 'Jeannie',
       date: 'October 3, 2026',
+      locationLine: 'Melbourne, Victoria',
+      invitationLine: 'Formal invitation to follow',
+      rsvpStatus: 'RSVPs will open closer to the date',
+      calendar: {
+        googleLabel: 'Add to Google Calendar',
+        appleLabel: 'Add to Apple Calendar',
+      },
     },
     details: {
       saveTheDate: 'Save the Date',
@@ -397,6 +411,13 @@ export const translations: Record<Language, TranslationContent> = {
       groomName: 'David',
       brideName: 'Jeannie',
       date: 'Ngày 3 tháng 10 năm 2026',
+      locationLine: 'Melbourne, Victoria',
+      invitationLine: 'Thiệp mời chính thức sẽ được gửi sau',
+      rsvpStatus: 'Chúng tôi sẽ mở RSVP gần ngày cưới',
+      calendar: {
+        googleLabel: 'Thêm vào Google Calendar',
+        appleLabel: 'Thêm vào Apple Calendar',
+      },
     },
     details: {
       saveTheDate: 'Lưu ngày trọng đại',

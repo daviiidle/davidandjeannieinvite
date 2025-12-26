@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
+import { EVENT_START } from '../utils/time';
 
 interface Remaining {
   days: number;
@@ -9,7 +10,7 @@ interface Remaining {
   seconds: number;
 }
 
-const targetDate = new Date('2026-10-03T00:00:00').getTime();
+const targetDate = EVENT_START.getTime();
 
 export function Countdown() {
   const { strings } = useLanguage();
@@ -26,6 +27,8 @@ export function Countdown() {
   return (
     <div
       className="font-sans text-center"
+      role="timer"
+      aria-live="polite"
       style={{
         fontFamily: theme.typography.fontFamily.sans,
         color: theme.colors.primary.dustyBlue,
@@ -45,14 +48,24 @@ export function Countdown() {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          gap: theme.spacing.xl,
+          alignItems: 'stretch',
+          flexWrap: 'wrap',
+          columnGap: theme.spacing.xl,
+          rowGap: theme.spacing.lg,
           fontFamily: theme.typography.fontFamily.serif,
           fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
         }}
       >
         {(Object.keys(timeRemaining) as Array<keyof Remaining>).map((unit) => (
-          <div key={unit}>
-            <div>{String(timeRemaining[unit]).padStart(2, '0')}</div>
+          <div
+            key={unit}
+            style={{
+              minWidth: '80px',
+            }}
+          >
+            <div style={{ whiteSpace: 'nowrap' }}>
+              {String(timeRemaining[unit]).padStart(2, '0')}
+            </div>
             <div
               style={{
                 fontFamily: theme.typography.fontFamily.sans,

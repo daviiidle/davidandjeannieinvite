@@ -120,6 +120,20 @@ export function Footer({
         </p>
 
         <p
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.xs,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: theme.colors.text.inverse,
+            opacity: 0.7,
+            marginBottom: theme.spacing.md,
+          }}
+        >
+          David &amp; Jeannie • 2026
+        </p>
+
+        <p
           className="font-sans"
           style={{
             fontFamily: theme.typography.fontFamily.sans,

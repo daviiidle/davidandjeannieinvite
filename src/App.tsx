@@ -9,21 +9,29 @@ import { Footer } from './components/Footer';
 import { Photos } from './components/Photos';
 import { RsvpAccessPage } from './components/RsvpAccessPage';
 
-type PageKey = 'home' | 'details' | 'seating' | 'photos' | 'view' | 'not-found';
+type PageKey =
+  | 'save-the-date'
+  | 'rsvp'
+  | 'details'
+  | 'seating'
+  | 'photos'
+  | 'view'
+  | 'not-found';
 
 const BASE_PATH = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 
 const routeMap: Record<string, PageKey> = {
-  '/': 'home',
-  '/rsvp': 'home',
+  '/': 'save-the-date',
+  '/save-the-date': 'save-the-date',
+  '/rsvp': 'rsvp',
   '/details': 'details',
   '/seating': 'seating',
   '/photos': 'photos',
 };
 
 const navLinks = [
-  { path: '/', label: 'Home', targetId: 'hero' },
-  { path: '/rsvp', label: 'RSVP', targetId: 'rsvp' },
+  { path: '/', label: 'Save the Date', targetId: 'hero' },
+  { path: '/rsvp', label: 'RSVP' },
   { path: '/details', label: 'Details' },
   { path: '/seating', label: 'Seating' },
   { path: '/photos', label: 'Photos' },
@@ -73,7 +81,6 @@ export default function App() {
     if (viewToken) return 'view';
     return routeMap[path] ?? 'not-found';
   }, [path, viewToken]);
-  const [initialPathHandled, setInitialPathHandled] = useState(false);
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -86,22 +93,13 @@ export default function App() {
 
   useEffect(() => {
     if (!pendingScrollId) return;
-    if (page !== 'home') return;
+    if (page !== 'save-the-date') return;
     const el = document.getElementById(pendingScrollId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setPendingScrollId(null);
     }
   }, [pendingScrollId, page]);
-
-  useEffect(() => {
-    if (initialPathHandled) return;
-    if (page !== 'home') return;
-    if (path === '/rsvp') {
-      setPendingScrollId('rsvp');
-    }
-    setInitialPathHandled(true);
-  }, [initialPathHandled, page, path]);
 
   return (
     <div>
@@ -126,14 +124,15 @@ export default function App() {
       />
 
       <main>
-        {page === 'home' && (
+        {page === 'save-the-date' && (
           <>
             <div id="hero">
               <Hero />
             </div>
-            <RSVP />
           </>
         )}
+
+        {page === 'rsvp' && <RSVP />}
 
         {page === 'details' && (
           <>
