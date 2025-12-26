@@ -7,6 +7,7 @@ import {
   createGoogleCalendarLink,
 } from '../utils/calendarLinks';
 import { EVENT_START, EVENT_TIME_ZONE, formatWeekday, getEventEnd } from '../utils/time';
+import { StayInLoopForm } from './StayInLoopForm';
 
 interface HeroProps {
   groomName?: string;
@@ -287,6 +288,8 @@ export function Hero({
             </a>
           </div>
         </div>
+
+        <StayInLoopForm />
       </div>
     </section>
   );

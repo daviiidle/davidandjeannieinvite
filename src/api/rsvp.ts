@@ -23,6 +23,7 @@ export const RSVP_ENDPOINTS = {
   submit: withAction('rsvp'),
   fetch: withAction('rsvp'),
   update: withAction('rsvp.update'),
+  intent: withAction('intent'),
 };
 
 export function withQueryParams(
