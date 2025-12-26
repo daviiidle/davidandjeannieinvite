@@ -85,7 +85,7 @@ export function Hero({
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden hero-opener-root"
+      className="px-4 sm:px-6 lg:px-8 overflow-hidden hero-opener-root"
       style={{
         backgroundColor: theme.colors.background.white,
         backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
@@ -93,7 +93,9 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        paddingTop: 'calc(var(--app-header-height, 80px) + clamp(3rem, 8vw, 5.5rem) + env(safe-area-inset-top))',
+        paddingTop:
+          'calc(var(--app-header-height, 80px) + var(--hero-offset, 2rem) + env(safe-area-inset-top))',
+        paddingBottom: theme.spacing['3xl'],
       }}
     >
       <div
@@ -106,7 +108,10 @@ export function Hero({
         }}
       />
 
-      <div className="w-full max-w-4xl text-center relative z-10 space-y-6">
+      <div
+        className="w-full max-w-4xl text-center relative z-10 space-y-6"
+        style={{ margin: '0 auto' }}
+      >
         <p
           className="hero-opener__names font-serif"
           style={{
