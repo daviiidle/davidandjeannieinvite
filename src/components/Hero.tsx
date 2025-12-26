@@ -6,7 +6,7 @@ import {
   createAppleCalendarLink,
   createGoogleCalendarLink,
 } from '../utils/calendarLinks';
-import { EVENT_START, EVENT_TIME_ZONE, formatWeekday, getEventEnd } from '../utils/time';
+import { formatWeekday } from '../utils/time';
 import { StayInLoopForm } from './StayInLoopForm';
 
 interface HeroProps {
@@ -29,8 +29,7 @@ export function Hero({
   const namesText = `${resolvedGroom} &\n${resolvedBride}`;
   const backgroundImageUrl =
     'https://images.unsplash.com/photo-1520854223477-08661d33a360?w=1600&auto=format&fit=crop&q=80';
-  const calendarEventStart = EVENT_START;
-  const calendarEventEnd = useMemo(() => getEventEnd(), []);
+  const calendarDate = '2026-10-03';
   const locale = language === 'vi' ? 'vi-VN' : 'en-AU';
   const weekdayLabel = useMemo(() => formatWeekday(locale), [locale]);
   const [lockedButton, setLockedButton] = useState<string | null>(null);
@@ -41,11 +40,9 @@ export function Hero({
       createGoogleCalendarLink({
         title: 'David & Jeannie Wedding',
         location: locationText,
-        start: calendarEventStart,
-        end: calendarEventEnd,
-        timeZone: EVENT_TIME_ZONE,
+        startDate: calendarDate,
       }),
-    [calendarEventStart, calendarEventEnd, locationText]
+    [locationText]
   );
 
   const appleCalendarLink = useMemo(
@@ -53,11 +50,9 @@ export function Hero({
       createAppleCalendarLink({
         title: 'David & Jeannie Wedding',
         location: locationText,
-        start: calendarEventStart,
-        end: calendarEventEnd,
-        timeZone: EVENT_TIME_ZONE,
+        startDate: calendarDate,
       }),
-    [calendarEventStart, calendarEventEnd, locationText]
+    [locationText]
   );
 
   useEffect(() => {
@@ -85,7 +80,7 @@ export function Hero({
 
   return (
     <section
-      className="px-4 sm:px-6 lg:px-8 overflow-hidden hero-opener-root"
+      className="overflow-hidden hero-opener-root"
       style={{
         backgroundColor: theme.colors.background.white,
         backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
@@ -93,9 +88,8 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        paddingTop:
-          'calc(var(--app-header-height, 80px) + var(--hero-offset, 2rem) + env(safe-area-inset-top))',
-        paddingBottom: theme.spacing['3xl'],
+        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
+        paddingTop: `calc(${theme.spacing['4xl']} + env(safe-area-inset-top))`,
       }}
     >
       <div

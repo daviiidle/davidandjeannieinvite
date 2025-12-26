@@ -1,6 +1,5 @@
 const MELBOURNE_TZ = 'Australia/Melbourne';
 const EVENT_LOCAL_START = '2026-10-03T14:00:00';
-const EVENT_DURATION_HOURS = 2;
 
 const numberFromPart = (value?: string) => Number(value ?? '0');
 
@@ -53,18 +52,8 @@ export const createZonedDate = (localIso: string, timeZone: string) => {
 export const EVENT_TIME_ZONE = MELBOURNE_TZ;
 export const EVENT_START = createZonedDate(EVENT_LOCAL_START, EVENT_TIME_ZONE);
 
-export const getEventEnd = (hours: number = EVENT_DURATION_HOURS) =>
-  new Date(EVENT_START.getTime() + hours * 60 * 60 * 1000);
-
 export const formatWeekday = (locale: string) =>
   new Intl.DateTimeFormat(locale, {
     weekday: 'long',
     timeZone: EVENT_TIME_ZONE,
   }).format(EVENT_START);
-
-const pad = (value: number, length: number = 2) => value.toString().padStart(length, '0');
-
-export const formatUtcDateTime = (date: Date) =>
-  `${pad(date.getUTCFullYear(), 4)}${pad(date.getUTCMonth() + 1)}${pad(
-    date.getUTCDate()
-  )}${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}Z`;

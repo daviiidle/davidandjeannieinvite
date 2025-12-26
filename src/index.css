@@ -3,7 +3,6 @@
 
 :root {
   --app-header-height: 80px;
-  --hero-offset: 3rem;
 }
 
 @theme {
@@ -13,10 +12,4 @@
   --color-dusty-blue: #8B9DC3;
   --color-off-white: #FAF9F6;
   --color-muted-slate: #64748B;
-}
-
-@media (min-width: 768px) {
-  :root {
-    --hero-offset: 2rem;
-  }
 }
