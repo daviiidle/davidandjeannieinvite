@@ -93,7 +93,7 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        paddingTop: 'clamp(4rem, 12vw, 5rem)',
+        paddingTop: 'calc(var(--app-header-height, 80px) + clamp(3rem, 8vw, 5.5rem) + env(safe-area-inset-top))',
       }}
     >
       <div

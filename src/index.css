@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "./styles/animations.css";
 
+:root {
+  --app-header-height: 80px;
+}
+
 @theme {
   --font-family-serif: "Playfair Display", serif;
   --font-family-sans: "Inter", sans-serif;

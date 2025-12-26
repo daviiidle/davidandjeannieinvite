@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -13,11 +14,40 @@ interface NavigationProps {
   onNavigate: (path: string, targetId?: string) => void;
 }
 
+const HEADER_VAR = '--app-header-height';
+
 export function Navigation({ currentPath, links, onNavigate }: NavigationProps) {
   const { strings, openLanguageSelector } = useLanguage();
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const updateHeaderHeight = () => {
+      const height = navRef.current?.offsetHeight ?? 0;
+      if (height > 0) {
+        document.documentElement.style.setProperty(HEADER_VAR, `${height}px`);
+      }
+    };
+
+    updateHeaderHeight();
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && navRef.current) {
+      resizeObserver = new ResizeObserver(updateHeaderHeight);
+      resizeObserver.observe(navRef.current);
+    }
+
+    window.addEventListener('resize', updateHeaderHeight, { passive: true });
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', updateHeaderHeight);
+    };
+  }, []);
 
   return (
     <nav
+      ref={navRef}
       role="navigation"
       aria-label="Main navigation"
       style={{
