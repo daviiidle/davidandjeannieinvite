@@ -102,12 +102,15 @@ export function RsvpAccessPage({ token }: RsvpAccessPageProps) {
   }, [record]);
 
   const displayName = useMemo(() => {
-    if (!record) return '';
+    if (!record) return 'Guest';
+    const parts = [record.firstName, record.lastName].filter(Boolean);
+    if (parts.length) {
+      return parts.join(' ');
+    }
     if (record.householdName) {
       return record.householdName;
     }
-    const parts = [record.firstName, record.lastName].filter(Boolean);
-    return parts.length ? parts.join(' ') : 'Guest';
+    return 'Guest';
   }, [record]);
 
   const lastUpdatedLabel = useMemo(() => {
@@ -283,6 +286,30 @@ export function RsvpAccessPage({ token }: RsvpAccessPageProps) {
               margin: 0,
             }}
           >
+            <div>
+              <dt className="font-sans" style={{ fontWeight: 600, color: theme.colors.text.primary }}>
+                First name
+              </dt>
+              <dd style={{ margin: 0, color: theme.colors.text.secondary }}>
+                {record.firstName || 'Not provided'}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-sans" style={{ fontWeight: 600, color: theme.colors.text.primary }}>
+                Last name
+              </dt>
+              <dd style={{ margin: 0, color: theme.colors.text.secondary }}>
+                {record.lastName || 'Not provided'}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-sans" style={{ fontWeight: 600, color: theme.colors.text.primary }}>
+                Household
+              </dt>
+              <dd style={{ margin: 0, color: theme.colors.text.secondary }}>
+                {record.householdName || 'Not provided'}
+              </dd>
+            </div>
             <div>
               <dt className="font-sans" style={{ fontWeight: 600, color: theme.colors.text.primary }}>
                 Contact
