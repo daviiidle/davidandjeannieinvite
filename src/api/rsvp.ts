@@ -1,5 +1,5 @@
 const DEFAULT_RSVP_BASE =
-  'https://script.google.com/macros/s/AKfycbyLGVq4ncTykrqeYcHRyQoe1WSDgdfyNNvlrxz57Mp41JLxgCF8-pH55uIaomepYAJwbg/exec';
+  'https://script.google.com/macros/s/AKfycbxDELldQq1mzRyhCf-BAu5EgsJhSwlSCMh2unmut6fPiHBWXF48lgFcEZ4PAF3Y_Bpz5g/exec';
 
 const rawBase =
   (import.meta.env.VITE_RSVP_ENDPOINT as string | undefined) ?? DEFAULT_RSVP_BASE;
