@@ -11,7 +11,7 @@ const SPREADSHEET_ID = '10JrN7JVnGNO3Za4TNpwX7yfEhkaLghv8o9m-_0WVtlo';
 const SHEET_NAME = 'Sheet1';
 const SOURCE_LABEL = 'WEBSITE';
 const OUTBOX_SHEET_NAME = 'OUTBOX';
-const BASE_SITE_URL = 'https://your-site.example.com';
+const BASE_SITE_URL = 'https://daviiidle.github.io/davidandjeannieinvite';
 const TOKEN_BYTE_LENGTH = 24;
 
 const HEADER_CONFIG = [
