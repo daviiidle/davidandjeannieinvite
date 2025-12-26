@@ -47,3 +47,4 @@ if (document.readyState === 'complete') {
 } else {
   window.addEventListener('load', startHeroOpener, { once: true });
 }
+
