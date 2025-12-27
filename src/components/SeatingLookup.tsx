@@ -17,6 +17,45 @@ export function SeatingLookup() {
   useScrollReveal(sectionRef, { duration: 0.6 });
   const { strings, formatMessage } = useLanguage();
   const seatingText = strings.seating;
+  const cardStyle = {
+    backgroundColor: theme.colors.background.white,
+    borderRadius: theme.borderRadius['3xl'],
+    padding: theme.spacing['2xl'],
+    boxShadow: theme.shadows.lg,
+    maxWidth: '680px',
+    width: '100%',
+    margin: '0 auto',
+    border: `1px solid ${theme.colors.primary.dustyBlue}20`,
+    textAlign: 'center' as const,
+  };
+  const inputStyle = {
+    fontFamily: theme.typography.fontFamily.sans,
+    fontSize: theme.typography.fontSize.base,
+    padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+    border: `1px solid ${theme.colors.primary.dustyBlue}40`,
+    borderRadius: theme.borderRadius.lg,
+    backgroundColor: theme.colors.background.white,
+    color: theme.colors.text.primary,
+    minHeight: '52px',
+    width: '100%',
+    transition: theme.transitions.base,
+  };
+  const primaryButtonStyle = {
+    fontFamily: theme.typography.fontFamily.sans,
+    fontSize: theme.typography.fontSize.sm,
+    fontWeight: theme.typography.fontWeight.medium,
+    letterSpacing: '0.15em',
+    textTransform: 'uppercase' as const,
+    padding: `${theme.spacing.sm} ${theme.spacing['2xl']}`,
+    borderRadius: theme.borderRadius.full,
+    border: 'none',
+    backgroundColor: theme.colors.primary.dustyBlue,
+    color: theme.colors.text.inverse,
+    cursor: 'pointer',
+    minHeight: '48px',
+    boxShadow: theme.shadows.md,
+    transition: theme.transitions.base,
+  };
 
   const [searchName, setSearchName] = useState('');
   const [result, setResult] = useState<{ found: boolean; table?: number; message: string } | null>(null);
@@ -212,6 +251,7 @@ export function SeatingLookup() {
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             fontWeight: theme.typography.fontWeight.bold,
             color: theme.colors.primary.dustyBlue,
+            letterSpacing: '0.03em',
             marginBottom: theme.spacing.lg,
           }}
         >
@@ -227,22 +267,13 @@ export function SeatingLookup() {
             lineHeight: theme.typography.lineHeight.relaxed,
             color: theme.colors.text.secondary,
             maxWidth: '720px',
-            margin: `0 auto ${theme.spacing['2xl']}`,
+            margin: `0 auto ${theme.spacing['3xl']}`,
           }}
         >
           {seatingText.subtitle}
         </p>
 
-        <div
-          style={{
-            backgroundColor: theme.colors.background.white,
-            borderRadius: theme.borderRadius['3xl'],
-            padding: theme.spacing['2xl'],
-            boxShadow: theme.shadows.lg,
-            maxWidth: '720px',
-            margin: '0 auto',
-          }}
-        >
+        <div style={cardStyle}>
           <p
             className="font-sans"
             style={{
@@ -279,25 +310,8 @@ export function SeatingLookup() {
                 aria-autocomplete="list"
                 aria-expanded={showSuggestions}
                 aria-controls="suggestions-list"
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  fontSize: theme.typography.fontSize.base,
-                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-                  border: `2px solid ${theme.colors.primary.dustyBlue}40`,
-                  borderRadius: theme.borderRadius.lg,
-                  outline: 'none',
-                  transition: theme.transitions.base,
-                  backgroundColor: theme.colors.background.white,
-                  color: theme.colors.text.primary,
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.primary.dustyBlue;
-                  e.currentTarget.style.boxShadow = `0 0 0 3px ${theme.colors.primary.dustyBlue}20`;
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = `${theme.colors.primary.dustyBlue}40`;
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="seating-input"
+                style={inputStyle}
               />
 
               {showSuggestions && suggestions.length > 0 && (
@@ -364,34 +378,11 @@ export function SeatingLookup() {
             <button
               onClick={() => handleSearch()}
               disabled={isLoading}
-              className={!isLoading ? 'btn-hover' : ''}
+              className="form-primary-button"
               style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.base,
-                fontWeight: theme.typography.fontWeight.semibold,
-                padding: `${theme.spacing.md} ${theme.spacing['2xl']}`,
-                minHeight: '48px',
-                backgroundColor: theme.colors.primary.dustyBlue,
-                color: theme.colors.text.inverse,
-                border: 'none',
-                borderRadius: theme.borderRadius.full,
+                ...primaryButtonStyle,
                 cursor: isLoading ? 'not-allowed' : 'pointer',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                boxShadow: theme.shadows.md,
-                opacity: isLoading ? 0.6 : 1,
-              }}
-              onMouseEnter={(e) => {
-                if (!isLoading) {
-                  e.currentTarget.style.backgroundColor = theme.colors.primary.dustyBlueDark;
-                  e.currentTarget.style.boxShadow = theme.shadows.lg;
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isLoading) {
-                  e.currentTarget.style.backgroundColor = theme.colors.primary.dustyBlue;
-                  e.currentTarget.style.boxShadow = theme.shadows.md;
-                }
+                opacity: isLoading ? 0.7 : 1,
               }}
             >
               {isLoading ? seatingText.searchingButton : seatingText.searchButton}

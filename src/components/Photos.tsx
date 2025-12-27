@@ -72,6 +72,14 @@ export function Photos() {
     return `https://quickchart.io/qr?${params.toString()}`;
   }, [uploadLink]);
 
+  const cardStyle = {
+    borderRadius: theme.borderRadius['3xl'],
+    padding: theme.spacing['2xl'],
+    backgroundColor: theme.colors.background.white,
+    boxShadow: theme.shadows.lg,
+    border: `1px solid ${theme.colors.primary.dustyBlue}15`,
+  };
+
   return (
     <section
       id="photos"
@@ -107,6 +115,8 @@ export function Photos() {
           style={{
             fontFamily: theme.typography.fontFamily.serif,
             fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: theme.typography.fontWeight.bold,
+            letterSpacing: '0.03em',
             color: theme.colors.primary.dustyBlue,
             marginBottom: theme.spacing.md,
           }}
@@ -121,11 +131,11 @@ export function Photos() {
             lineHeight: theme.typography.lineHeight.relaxed,
             color: theme.colors.text.secondary,
             maxWidth: '720px',
-            margin: `0 auto ${theme.spacing['2xl']}`,
-          }}
-        >
-          {photos.intro}
-        </p>
+          margin: `0 auto ${theme.spacing['3xl']}`,
+        }}
+      >
+        {photos.intro}
+      </p>
       </div>
 
       <div
@@ -136,14 +146,12 @@ export function Photos() {
           alignItems: 'stretch',
           maxWidth: '960px',
           margin: '0 auto',
+          marginBottom: theme.spacing['4xl'],
         }}
       >
         <div
           style={{
-            borderRadius: theme.borderRadius['3xl'],
-            padding: theme.spacing['2xl'],
-            backgroundColor: theme.colors.background.white,
-            boxShadow: theme.shadows.md,
+            ...cardStyle,
             textAlign: 'left',
           }}
         >
@@ -197,20 +205,10 @@ export function Photos() {
           </div>
           <a
             href={uploadLink || '#uploadcare-uploader'}
+            className="button-link"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               width: '100%',
               marginTop: theme.spacing['2xl'],
-              padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-              borderRadius: theme.borderRadius.full,
-              border: `1px solid ${theme.colors.primary.dustyBlue}`,
-              color: theme.colors.primary.dustyBlue,
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              textDecoration: 'none',
-              transition: `background-color ${theme.transitions.base}, color ${theme.transitions.base}`,
             }}
           >
             {photos.ctaLabel}
@@ -219,24 +217,21 @@ export function Photos() {
 
         <div
           style={{
-            borderRadius: theme.borderRadius['3xl'],
-            padding: theme.spacing['2xl'],
-            backgroundColor: theme.colors.background.white,
-            boxShadow: theme.shadows.md,
+            ...cardStyle,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             gap: theme.spacing.lg,
           }}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '320px',
-              backgroundColor: theme.colors.background.offWhite,
-              padding: theme.spacing.md,
-              borderRadius: theme.borderRadius['2xl'],
+          >
+            <div
+              style={{
+                width: '100%',
+                maxWidth: '280px',
+                backgroundColor: theme.colors.background.offWhite,
+                padding: theme.spacing.md,
+                borderRadius: theme.borderRadius['2xl'],
             }}
           >
             <img
@@ -268,6 +263,7 @@ export function Photos() {
 
       <div
         id="uploadcare-uploader"
+        className="uploadcare-card"
         style={{
           margin: `${theme.spacing['3xl']} auto 0`,
           maxWidth: '720px',
@@ -275,7 +271,9 @@ export function Photos() {
           borderRadius: theme.borderRadius['3xl'],
           padding: theme.spacing['2xl'],
           boxShadow: theme.shadows.lg,
+          border: `1px solid ${theme.colors.primary.dustyBlue}15`,
           textAlign: 'center',
+          marginBottom: theme.spacing['4xl'],
         }}
       >
         <p
@@ -305,7 +303,7 @@ export function Photos() {
         {uploadcarePublicKey ? (
           <div
             style={{
-              border: `1px dashed ${theme.colors.primary.dustyBlue}80`,
+              border: `1px dashed ${theme.colors.primary.dustyBlue}60`,
               borderRadius: theme.borderRadius['2xl'],
               padding: theme.spacing['2xl'],
               backgroundColor: `${theme.colors.primary.dustyBlue}08`,

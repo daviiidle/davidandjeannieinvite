@@ -13,6 +13,7 @@ type PageKey =
   | 'save-the-date'
   | 'rsvp'
   | 'details'
+  | 'story'
   | 'seating'
   | 'photos'
   | 'view'
@@ -25,6 +26,7 @@ const routeMap: Record<string, PageKey> = {
   '/save-the-date': 'save-the-date',
   '/rsvp': 'rsvp',
   '/details': 'details',
+  '/our-story': 'story',
   '/seating': 'seating',
   '/photos': 'photos',
 };
@@ -33,6 +35,7 @@ const navLinks = [
   { path: '/', label: 'Save the Date', targetId: 'hero' },
   { path: '/rsvp', label: 'RSVP' },
   { path: '/details', label: 'Details' },
+  { path: '/our-story', label: 'Our Story' },
   { path: '/seating', label: 'Seating' },
   { path: '/photos', label: 'Photos' },
 ];
@@ -137,9 +140,10 @@ export default function App() {
         {page === 'details' && (
           <>
             <Details />
-            <Story />
           </>
         )}
+
+        {page === 'story' && <Story />}
 
         {page === 'seating' && <SeatingLookup />}
 

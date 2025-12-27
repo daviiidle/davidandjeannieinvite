@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { theme } from '../theme';
 import { SAVE_THE_DATE_WEBHOOK_URL } from '../api/rsvp';
+import { useLanguage } from '../context/LanguageContext';
 import {
   FormCard,
   FormField,
@@ -13,6 +14,12 @@ import {
 } from './FormPrimitives';
 
 type LikelyValue = '' | 'YES' | 'MAYBE';
+type FormErrors = Partial<Record<keyof FormState, boolean>>;
+type SubmitErrorKey = 'unavailable' | 'generic';
+type SubmitErrorState =
+  | { key: SubmitErrorKey; message?: undefined }
+  | { key?: undefined; message: string }
+  | null;
 
 interface FormState {
   firstName: string;
@@ -30,12 +37,15 @@ const initialState: FormState = {
 };
 
 const sanitizePhone = (value: string) => value.replace(/[^\d+]/g, '');
+const GENERIC_ERROR_TOKEN = '__GENERIC__';
 
 export function StayInLoopForm() {
+  const { strings } = useLanguage();
+  const stayInLoop = strings.stayInLoop;
   const [formState, setFormState] = useState<FormState>(initialState);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<SubmitErrorState>(null);
 
   const isPhoneValid = useMemo(
     () => PHONE_REGEX.test(sanitizePhone(formState.phone.trim())),
@@ -49,16 +59,16 @@ export function StayInLoopForm() {
     }));
   };
 
-  const validate = (): Partial<Record<keyof FormState, string>> => {
-    const nextErrors: Partial<Record<keyof FormState, string>> = {};
+  const validate = (): FormErrors => {
+    const nextErrors: FormErrors = {};
     if (!formState.firstName.trim()) {
-      nextErrors.firstName = 'First name is required.';
+      nextErrors.firstName = true;
     }
     if (!formState.lastName.trim()) {
-      nextErrors.lastName = 'Last name is required.';
+      nextErrors.lastName = true;
     }
     if (!formState.phone.trim() || !isPhoneValid) {
-      nextErrors.phone = 'Enter a valid Australian mobile number.';
+      nextErrors.phone = true;
     }
     return nextErrors;
   };
@@ -72,7 +82,7 @@ export function StayInLoopForm() {
     }
 
     if (!SAVE_THE_DATE_WEBHOOK_URL) {
-      setSubmitError('Unable to send right now. Please try again later.');
+      setSubmitError({ key: 'unavailable' });
       return;
     }
 
@@ -96,19 +106,26 @@ export function StayInLoopForm() {
 
       const result = await response.json().catch(() => null);
       if (!response.ok || !result?.ok) {
-        throw new Error(result?.error || 'Unable to send your details.');
+        throw new Error(result?.error || GENERIC_ERROR_TOKEN);
       }
 
       setStatus('success');
       setErrors({});
       setFormState(initialState);
+      setSubmitError(null);
     } catch (error) {
-      setSubmitError(
-        error instanceof Error ? error.message : 'Something went wrong. Please try again.'
-      );
+      if (error instanceof Error && error.message && error.message !== GENERIC_ERROR_TOKEN) {
+        setSubmitError({ message: error.message });
+      } else {
+        setSubmitError({ key: 'generic' });
+      }
       setStatus('idle');
     }
   };
+
+  const resolvedSubmitError =
+    submitError?.message ||
+    (submitError?.key ? stayInLoop.submitErrors[submitError.key] : null);
 
   return (
     <FormCard
@@ -129,7 +146,7 @@ export function StayInLoopForm() {
             marginBottom: theme.spacing.xs,
           }}
         >
-          Want to stay in the loop?
+          {stayInLoop.heading}
         </p>
         <p
           style={{
@@ -140,7 +157,7 @@ export function StayInLoopForm() {
             textTransform: 'uppercase',
           }}
         >
-          Leave your name and number so we can keep you updated. This is not a formal RSVP.
+          {stayInLoop.subtitle}
         </p>
       </div>
 
@@ -154,10 +171,10 @@ export function StayInLoopForm() {
       >
         <FormGrid>
           <FormField
-            label="First name"
+            label={stayInLoop.firstNameLabel}
             htmlFor="intent-first-name"
             required
-            error={errors.firstName}
+            error={errors.firstName ? stayInLoop.errors.firstName : undefined}
           >
             <FormInput
               id="intent-first-name"
@@ -168,10 +185,10 @@ export function StayInLoopForm() {
             />
           </FormField>
           <FormField
-            label="Last name"
+            label={stayInLoop.lastNameLabel}
             htmlFor="intent-last-name"
             required
-            error={errors.lastName}
+            error={errors.lastName ? stayInLoop.errors.lastName : undefined}
           >
             <FormInput
               id="intent-last-name"
@@ -184,17 +201,17 @@ export function StayInLoopForm() {
         </FormGrid>
 
         <FormField
-          label="Mobile number"
+          label={stayInLoop.phoneLabel}
           htmlFor="intent-phone"
           required
-          error={errors.phone}
-          helperText="Use an Australian mobile number"
+          error={errors.phone ? stayInLoop.errors.phone : undefined}
+          helperText={stayInLoop.phoneHelper}
         >
           <FormInput
             id="intent-phone"
             type="tel"
             inputMode="tel"
-            placeholder="04XX XXX XXX"
+            placeholder={stayInLoop.phonePlaceholder}
             value={formState.phone}
             onChange={(event) => handleChange('phone', event.target.value)}
             hasError={Boolean(errors.phone)}
@@ -202,24 +219,24 @@ export function StayInLoopForm() {
           />
         </FormField>
 
-        <FormField label="Likely to attend? (optional)" htmlFor="intent-likely">
+        <FormField label={stayInLoop.likelyLabel} htmlFor="intent-likely">
           <FormSelect
             id="intent-likely"
             value={formState.likely}
             onChange={(event) => handleChange('likely', event.target.value as LikelyValue)}
           >
-            <option value="">Select one (optional)</option>
-            <option value="YES">Yes</option>
-            <option value="MAYBE">Maybe</option>
+            <option value="">{stayInLoop.dropdownPlaceholder}</option>
+            <option value="YES">{stayInLoop.optionYes}</option>
+            <option value="MAYBE">{stayInLoop.optionMaybe}</option>
           </FormSelect>
         </FormField>
 
         <PrimaryButton type="submit" disabled={status === 'submitting'}>
-          {status === 'submitting' ? 'Sending…' : 'Send me updates'}
+          {status === 'submitting' ? stayInLoop.buttonSubmitting : stayInLoop.buttonIdle}
         </PrimaryButton>
 
         <FormHelperText>
-          We’ll only use your details for wedding updates.
+          {stayInLoop.privacy}
         </FormHelperText>
 
         <div aria-live="polite">
@@ -232,10 +249,10 @@ export function StayInLoopForm() {
                 textAlign: 'center',
               }}
             >
-              Thanks! We’ll keep you posted.
+              {stayInLoop.success}
             </p>
           )}
-          {submitError && <FormErrorText>{submitError}</FormErrorText>}
+          {resolvedSubmitError && <FormErrorText>{resolvedSubmitError}</FormErrorText>}
         </div>
       </form>
     </FormCard>

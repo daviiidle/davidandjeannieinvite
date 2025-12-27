@@ -14,6 +14,13 @@ export function Details() {
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
   const orderedInfoSections = details.infoSections ?? [];
+  const setAddressLinkState = (element: HTMLAnchorElement | null, isActive: boolean) => {
+    if (!element) return;
+    element.style.color = isActive ? theme.colors.primary.dustyBlue : theme.colors.text.secondary;
+    element.style.borderBottomColor = isActive
+      ? theme.colors.primary.dustyBlue
+      : `${theme.colors.primary.dustyBlue}40`;
+  };
 
   return (
     <section
@@ -249,7 +256,8 @@ export function Details() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: theme.spacing.xl,
-            marginBottom: theme.spacing['3xl'],
+            marginBottom: theme.spacing['4xl'],
+            alignItems: 'stretch',
           }}
         >
           {mainCards.map((card, index) => {
@@ -260,17 +268,19 @@ export function Details() {
             const imageSrc = card.image
               ? `${assetBase}/${card.image.replace(/^\/+/, '')}`
               : undefined;
+            const qrSize = 120;
 
             return (
-              <div
+              <article
                 key={index}
                 style={{
-                  padding: theme.spacing['2xl'],
+                  padding: `${theme.spacing['2xl']} ${theme.spacing.xl}`,
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  height: '100%',
+                  minHeight: '100%',
+                  gap: theme.spacing.sm,
                 }}
               >
                 <p
@@ -295,7 +305,7 @@ export function Details() {
                       fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
                       fontWeight: theme.typography.fontWeight.semibold,
                       color: theme.colors.primary.dustyBlue,
-                      marginBottom: theme.spacing.sm,
+                      marginBottom: theme.spacing.xs,
                     }}
                   >
                     {card.time}
@@ -304,12 +314,13 @@ export function Details() {
 
                 {card.location && (
                   <p
-                    className="font-sans"
+                    className="font-serif"
                     style={{
-                      fontFamily: theme.typography.fontFamily.sans,
-                      fontSize: theme.typography.fontSize.base,
-                      fontWeight: theme.typography.fontWeight.medium,
-                      color: theme.colors.text.primary,
+                      fontFamily: theme.typography.fontFamily.serif,
+                      fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
+                      fontWeight: theme.typography.fontWeight.normal,
+                      color: theme.colors.primary.dustyBlue,
+                      letterSpacing: '0.02em',
                       marginBottom: theme.spacing.xs,
                     }}
                   >
@@ -318,38 +329,30 @@ export function Details() {
                 )}
 
                 {mapLink && (
-                  <p
-                    className="font-sans"
+                  <a
+                    href={mapLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       fontFamily: theme.typography.fontFamily.sans,
                       fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.primary.dustyBlue,
+                      color: theme.colors.text.secondary,
                       lineHeight: theme.typography.lineHeight.relaxed,
-                      marginBottom: theme.spacing.md,
+                      letterSpacing: '0.03em',
+                      textDecoration: 'none',
+                      borderBottom: `1px solid ${theme.colors.primary.dustyBlue}40`,
+                      paddingBottom: 2,
+                      transition: theme.transitions.base,
+                      display: 'inline-block',
+                      marginBottom: theme.spacing.xs,
                     }}
+                    onMouseEnter={(event) => setAddressLinkState(event.currentTarget, true)}
+                    onFocus={(event) => setAddressLinkState(event.currentTarget, true)}
+                    onMouseLeave={(event) => setAddressLinkState(event.currentTarget, false)}
+                    onBlur={(event) => setAddressLinkState(event.currentTarget, false)}
                   >
                     {card.address}
-                  </p>
-                )}
-
-                {mapLink && (
-                  <div
-                    style={{
-                      marginTop: theme.spacing.md,
-                      display: 'flex',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(mapLink)}`}
-                      alt={`QR code for ${card.heading} location`}
-                      style={{
-                        width: '160px',
-                        height: '160px',
-                        borderRadius: theme.borderRadius.md,
-                      }}
-                    />
-                  </div>
+                  </a>
                 )}
 
                 {card.description && (
@@ -357,15 +360,34 @@ export function Details() {
                     className="font-sans"
                     style={{
                       fontFamily: theme.typography.fontFamily.sans,
-                      fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.text.secondary,
+                      fontSize: theme.typography.fontSize.xs,
+                      color: theme.colors.secondary.slate,
                       lineHeight: theme.typography.lineHeight.relaxed,
                       fontStyle: 'italic',
-                      marginTop: theme.spacing.md,
+                      marginTop: theme.spacing.sm,
                     }}
                   >
                     {card.description}
                   </p>
+                )}
+
+                {mapLink && (
+                  <div
+                    style={{
+                      marginTop: theme.spacing.lg,
+                      opacity: 0.8,
+                    }}
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(mapLink)}`}
+                      alt={`QR code for ${card.heading} location`}
+                      style={{
+                        width: `${qrSize}px`,
+                        height: `${qrSize}px`,
+                        borderRadius: theme.borderRadius.md,
+                      }}
+                    />
+                  </div>
                 )}
 
                 {imageSrc && (
@@ -391,7 +413,7 @@ export function Details() {
                     />
                   </div>
                 )}
-              </div>
+              </article>
             );
           })}
         </div>

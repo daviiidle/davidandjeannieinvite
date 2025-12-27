@@ -70,6 +70,32 @@ export interface TranslationContent {
     viewPrompt: string;
     closeLabel: string;
   };
+  stayInLoop: {
+    heading: string;
+    subtitle: string;
+    firstNameLabel: string;
+    lastNameLabel: string;
+    phoneLabel: string;
+    phonePlaceholder: string;
+    phoneHelper: string;
+    likelyLabel: string;
+    dropdownPlaceholder: string;
+    optionYes: string;
+    optionMaybe: string;
+    buttonIdle: string;
+    buttonSubmitting: string;
+    privacy: string;
+    success: string;
+    errors: {
+      firstName: string;
+      lastName: string;
+      phone: string;
+    };
+    submitErrors: {
+      unavailable: string;
+      generic: string;
+    };
+  };
   photos: {
     sectionLabel: string;
     heading: string;
@@ -301,6 +327,32 @@ export const translations: Record<Language, TranslationContent> = {
             'Formal attire requested. Ladies: Evening gowns or formal dresses. Gentlemen: Tuxedos or dark suits with ties.',
         },
       ],
+    },
+    stayInLoop: {
+      heading: 'Want to stay in the loop?',
+      subtitle: 'Leave your name and number so we can keep you updated. This is not a formal RSVP.',
+      firstNameLabel: 'First name',
+      lastNameLabel: 'Last name',
+      phoneLabel: 'Mobile number',
+      phonePlaceholder: '04XX XXX XXX',
+      phoneHelper: 'Use an Australian mobile number.',
+      likelyLabel: 'Likely to attend? (optional)',
+      dropdownPlaceholder: 'Select one (optional)',
+      optionYes: 'Yes',
+      optionMaybe: 'Maybe',
+      buttonIdle: 'Send me updates',
+      buttonSubmitting: 'Sending…',
+      privacy: 'We’ll only use your details for wedding updates.',
+      success: 'Thanks! We’ll keep you posted.',
+      errors: {
+        firstName: 'First name is required.',
+        lastName: 'Last name is required.',
+        phone: 'Enter a valid Australian mobile number.',
+      },
+      submitErrors: {
+        unavailable: 'Unable to send right now. Please try again later.',
+        generic: 'Something went wrong. Please try again.',
+      },
     },
     story: {
       heading: 'Our Story',
@@ -554,6 +606,33 @@ export const translations: Record<Language, TranslationContent> = {
             'Vui lòng mặc trang phục trang trọng. Quý cô: Đầm dạ hội hoặc váy trang nhã. Quý ông: Vest hoặc suit màu tối kèm cà vạt.',
         },
       ],
+    },
+    stayInLoop: {
+      heading: 'Muốn nhận thông tin mới nhất?',
+      subtitle:
+        'Để lại tên và số điện thoại để chúng tôi gửi cập nhật cho bạn. Đây không phải là RSVP chính thức.',
+      firstNameLabel: 'Tên',
+      lastNameLabel: 'Họ',
+      phoneLabel: 'Số điện thoại',
+      phonePlaceholder: '04XX XXX XXX',
+      phoneHelper: 'Vui lòng dùng số di động Úc.',
+      likelyLabel: 'Bạn có thể tham dự? (không bắt buộc)',
+      dropdownPlaceholder: 'Chọn một tùy chọn (không bắt buộc)',
+      optionYes: 'Có',
+      optionMaybe: 'Có thể',
+      buttonIdle: 'Gửi cho tôi cập nhật',
+      buttonSubmitting: 'Đang gửi…',
+      privacy: 'Thông tin chỉ dùng để gửi cập nhật đám cưới.',
+      success: 'Cảm ơn! Chúng tôi sẽ báo cho bạn.',
+      errors: {
+        firstName: 'Vui lòng nhập tên.',
+        lastName: 'Vui lòng nhập họ.',
+        phone: 'Vui lòng nhập số di động Úc hợp lệ.',
+      },
+      submitErrors: {
+        unavailable: 'Hiện không thể gửi, vui lòng thử lại sau.',
+        generic: 'Có lỗi xảy ra, vui lòng thử lại.',
+      },
     },
     story: {
       heading: 'Chuyện tình của chúng tôi',

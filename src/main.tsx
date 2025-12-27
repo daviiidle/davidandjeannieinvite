@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import './styles/heroOpener.css';
 import './styles/forms.css';
+import './styles/uploadcare.css';
 import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext.tsx';
 import { initHeroOpener } from './heroOpener';

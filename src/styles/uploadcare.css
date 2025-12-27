@@ -1,0 +1,51 @@
+.uploadcare-card .uploadcare--widget {
+  font-family: "Inter", sans-serif;
+  color: #64748b;
+}
+
+.uploadcare-card .uploadcare--widget__button {
+  font-family: "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-radius: 9999px !important;
+  background-color: #8b9dc3;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.75rem;
+  min-height: 44px;
+  transition: background-color 200ms ease;
+}
+
+.uploadcare-card .uploadcare--widget__button:hover,
+.uploadcare-card .uploadcare--widget__button:focus-visible {
+  background-color: #7a8db5;
+}
+
+.uploadcare-card .uploadcare--widget__button_type_remove,
+.uploadcare-card .uploadcare--widget__button_type_cancel {
+  background-color: transparent;
+  color: #64748b;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+
+.uploadcare-card .uploadcare--widget__button_type_remove:hover,
+.uploadcare-card .uploadcare--widget__button_type_cancel:hover {
+  color: #8b9dc3;
+}
+
+.uploadcare-card .uploadcare--panel,
+.uploadcare-card .uploadcare--widget__text {
+  font-family: "Inter", sans-serif;
+  color: #475569;
+}
+
+.uploadcare-card .uploadcare--widget__dragndrop-area {
+  border-radius: 1rem;
+  border: 1px dashed rgba(139, 157, 195, 0.6);
+  background-color: rgba(139, 157, 195, 0.08);
+}
+
+.uploadcare-card .uploadcare--widget__progress {
+  color: #8b9dc3;
+}

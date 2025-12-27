@@ -25,3 +25,41 @@
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.75rem 2.5rem;
+  border-radius: 9999px;
+  background-color: #8b9dc3;
+  color: #ffffff;
+  text-decoration: none;
+  border: none;
+  transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease;
+}
+
+.button-link:hover,
+.button-link:focus-visible {
+  background-color: #7a8db5;
+  color: #ffffff;
+}
+
+.button-link:focus-visible {
+  outline: 2px solid #8b9dc3;
+  outline-offset: 3px;
+}
+
+.seating-input::placeholder {
+  color: #94a3b8;
+}
+
+.seating-input:focus-visible {
+  border-color: #8b9dc3 !important;
+  box-shadow: 0 0 0 3px rgba(139, 157, 195, 0.25);
+}
