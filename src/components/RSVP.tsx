@@ -434,22 +434,31 @@ export function RSVP({
           >
             {strings.rsvp.contactHint}
           </p>
-          {emails.map((email) => (
-            <a
-              key={email}
-              href={`mailto:${email}`}
-              className="link-hover"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.base,
-                fontWeight: theme.typography.fontWeight.medium,
-                color: theme.colors.primary.dustyBlue,
-                display: 'inline-block',
-              }}
-            >
-              {email}
-            </a>
-          ))}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: theme.spacing.xs,
+              alignItems: 'center',
+            }}
+          >
+            {emails.map((email) => (
+              <a
+                key={email}
+                href={`mailto:${email}`}
+                className="link-hover"
+                style={{
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.base,
+                  fontWeight: theme.typography.fontWeight.medium,
+                  color: theme.colors.primary.dustyBlue,
+                  display: 'inline-block',
+                }}
+              >
+                {email}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

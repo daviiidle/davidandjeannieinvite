@@ -7,3 +7,4 @@ export { SeatingLookup } from './SeatingLookup';
 export { Footer } from './Footer';
 export { TheDay } from './TheDay';
 export { ReceptionTimeline } from './ReceptionTimeline';
+export { TimelineCard } from './TimelineCard';

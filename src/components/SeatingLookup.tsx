@@ -293,7 +293,7 @@ export function SeatingLookup() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: theme.spacing.md,
+              gap: theme.spacing.lg,
               marginBottom: theme.spacing.xl,
             }}
           >
@@ -441,7 +441,8 @@ export function SeatingLookup() {
           style={{
             fontFamily: theme.typography.fontFamily.sans,
             fontSize: theme.typography.fontSize.sm,
-            color: theme.colors.text.muted,
+            color: theme.colors.secondary.slate,
+            opacity: 0.8,
             fontStyle: 'italic',
             marginTop: theme.spacing['2xl'],
             textAlign: 'center',

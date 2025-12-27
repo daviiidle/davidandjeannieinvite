@@ -1,0 +1,118 @@
+.timeline-card {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.timeline-card__header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.timeline-card__title {
+  margin: 0.5rem 0;
+}
+
+.timeline-card__kicker,
+.timeline-card__date {
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+.timeline-card__list-wrapper {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.timeline-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.timeline-card__item {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.1rem, 3vw, 1.75rem);
+}
+
+.timeline-card__icon-col {
+  width: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.timeline-card__icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-card__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.timeline-card__time {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.timeline-card__label {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+}
+
+.timeline-card__description {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .timeline-card {
+    padding: 0 1rem;
+  }
+
+  .timeline-card__list-wrapper {
+    padding: 0 16px;
+  }
+
+  .timeline-card__item {
+    flex-direction: column;
+    gap: 0.85rem;
+    align-items: flex-start;
+  }
+
+  .timeline-card__icon-col {
+    width: auto;
+  }
+
+  .timeline-card__content {
+    align-items: flex-start;
+  }
+}

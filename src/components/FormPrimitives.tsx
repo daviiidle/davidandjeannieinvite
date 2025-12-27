@@ -30,7 +30,8 @@ const helperTextStyle: CSSProperties = {
   fontSize: theme.typography.fontSize.xs,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
-  color: theme.colors.text.secondary,
+  color: theme.colors.secondary.slate,
+  opacity: 0.85,
 };
 
 const errorTextStyle: CSSProperties = {

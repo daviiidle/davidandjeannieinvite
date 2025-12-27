@@ -126,12 +126,12 @@ export function Story({
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  backgroundColor: 'rgba(139, 157, 195, 0)',
+                  backgroundColor: 'rgba(139, 157, 195, 0.12)',
                   transition: theme.transitions.base,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: theme.colors.text.inverse,
+                  color: 'rgba(255, 255, 255, 0.9)',
                   fontSize: theme.typography.fontSize.sm,
                   fontFamily: theme.typography.fontFamily.sans,
                   fontWeight: theme.typography.fontWeight.medium,
@@ -139,7 +139,10 @@ export function Story({
                   letterSpacing: '0.1em',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(139, 157, 195, 0.3)';
+                  e.currentTarget.style.backgroundColor = 'rgba(139, 157, 195, 0.24)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(139, 157, 195, 0.12)';
                 }}
               >
                 {strings.story.viewPrompt}

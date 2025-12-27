@@ -88,8 +88,8 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
-        paddingTop: `calc(${theme.spacing['4xl']} + env(safe-area-inset-top))`,
+        padding: `${theme.spacing['3xl']} ${theme.spacing.lg}`,
+        paddingTop: `calc(${theme.spacing['3xl']} + env(safe-area-inset-top))`,
       }}
     >
       <div
@@ -103,7 +103,7 @@ export function Hero({
       />
 
       <div
-        className="w-full max-w-4xl text-center relative z-10 space-y-6"
+        className="w-full max-w-4xl text-center relative z-10 space-y-5 sm:space-y-6"
         style={{ margin: '0 auto' }}
       >
         <p

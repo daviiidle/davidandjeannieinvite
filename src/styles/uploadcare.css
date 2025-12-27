@@ -5,15 +5,17 @@
 
 .uploadcare-card .uploadcare--widget__button {
   font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
   border-radius: 9999px !important;
   background-color: #8b9dc3;
   color: #ffffff;
   border: none;
-  padding: 0.65rem 1.75rem;
+  padding: 0.75rem 2.75rem;
   min-height: 44px;
-  transition: background-color 200ms ease;
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 .uploadcare-card .uploadcare--widget__button:hover,

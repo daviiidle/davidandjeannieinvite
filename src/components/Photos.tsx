@@ -131,11 +131,24 @@ export function Photos() {
             lineHeight: theme.typography.lineHeight.relaxed,
             color: theme.colors.text.secondary,
             maxWidth: '720px',
-          margin: `0 auto ${theme.spacing['3xl']}`,
-        }}
-      >
-        {photos.intro}
-      </p>
+            margin: '0 auto',
+          }}
+        >
+          {photos.intro}
+        </p>
+        <p
+          className="font-sans"
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.sm,
+            color: `${theme.colors.secondary.slate}`,
+            opacity: 0.9,
+            marginTop: theme.spacing.sm,
+            marginBottom: theme.spacing['3xl'],
+          }}
+        >
+          {photos.encouragement}
+        </p>
       </div>
 
       <div

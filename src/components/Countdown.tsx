@@ -32,6 +32,8 @@ export function Countdown() {
       style={{
         fontFamily: theme.typography.fontFamily.sans,
         color: theme.colors.primary.dustyBlue,
+        maxWidth: '560px',
+        margin: `${theme.spacing.lg} auto`,
       }}
     >
       <p
@@ -50,10 +52,10 @@ export function Countdown() {
           justifyContent: 'center',
           alignItems: 'stretch',
           flexWrap: 'wrap',
-          columnGap: theme.spacing.xl,
-          rowGap: theme.spacing.lg,
+          columnGap: theme.spacing.lg,
+          rowGap: theme.spacing.md,
           fontFamily: theme.typography.fontFamily.serif,
-          fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+          fontSize: 'clamp(1.35rem, 3.5vw, 2.2rem)',
         }}
       >
         {(Object.keys(timeRemaining) as Array<keyof Remaining>).map((unit) => (

@@ -130,7 +130,7 @@ export function StayInLoopForm() {
   return (
     <FormCard
       className="hero-opener__fade-item"
-      style={{ marginTop: theme.spacing['3xl'], textAlign: 'left' }}
+      style={{ marginTop: theme.spacing['2xl'], textAlign: 'left' }}
     >
       <div
         style={{
@@ -238,6 +238,18 @@ export function StayInLoopForm() {
         <FormHelperText>
           {stayInLoop.privacy}
         </FormHelperText>
+
+        <p
+          style={{
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.xs,
+            color: `${theme.colors.text.secondary}CC`,
+            textAlign: 'center',
+            letterSpacing: '0.04em',
+          }}
+        >
+          {stayInLoop.rsvpNote}
+        </p>
 
         <div aria-live="polite">
           {status === 'success' && (

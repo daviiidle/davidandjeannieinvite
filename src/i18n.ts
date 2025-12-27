@@ -86,6 +86,7 @@ export interface TranslationContent {
     buttonSubmitting: string;
     privacy: string;
     success: string;
+    rsvpNote: string;
     errors: {
       firstName: string;
       lastName: string;
@@ -100,6 +101,7 @@ export interface TranslationContent {
     sectionLabel: string;
     heading: string;
     intro: string;
+    encouragement: string;
     stepsTitle: string;
     steps: Array<{
       title: string;
@@ -344,6 +346,7 @@ export const translations: Record<Language, TranslationContent> = {
       buttonSubmitting: 'Sending…',
       privacy: 'We’ll only use your details for wedding updates.',
       success: 'Thanks! We’ll keep you posted.',
+      rsvpNote: 'Formal RSVPs will open closer to the date.',
       errors: {
         firstName: 'First name is required.',
         lastName: 'Last name is required.',
@@ -364,6 +367,7 @@ export const translations: Record<Language, TranslationContent> = {
       heading: 'Photo & Video Album',
       intro:
         'We set up an Uploadcare portal for everyone to drop photos and short clips. Scan the QR code below to open the uploader, share what you captured, and explore the memories from every point of view.',
+      encouragement: 'Feel free to upload photos and videos at any time during the evening.',
       stepsTitle: 'How it works',
       steps: [
         {
@@ -624,6 +628,7 @@ export const translations: Record<Language, TranslationContent> = {
       buttonSubmitting: 'Đang gửi…',
       privacy: 'Thông tin chỉ dùng để gửi cập nhật đám cưới.',
       success: 'Cảm ơn! Chúng tôi sẽ báo cho bạn.',
+      rsvpNote: 'RSVP chính thức sẽ mở gần ngày cưới.',
       errors: {
         firstName: 'Vui lòng nhập tên.',
         lastName: 'Vui lòng nhập họ.',
@@ -644,6 +649,7 @@ export const translations: Record<Language, TranslationContent> = {
       heading: 'Album Ảnh & Video',
       intro:
         'Chúng tôi đã tạo cổng Uploadcare để mọi người dễ dàng gửi ảnh và video ngắn. Quét mã QR bên dưới để mở trình tải lên, chia sẻ khoảnh khắc của bạn và cùng gìn giữ ký ức.',
+      encouragement: 'Cứ thoải mái tải ảnh và video bất cứ lúc nào trong buổi tối.',
       stepsTitle: 'Cách thực hiện',
       steps: [
         {

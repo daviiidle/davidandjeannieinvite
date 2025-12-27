@@ -105,6 +105,18 @@ export function Footer({
           }}
         />
 
+        <p
+          style={{
+            fontFamily: theme.typography.fontFamily.serif,
+            fontSize: theme.typography.fontSize.lg,
+            color: theme.colors.text.inverse,
+            marginBottom: theme.spacing.sm,
+            opacity: 0.9,
+          }}
+        >
+          We can’t wait to celebrate with you.
+        </p>
+
         {/* Copyright */}
         <p
           className="font-serif"
