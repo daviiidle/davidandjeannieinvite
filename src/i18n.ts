@@ -214,9 +214,9 @@ export const translations: Record<Language, TranslationContent> = {
         columns: [
           {
             title: 'Best Man',
-            name: 'Best Man Name',
+            name: 'Viet Ngoc Tran',
             groupTitle: 'Groomsmen',
-            members: ['Viet Tien Vu', 'Groomsman Name', 'Groomsman Name'],
+            members: ['Daniel Le', 'Tien Viet Vu', 'Groomsman Name'],
           },
           {
             title: 'Maid of Honor',
@@ -233,7 +233,7 @@ export const translations: Record<Language, TranslationContent> = {
           subsections: [
             {
               heading: 'Reception Timing',
-              body: 'Reception concludes at 11:00 PM sharp to respect venue regulations and ensure a smooth evening for all guests.',
+              body: 'Reception winds down at 11:00 PM, with guests beginning to depart from 11:15 PM. We kindly ask that the venue be fully cleared by 11:30 PM to respect venue regulations and ensure a smooth conclusion to the evening.',
             },
             {
               heading: 'Photography & Phones',
@@ -297,7 +297,7 @@ export const translations: Record<Language, TranslationContent> = {
                 'Adults-focused celebration',
                 'Wishing table available',
                 'Assigned seating via website',
-                'Reception ends at 11:00 PM',
+                'Reception winds down by 11:00 PM (departures from 11:15 PM, venue clear by 11:30 PM)',
               ],
             },
           ],
@@ -493,9 +493,9 @@ export const translations: Record<Language, TranslationContent> = {
         columns: [
           {
             title: 'Phù rể chính',
-            name: 'Tên phù rể chính',
+            name: 'Viet Ngoc Tran',
             groupTitle: 'Phù rể',
-            members: ['Viet Tien Vu', 'Groomsman Name', 'Groomsman Name'],
+            members: ['Daniel Le', 'Tien Viet Vu', 'Groomsman Name'],
           },
           {
             title: 'Phù dâu chính',
@@ -512,7 +512,7 @@ export const translations: Record<Language, TranslationContent> = {
           subsections: [
             {
               heading: 'Thời gian tiệc',
-              body: 'Tiệc sẽ kết thúc đúng 11:00 PM để tuân thủ quy định của địa điểm và giúp buổi tối diễn ra trọn vẹn.',
+              body: 'Tiệc sẽ nhẹ nhàng kết thúc vào 11:00 PM, khách bắt đầu rời tiệc từ 11:15 PM. Mong mọi người giúp chúng tôi rời địa điểm trước 11:30 PM để tôn trọng quy định và khép lại buổi tối thật trọn vẹn.',
             },
             {
               heading: 'Chụp hình & điện thoại',
@@ -576,7 +576,7 @@ export const translations: Record<Language, TranslationContent> = {
                 'Tiệc ưu tiên người lớn',
                 'Có bàn nhận lời chúc',
                 'Xem chỗ ngồi ngay trên website',
-                'Tiệc kết thúc 11:00 PM',
+                'Tiệc kết thúc 11:00 PM (bắt đầu rời tiệc từ 11:15 PM, rời địa điểm trước 11:30 PM)',
               ],
             },
           ],

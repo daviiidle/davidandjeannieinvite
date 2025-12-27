@@ -8,12 +8,16 @@ import { RSVP } from './components/RSVP';
 import { Footer } from './components/Footer';
 import { Photos } from './components/Photos';
 import { RsvpAccessPage } from './components/RsvpAccessPage';
+import { TheDay } from './components/TheDay';
+import { ReceptionTimeline } from './components/ReceptionTimeline';
 
 type PageKey =
   | 'save-the-date'
   | 'rsvp'
   | 'details'
   | 'story'
+  | 'the-day'
+  | 'reception'
   | 'seating'
   | 'photos'
   | 'view'
@@ -26,6 +30,8 @@ const routeMap: Record<string, PageKey> = {
   '/save-the-date': 'save-the-date',
   '/rsvp': 'rsvp',
   '/details': 'details',
+  '/the-day': 'the-day',
+  '/reception': 'reception',
   '/our-story': 'story',
   '/seating': 'seating',
   '/photos': 'photos',
@@ -35,9 +41,11 @@ const navLinks = [
   { path: '/', label: 'Save the Date', targetId: 'hero' },
   { path: '/rsvp', label: 'RSVP' },
   { path: '/details', label: 'Details' },
-  { path: '/our-story', label: 'Our Story' },
+  { path: '/the-day', label: 'The Day' },
+  { path: '/reception', label: 'Reception' },
   { path: '/seating', label: 'Seating' },
   { path: '/photos', label: 'Photos' },
+  { path: '/our-story', label: 'Our Story' },
 ];
 
 const normalizeRelativePath = (pathname: string) => {
@@ -142,6 +150,10 @@ export default function App() {
             <Details />
           </>
         )}
+
+        {page === 'the-day' && <TheDay />}
+
+        {page === 'reception' && <ReceptionTimeline />}
 
         {page === 'story' && <Story />}
 

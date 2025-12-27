@@ -5,3 +5,5 @@ export { Story } from './Story';
 export { RSVP } from './RSVP';
 export { SeatingLookup } from './SeatingLookup';
 export { Footer } from './Footer';
+export { TheDay } from './TheDay';
+export { ReceptionTimeline } from './ReceptionTimeline';
