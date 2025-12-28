@@ -4,6 +4,14 @@ import { useLanguage } from '../context/LanguageContext';
 import { theme } from '../theme';
 import { navigateWithinApp } from '../utils/routing';
 
+const quickNotesMatch = (heading: string) => {
+  const normalized = heading.toLowerCase();
+  return (
+    normalized.includes('quick notes') ||
+    normalized.includes('ghi chú nhanh')
+  );
+};
+
 export function Etiquette() {
   const sectionRef = useRef<HTMLElement>(null);
   useScrollReveal(sectionRef, { duration: 0.8 });
@@ -15,10 +23,7 @@ export function Etiquette() {
     <section
       id="etiquette-page"
       ref={sectionRef}
-      className="px-4 py-16 md:py-24"
-      style={{
-        backgroundColor: theme.colors.background.offWhite,
-      }}
+      className="py-16 md:py-24"
     >
       <div
         className="mx-auto px-4 sm:px-6 lg:px-8"
@@ -68,66 +73,52 @@ export function Etiquette() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div>
           {sections.map((column, columnIndex) => (
-            <article
+            <div
               key={`${column.title}-${columnIndex}`}
-              className="rounded-3xl bg-white p-6 md:p-8 shadow-sm flex flex-col"
-              style={{
-                borderRadius: theme.borderRadius['2xl'],
-                boxShadow: theme.shadows.sm,
-              }}
+              className="etiquette-section"
             >
-              <p
-                className="font-sans text-xs uppercase tracking-[0.25em] text-center text-slate-500 mb-4"
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  letterSpacing: '0.25em',
-                }}
-              >
-                {column.title}
-              </p>
-              {column.subsections.map((section, idx) => (
-                <div key={`${section.heading}-${idx}`} className="mb-6 text-center last:mb-0">
-                  <h2
-                    className="font-serif text-2xl text-[#8B9DC3] mb-2"
-                    style={{
-                      fontFamily: theme.typography.fontFamily.serif,
-                      color: theme.colors.primary.dustyBlue,
-                    }}
-                  >
-                    {section.heading}
-                  </h2>
-                  {section.body && (
-                    <p
-                      className="font-sans text-sm text-slate-600 leading-relaxed"
+              <p className="etiquette-section-title">{column.title}</p>
+              {column.subsections.map((section, idx) => {
+                const isQuickNotes = quickNotesMatch(section.heading);
+                const blockClass = isQuickNotes
+                  ? 'etiquette-quick-notes'
+                  : 'etiquette-subsection';
+
+                return (
+                  <div key={`${section.heading}-${idx}`} className={blockClass}>
+                    <h2
+                      className="font-serif text-2xl text-[#8B9DC3] mb-2"
                       style={{
-                        fontFamily: theme.typography.fontFamily.sans,
-                        color: theme.colors.text.secondary,
+                        fontFamily: theme.typography.fontFamily.serif,
+                        color: theme.colors.primary.dustyBlue,
                       }}
                     >
-                      {section.body}
-                    </p>
-                  )}
-                  {section.bullets && (
-                    <ul className="mt-3 space-y-1 text-left inline-block">
-                      {section.bullets.map((bullet) => (
-                        <li
-                          key={bullet}
-                          className="font-sans text-sm text-slate-600"
-                          style={{
-                            fontFamily: theme.typography.fontFamily.sans,
-                            color: theme.colors.text.secondary,
-                          }}
-                        >
-                          • {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </article>
+                      {section.heading}
+                    </h2>
+                    {section.body && (
+                      <p
+                        className="font-sans text-sm text-slate-600 leading-relaxed"
+                        style={{
+                          fontFamily: theme.typography.fontFamily.sans,
+                          color: theme.colors.text.secondary,
+                        }}
+                      >
+                        {section.body}
+                      </p>
+                    )}
+                    {section.bullets && (
+                      <ul>
+                        {section.bullets.map((bullet) => (
+                          <li key={bullet}>• {bullet}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           ))}
         </div>
       </div>
