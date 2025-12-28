@@ -5,11 +5,23 @@
   margin-bottom: 4rem;
 }
 
+.details-event-card--reception {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 @media (max-width: 768px) {
   .details-event-grid {
     --details-event-gap: 1rem;
     --details-event-card-padding: 2.25rem 1.75rem;
-    margin-bottom: 3rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .details-event-card--reception {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(100, 116, 139, 0.2);
   }
 }
 
@@ -18,6 +30,28 @@
     --details-event-gap: 0;
     --details-event-card-padding: 0 0;
     margin-bottom: 0;
+  }
+
+  .details-event-card--reception {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(100, 116, 139, 0.3);
+  }
+}
+
+.details-etiquette-preview {
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .details-etiquette-preview {
+    margin-top: 0.25rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .details-etiquette-preview {
+    margin-top: 0;
   }
 }
 

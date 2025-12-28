@@ -247,6 +247,7 @@ export function Details() {
           }}
         >
           {mainCards.map((card, index) => {
+            const isReception = index === 1;
             const mapLink = card.address
               ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`
               : undefined;
@@ -258,8 +259,8 @@ export function Details() {
 
             return (
               <article
-                key={index}
-                className="details-event-card"
+                key={`${card.heading}-${index}`}
+                className={`details-event-card${isReception ? ' details-event-card--reception' : ''}`}
                 style={{
                   padding: `var(--details-event-card-padding, ${theme.spacing['2xl']} ${theme.spacing.xl})`,
                   textAlign: 'center',
@@ -361,7 +362,7 @@ export function Details() {
                 {mapLink && (
                   <div
                     style={{
-                      marginTop: theme.spacing.lg,
+                      marginTop: theme.spacing.sm,
                       opacity: 0.8,
                     }}
                   >
@@ -380,7 +381,7 @@ export function Details() {
                 {imageSrc && (
                   <div
                     style={{
-                      marginTop: 'auto',
+                      marginTop: theme.spacing.md,
                       display: 'flex',
                       justifyContent: 'center',
                       width: '100%',
@@ -389,14 +390,14 @@ export function Details() {
                     <img
                       src={imageSrc}
                       alt={`${card.heading} venue`}
-                      style={{
-                        width: '100%',
-                        maxWidth: '320px',
-                        height: '220px',
-                        borderRadius: theme.borderRadius['2xl'],
-                        boxShadow: theme.shadows.md,
-                        objectFit: 'cover',
-                      }}
+                    style={{
+                      width: '100%',
+                      maxWidth: '320px',
+                      height: '220px',
+                      borderRadius: theme.borderRadius['2xl'],
+                      boxShadow: theme.shadows.md,
+                      objectFit: 'cover',
+                    }}
                     />
                   </div>
                 )}
@@ -406,7 +407,7 @@ export function Details() {
         </div>
 
         {etiquettePreview && (
-          <div className="mt-16 md:mt-20">
+          <div className="details-etiquette-preview">
             <article
               className="flex flex-col gap-6 rounded-[1.5rem] p-6 md:p-10 lg:flex-row lg:items-center lg:gap-10"
               style={{
