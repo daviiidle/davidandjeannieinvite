@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
+import { navigateWithinApp } from '../utils/routing';
 
 export function Details() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -13,7 +14,7 @@ export function Details() {
 
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
-  const orderedInfoSections = details.infoSections ?? [];
+  const etiquettePreview = strings.etiquette?.preview;
   const setAddressLinkState = (element: HTMLAnchorElement | null, isActive: boolean) => {
     if (!element) return;
     element.style.color = isActive ? theme.colors.primary.dustyBlue : theme.colors.text.secondary;
@@ -418,123 +419,68 @@ export function Details() {
           })}
         </div>
 
-        {/* Wedding Etiquette & Information */}
-        {orderedInfoSections.length > 0 && (
-          <div
-            style={{
-              marginTop: theme.spacing['4xl'],
-              marginBottom: theme.spacing['4xl'],
-            }}
-          >
-            <h3
-              className="font-serif text-center"
+        {etiquettePreview && (
+          <div className="mt-16 md:mt-20">
+            <article
+              className="flex flex-col gap-6 rounded-[1.5rem] p-6 md:p-10 lg:flex-row lg:items-center lg:gap-10"
               style={{
-                fontFamily: theme.typography.fontFamily.serif,
-                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                fontWeight: theme.typography.fontWeight.semibold,
-                color: theme.colors.primary.dustyBlue,
-                marginBottom: theme.spacing['2xl'],
+                backgroundColor: theme.colors.background.lightGray,
+                borderRadius: theme.borderRadius['3xl'],
+                boxShadow: theme.shadows.md,
               }}
             >
-              {details.infoTitle}
-            </h3>
-            <div
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: theme.spacing.xl,
-                alignItems: 'stretch',
-              }}
-            >
-              {orderedInfoSections.map((column, columnIndex) => (
-                <div
-                  key={`${column.title}-${columnIndex}`}
+              <div className="flex-1 text-center lg:text-left space-y-4">
+                <p
+                  className="font-serif text-2xl md:text-3xl text-[#8B9DC3]"
                   style={{
-                    padding: theme.spacing['2xl'],
-                    textAlign: 'center',
-                    maxWidth: '360px',
-                    margin: '0 auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
+                    fontFamily: theme.typography.fontFamily.serif,
+                    color: theme.colors.primary.dustyBlue,
                   }}
                 >
-                  <p
-                    className="font-sans text-center"
-                    style={{
-                      fontFamily: theme.typography.fontFamily.sans,
-                      fontSize: theme.typography.fontSize.sm,
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      color: theme.colors.secondary.slate,
-                      marginBottom: theme.spacing.sm,
-                    }}
-                  >
-                    {column.title}
-                  </p>
-                  {column.subsections.map((section, idx) => (
-                    <div
-                      key={`${section.heading}-${idx}`}
+                  {etiquettePreview.title}
+                </p>
+                <p
+                  className="font-sans text-base text-slate-600 leading-relaxed"
+                  style={{
+                    fontFamily: theme.typography.fontFamily.sans,
+                    color: theme.colors.text.secondary,
+                  }}
+                >
+                  {etiquettePreview.summary}
+                </p>
+                <ul className="space-y-2">
+                  {etiquettePreview.highlights.map((item) => (
+                    <li
+                      key={item}
+                      className="font-sans text-sm text-slate-600 flex items-start justify-center lg:justify-start gap-2"
                       style={{
-                        marginBottom: theme.spacing.lg,
-                        textAlign: 'center',
+                        fontFamily: theme.typography.fontFamily.sans,
+                        color: theme.colors.text.secondary,
                       }}
                     >
-                      <p
-                        className="font-serif"
+                      <span
+                        aria-hidden="true"
                         style={{
-                          fontFamily: theme.typography.fontFamily.serif,
-                          fontSize: theme.typography.fontSize.lg,
-                          fontWeight: theme.typography.fontWeight.semibold,
                           color: theme.colors.primary.dustyBlue,
-                          marginBottom: theme.spacing.xs,
                         }}
                       >
-                        {section.heading}
-                      </p>
-                      {section.body && (
-                        <p
-                          className="font-sans"
-                          style={{
-                            fontFamily: theme.typography.fontFamily.sans,
-                            fontSize: theme.typography.fontSize.sm,
-                            color: theme.colors.text.secondary,
-                            lineHeight: theme.typography.lineHeight.relaxed,
-                            marginBottom: section.bullets ? theme.spacing.xs : 0,
-                          }}
-                        >
-                          {section.body}
-                        </p>
-                      )}
-                      {section.bullets && (
-                        <ul
-                          style={{
-                            listStyle: 'none',
-                            paddingLeft: 0,
-                            marginTop: theme.spacing.xs,
-                            color: theme.colors.text.secondary,
-                          }}
-                        >
-                          {section.bullets.map((bullet) => (
-                            <li
-                              key={bullet}
-                              style={{
-                                fontFamily: theme.typography.fontFamily.sans,
-                                fontSize: theme.typography.fontSize.sm,
-                                marginBottom: '4px',
-                              }}
-                            >
-                              {`• ${bullet}`}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
+                        •
+                      </span>
+                      <span>{item}</span>
+                    </li>
                   ))}
-                </div>
-              ))}
-            </div>
+                </ul>
+              </div>
+              <div className="flex flex-col items-center gap-3 text-center">
+                <button
+                  type="button"
+                  className="button-link"
+                  onClick={() => navigateWithinApp('/etiquette')}
+                >
+                  {etiquettePreview.ctaLabel}
+                </button>
+              </div>
+            </article>
           </div>
         )}
       </div>

@@ -59,17 +59,7 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
         borderBottom: `1px solid ${theme.colors.primary.dustyBlue}20`,
       }}
     >
-      <div
-        style={{
-          maxWidth: theme.layout.maxWidth,
-          margin: '0 auto',
-          padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-          display: 'flex',
-          justifyContent: 'center',
-          gap: theme.spacing.xl,
-          flexWrap: 'wrap',
-        }}
-      >
+      <div className="navigation-inner">
         {links.map((link) => {
           const active = currentPath === link.path;
           return (

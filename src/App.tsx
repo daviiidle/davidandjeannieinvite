@@ -10,11 +10,14 @@ import { Photos } from './components/Photos';
 import { RsvpAccessPage } from './components/RsvpAccessPage';
 import { TheDay } from './components/TheDay';
 import { ReceptionTimeline } from './components/ReceptionTimeline';
+import { Etiquette } from './components/Etiquette';
+import { BASE_PATH, buildFullPath, normalizeRelativePath } from './utils/routing';
 
 type PageKey =
   | 'save-the-date'
   | 'rsvp'
   | 'details'
+  | 'etiquette'
   | 'story'
   | 'the-day'
   | 'reception'
@@ -23,13 +26,12 @@ type PageKey =
   | 'view'
   | 'not-found';
 
-const BASE_PATH = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
-
 const routeMap: Record<string, PageKey> = {
   '/': 'save-the-date',
   '/save-the-date': 'save-the-date',
   '/rsvp': 'rsvp',
   '/details': 'details',
+  '/etiquette': 'etiquette',
   '/the-day': 'the-day',
   '/reception': 'reception',
   '/our-story': 'story',
@@ -41,23 +43,13 @@ const navLinks = [
   { path: '/', label: 'Save the Date', targetId: 'hero' },
   { path: '/rsvp', label: 'RSVP' },
   { path: '/details', label: 'Details' },
+  { path: '/etiquette', label: 'Etiquette' },
   { path: '/the-day', label: 'The Day' },
   { path: '/reception', label: 'Reception' },
   { path: '/seating', label: 'Seating' },
   { path: '/photos', label: 'Photos' },
   { path: '/our-story', label: 'Our Story' },
 ];
-
-const normalizeRelativePath = (pathname: string) => {
-  let relative = pathname;
-  if (BASE_PATH && relative.startsWith(BASE_PATH)) {
-    relative = relative.slice(BASE_PATH.length) || '/';
-  }
-  if (!relative.startsWith('/')) {
-    relative = `/${relative}`;
-  }
-  return relative || '/';
-};
 
 function usePathname() {
   const getPath = () => normalizeRelativePath(window.location.pathname);
@@ -70,10 +62,9 @@ function usePathname() {
   }, []);
 
   const navigate = (nextPath: string) => {
-    const normalized = nextPath.replace(/\/+$/, '') || '/';
+    const normalized = normalizeRelativePath(nextPath);
     if (normalized === path) return;
-    const fullPath =
-      (BASE_PATH || '') + (normalized === '/' ? '' : normalized);
+    const fullPath = buildFullPath(normalized);
     window.history.pushState({}, '', fullPath || '/');
     setPath(normalized);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -150,6 +141,8 @@ export default function App() {
             <Details />
           </>
         )}
+
+        {page === 'etiquette' && <Etiquette />}
 
         {page === 'the-day' && <TheDay />}
 

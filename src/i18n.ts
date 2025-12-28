@@ -1,5 +1,15 @@
 export type Language = 'en' | 'vi';
 
+interface InfoSection {
+  title: string;
+  layoutIndex?: number;
+  subsections: Array<{
+    heading: string;
+    body?: string;
+    bullets?: string[];
+  }>;
+}
+
 export interface TranslationContent {
   navigation: {
     skipToContent: string;
@@ -47,15 +57,7 @@ export interface TranslationContent {
         members: string[];
       }>;
     };
-    infoSections?: Array<{
-      title: string;
-      layoutIndex?: number;
-      subsections: Array<{
-        heading: string;
-        body?: string;
-        bullets?: string[];
-      }>;
-    }>;
+    infoSections?: InfoSection[];
     cards: Array<{
       heading: string;
       time?: string;
@@ -170,7 +172,176 @@ export interface TranslationContent {
     vietnamese: string;
     close: string;
   };
+  etiquette: {
+    pageLabel: string;
+    pageTitle: string;
+    intro: string;
+    preview: {
+      title: string;
+      summary: string;
+      highlights: string[];
+      ctaLabel: string;
+    };
+    sections: InfoSection[];
+    backToDetailsLabel: string;
+  };
 }
+
+const englishInfoSections: InfoSection[] = [
+  {
+    title: 'Reception Details',
+    layoutIndex: 0,
+    subsections: [
+      {
+        heading: 'Reception Timing',
+        body: 'Reception winds down at 11:00 PM, with guests beginning to depart from 11:15 PM. We kindly ask that the venue be fully cleared by 11:30 PM to respect venue regulations and ensure a smooth conclusion to the evening.',
+      },
+      {
+        heading: 'Photography & Phones',
+        body: 'We invite you to be fully present and enjoy the moment with us.',
+        bullets: [
+          'Please refrain from stepping into aisles during the ceremony',
+          'Kindly avoid using flash photography',
+          'Our photographers will capture the evening so you can relax and celebrate',
+        ],
+      },
+      {
+        heading: 'Seating Arrangements',
+        body: 'All seating arrangements are available on this website. Please enter your name exactly as shown on your invitation to view your assigned table for the reception.',
+      },
+    ],
+  },
+  {
+    title: 'Attire & Dress Code',
+    layoutIndex: 1,
+    subsections: [
+      {
+        heading: 'Dress Code: Semi-Formal / Elegant',
+        body: 'We kindly ask guests to dress in polished, evening-appropriate attire to match the tone of the celebration.',
+        bullets: [
+          'Cocktail dresses, evening dresses, suits, or dress shirts are welcome',
+          'Neutral, pastel, or rich evening colours are encouraged',
+          'Please avoid overly casual clothing such as jeans, sneakers, or T-shirts',
+        ],
+      },
+      {
+        heading: 'Children',
+        body: 'This will be an adults-focused celebration to allow everyone to fully enjoy the evening. A small number of children from our immediate family will be in attendance. Thank you for your understanding.',
+      },
+      {
+        heading: 'Gifts & Well-Wishes',
+        body: 'Your presence truly means the world to us. For those who wish to share their well-wishes in a traditional way, a wishing table will be available at the reception.',
+      },
+    ],
+  },
+  {
+    title: 'Celebration Notes',
+    layoutIndex: 2,
+    subsections: [
+      {
+        heading: 'Food & Celebration Style',
+        body: 'Dinner will be served as individual plated courses throughout the evening. Relax, enjoy each course, and celebrate with us.',
+      },
+      {
+        heading: 'Respectful Celebration',
+        body: 'We kindly ask all guests to help make the night enjoyable for everyone.',
+        bullets: [
+          'Celebrate responsibly',
+          'Be mindful of volume as the evening progresses',
+          'Respect venue staff and fellow guests',
+        ],
+      },
+      {
+        heading: 'Quick Notes (Mobile Summary)',
+        bullets: [
+          'Semi-formal attire',
+          'Adults-focused celebration',
+          'Wishing table available',
+          'Assigned seating via website',
+          'Reception winds down by 11:00 PM (departures from 11:15 PM, venue clear by 11:30 PM)',
+        ],
+      },
+    ],
+  },
+];
+
+const vietnameseInfoSections: InfoSection[] = [
+  {
+    title: 'Chi tiết tiệc cưới',
+    layoutIndex: 0,
+    subsections: [
+      {
+        heading: 'Thời gian tiệc',
+        body: 'Tiệc sẽ nhẹ nhàng kết thúc vào 11:00 PM, khách bắt đầu rời tiệc từ 11:15 PM. Mong mọi người giúp chúng tôi rời địa điểm trước 11:30 PM để tôn trọng quy định và khép lại buổi tối thật trọn vẹn.',
+      },
+      {
+        heading: 'Chụp hình & điện thoại',
+        body: 'Mong mọi người hãy tận hưởng khoảnh khắc cùng chúng tôi.',
+        bullets: [
+          'Vui lòng không bước vào lối đi trong lúc làm lễ',
+          'Hạn chế sử dụng đèn flash khi chụp ảnh',
+          'Đã có nhiếp ảnh gia ghi lại trọn vẹn buổi tối để bạn yên tâm vui tiệc',
+        ],
+      },
+      {
+        heading: 'Sắp xếp chỗ ngồi',
+        body: 'Sơ đồ chỗ ngồi được hiển thị ngay trên website. Vui lòng nhập đúng họ tên như trên thiệp mời để xem bàn tiệc được sắp xếp cho bạn.',
+      },
+    ],
+  },
+  {
+    title: 'Trang phục & Dress code',
+    layoutIndex: 1,
+    subsections: [
+      {
+        heading: 'Trang phục: Bán trang trọng / thanh lịch',
+        body: 'Rất mong mọi người chọn trang phục chỉn chu, phù hợp không khí ấm áp của buổi tối.',
+        bullets: [
+          'Khuyến khích váy cocktail, đầm dạ tiệc, vest, sơ mi lịch sự',
+          'Màu trung tính, pastel hoặc sắc tối sang trọng đều phù hợp',
+          'Vui lòng hạn chế đồ quá casual như quần jeans, giày thể thao hoặc áo thun',
+        ],
+      },
+      {
+        heading: 'Trẻ em',
+        body: 'Buổi tiệc ưu tiên người lớn để mọi người có thể tận hưởng trọn vẹn. Một vài bé trong gia đình hai bên sẽ tham dự cùng chúng tôi. Cảm ơn bạn đã thông cảm.',
+      },
+      {
+        heading: 'Quà tặng & lời chúc',
+        body: 'Sự hiện diện của bạn là món quà quý giá nhất. Nếu muốn gửi lời chúc theo cách truyền thống, xin mời ghé “wishing table” tại tiệc.',
+      },
+    ],
+  },
+  {
+    title: 'Ghi chú buổi tiệc',
+    layoutIndex: 2,
+    subsections: [
+      {
+        heading: 'Phong cách tiệc & ẩm thực',
+        body: 'Bữa tối được phục vụ theo từng phần riêng cho mỗi khách, với nhiều món nối tiếp nhau. Mời mọi người thư giãn, thưởng thức và cùng nhau chúc mừng.',
+      },
+      {
+        heading: 'Ăn mừng văn minh',
+        body: 'Để buổi tối trọn vẹn hơn, mong mọi người:',
+        bullets: [
+          'Vui hết mình nhưng vẫn điều độ',
+          'Giữ âm lượng vừa phải khi đêm về khuya',
+          'Tôn trọng nhân viên phục vụ và khách mời khác',
+        ],
+      },
+      {
+        heading: 'Ghi chú nhanh',
+        bullets: [
+          'Trang phục bán trang trọng',
+          'Tiệc ưu tiên người lớn',
+          'Có bàn nhận lời chúc',
+          'Xem chỗ ngồi ngay trên website',
+          'Tiệc kết thúc 11:00 PM (bắt đầu rời tiệc từ 11:15 PM, rời địa điểm trước 11:30 PM)',
+        ],
+      },
+    ],
+  },
+];
 
 export const translations: Record<Language, TranslationContent> = {
   en: {
@@ -228,83 +399,7 @@ export const translations: Record<Language, TranslationContent> = {
           },
         ],
       },
-      infoSections: [
-        {
-          title: 'Reception Details',
-          layoutIndex: 0,
-          subsections: [
-            {
-              heading: 'Reception Timing',
-              body: 'Reception winds down at 11:00 PM, with guests beginning to depart from 11:15 PM. We kindly ask that the venue be fully cleared by 11:30 PM to respect venue regulations and ensure a smooth conclusion to the evening.',
-            },
-            {
-              heading: 'Photography & Phones',
-              body: 'We invite you to be fully present and enjoy the moment with us.',
-              bullets: [
-                'Please refrain from stepping into aisles during the ceremony',
-                'Kindly avoid using flash photography',
-                'Our photographers will capture the evening so you can relax and celebrate',
-              ],
-            },
-            {
-              heading: 'Seating Arrangements',
-              body: 'All seating arrangements are available on this website. Please enter your name exactly as shown on your invitation to view your assigned table for the reception.',
-            },
-          ],
-        },
-        {
-          title: 'Attire & Dress Code',
-          layoutIndex: 1,
-          subsections: [
-            {
-              heading: 'Dress Code: Semi-Formal / Elegant',
-              body: 'We kindly ask guests to dress in polished, evening-appropriate attire to match the tone of the celebration.',
-              bullets: [
-                'Cocktail dresses, evening dresses, suits, or dress shirts are welcome',
-                'Neutral, pastel, or rich evening colours are encouraged',
-                'Please avoid overly casual clothing such as jeans, sneakers, or T-shirts',
-              ],
-            },
-            {
-              heading: 'Children',
-              body: 'This will be an adults-focused celebration to allow everyone to fully enjoy the evening. A small number of children from our immediate family will be in attendance. Thank you for your understanding.',
-            },
-            {
-              heading: 'Gifts & Well-Wishes',
-              body: 'Your presence truly means the world to us. For those who wish to share their well-wishes in a traditional way, a wishing table will be available at the reception.',
-            },
-          ],
-        },
-        {
-          title: 'Celebration Notes',
-          layoutIndex: 2,
-          subsections: [
-            {
-              heading: 'Food & Celebration Style',
-              body: 'Dinner will be served as individual plated courses throughout the evening. Relax, enjoy each course, and celebrate with us.',
-            },
-            {
-              heading: 'Respectful Celebration',
-              body: 'We kindly ask all guests to help make the night enjoyable for everyone.',
-              bullets: [
-                'Celebrate responsibly',
-                'Be mindful of volume as the evening progresses',
-                'Respect venue staff and fellow guests',
-              ],
-            },
-            {
-              heading: 'Quick Notes (Mobile Summary)',
-              bullets: [
-                'Semi-formal attire',
-                'Adults-focused celebration',
-                'Wishing table available',
-                'Assigned seating via website',
-                'Reception winds down by 11:00 PM (departures from 11:15 PM, venue clear by 11:30 PM)',
-              ],
-            },
-          ],
-        },
-      ],
+      infoSections: englishInfoSections,
       cards: [
         {
           heading: 'Ceremony',
@@ -453,6 +548,25 @@ export const translations: Record<Language, TranslationContent> = {
       vietnamese: 'Tiếng Việt',
       close: 'Keep current language',
     },
+    etiquette: {
+      pageLabel: 'A gentle guide',
+      pageTitle: 'Wedding Etiquette',
+      intro:
+        'We gathered every helpful note about attire, timing, and celebration etiquette so you can feel confident and relaxed on the day.',
+      preview: {
+        title: 'Wedding Etiquette',
+        summary:
+          'Our celebration is adults-focused, the ceremony will be unplugged, and we kindly ask everyone to arrive a little early so seating runs smoothly.',
+        highlights: [
+          'Adults-focused celebration with limited children from immediate family',
+          'Unplugged ceremony — please keep phones away during the vows',
+          'Arrive 15 minutes early to settle in before the procession',
+        ],
+        ctaLabel: 'View full etiquette →',
+      },
+      sections: englishInfoSections,
+      backToDetailsLabel: 'Back to Details',
+    },
   },
   vi: {
     navigation: {
@@ -509,83 +623,7 @@ export const translations: Record<Language, TranslationContent> = {
           },
         ],
       },
-      infoSections: [
-        {
-          title: 'Chi tiết tiệc cưới',
-          layoutIndex: 0,
-          subsections: [
-            {
-              heading: 'Thời gian tiệc',
-              body: 'Tiệc sẽ nhẹ nhàng kết thúc vào 11:00 PM, khách bắt đầu rời tiệc từ 11:15 PM. Mong mọi người giúp chúng tôi rời địa điểm trước 11:30 PM để tôn trọng quy định và khép lại buổi tối thật trọn vẹn.',
-            },
-            {
-              heading: 'Chụp hình & điện thoại',
-              body: 'Mong mọi người hãy tận hưởng khoảnh khắc cùng chúng tôi.',
-              bullets: [
-                'Vui lòng không bước vào lối đi trong lúc làm lễ',
-                'Hạn chế sử dụng đèn flash khi chụp ảnh',
-                'Đã có nhiếp ảnh gia ghi lại trọn vẹn buổi tối để bạn yên tâm vui tiệc',
-              ],
-            },
-            {
-              heading: 'Sắp xếp chỗ ngồi',
-              body: 'Sơ đồ chỗ ngồi được hiển thị ngay trên website. Vui lòng nhập đúng họ tên như trên thiệp mời để xem bàn tiệc được sắp xếp cho bạn.',
-            },
-          ],
-        },
-        {
-          title: 'Trang phục & Dress code',
-          layoutIndex: 1,
-          subsections: [
-            {
-              heading: 'Trang phục: Bán trang trọng / thanh lịch',
-              body: 'Rất mong mọi người chọn trang phục chỉn chu, phù hợp không khí ấm áp của buổi tối.',
-              bullets: [
-                'Khuyến khích váy cocktail, đầm dạ tiệc, vest, sơ mi lịch sự',
-                'Màu trung tính, pastel hoặc sắc tối sang trọng đều phù hợp',
-                'Vui lòng hạn chế đồ quá casual như quần jeans, giày thể thao hoặc áo thun',
-              ],
-            },
-            {
-              heading: 'Trẻ em',
-              body: 'Buổi tiệc ưu tiên người lớn để mọi người có thể tận hưởng trọn vẹn. Một vài bé trong gia đình hai bên sẽ tham dự cùng chúng tôi. Cảm ơn bạn đã thông cảm.',
-            },
-            {
-              heading: 'Quà tặng & lời chúc',
-              body: 'Sự hiện diện của bạn là món quà quý giá nhất. Nếu muốn gửi lời chúc theo cách truyền thống, xin mời ghé “wishing table” tại tiệc.',
-            },
-          ],
-        },
-        {
-          title: 'Ghi chú buổi tiệc',
-          layoutIndex: 2,
-          subsections: [
-            {
-              heading: 'Phong cách tiệc & ẩm thực',
-              body: 'Bữa tối được phục vụ theo từng phần riêng cho mỗi khách, với nhiều món nối tiếp nhau. Mời mọi người thư giãn, thưởng thức và cùng nhau chúc mừng.',
-            },
-            {
-              heading: 'Ăn mừng văn minh',
-              body: 'Để buổi tối trọn vẹn hơn, mong mọi người:',
-              bullets: [
-                'Vui hết mình nhưng vẫn điều độ',
-                'Giữ âm lượng vừa phải khi đêm về khuya',
-                'Tôn trọng nhân viên phục vụ và khách mời khác',
-              ],
-            },
-            {
-              heading: 'Ghi chú nhanh',
-              bullets: [
-                'Trang phục bán trang trọng',
-                'Tiệc ưu tiên người lớn',
-                'Có bàn nhận lời chúc',
-                'Xem chỗ ngồi ngay trên website',
-                'Tiệc kết thúc 11:00 PM (bắt đầu rời tiệc từ 11:15 PM, rời địa điểm trước 11:30 PM)',
-              ],
-            },
-          ],
-        },
-      ],
+      infoSections: vietnameseInfoSections,
       cards: [
         {
           heading: 'Lễ cưới',
@@ -734,6 +772,25 @@ export const translations: Record<Language, TranslationContent> = {
       english: 'English',
       vietnamese: 'Tiếng Việt',
       close: 'Giữ nguyên ngôn ngữ hiện tại',
+    },
+    etiquette: {
+      pageLabel: 'Ghi chú nhẹ nhàng',
+      pageTitle: 'Nghi thức cưới',
+      intro:
+        'Chúng tôi đã gom những lưu ý về trang phục, thời gian và tinh thần buổi tiệc để mọi người chuẩn bị thật yên tâm.',
+      preview: {
+        title: 'Nghi thức cưới',
+        summary:
+          'Tiệc ưu tiên người lớn, lễ cưới sẽ “unplugged” và chúng tôi mong mọi người đến sớm 15 phút để ổn định chỗ ngồi.',
+        highlights: [
+          'Tiệc hướng đến người lớn, chỉ có vài bé trong gia đình thân thiết',
+          'Lễ cưới không dùng điện thoại — xin giữ máy trong túi suốt nghi thức',
+          'Đến trước giờ làm lễ 15 phút để ổn định chỗ và kịp thời gian',
+        ],
+        ctaLabel: 'Xem đầy đủ nghi thức →',
+      },
+      sections: vietnameseInfoSections,
+      backToDetailsLabel: 'Quay lại trang Thông tin',
     },
   },
 };
