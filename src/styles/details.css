@@ -1,0 +1,56 @@
+.details-event-grid {
+  --details-event-gap: 1.75rem;
+  --details-event-card-padding: 3rem 2rem;
+  row-gap: var(--details-event-gap);
+  margin-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+  .details-event-grid {
+    --details-event-gap: 1rem;
+    --details-event-card-padding: 2.25rem 1.75rem;
+    margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .details-event-grid {
+    --details-event-gap: 0;
+    --details-event-card-padding: 0 0;
+    margin-bottom: 0;
+  }
+}
+
+.wedding-party-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+}
+
+.wedding-party-card {
+  padding: 3rem;
+}
+
+@media (max-width: 768px) {
+  .wedding-party-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    column-gap: 1.5rem;
+  }
+
+  .wedding-party-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .wedding-party-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 0.75rem;
+    row-gap: 0.5rem;
+  }
+
+  .wedding-party-card {
+    padding: 0.9rem;
+  }
+}

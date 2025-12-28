@@ -39,14 +39,7 @@ export function Details() {
         }}
       >
         {/* Parents */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: theme.spacing.xl,
-          }}
-        >
+        <div className="wedding-party-grid mb-12">
           <div
             style={{
               textAlign: 'center',
@@ -140,20 +133,13 @@ export function Details() {
         </div>
 
         {/* Wedding Party */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: theme.spacing.xl,
-          }}
-        >
+        <div className="wedding-party-grid mb-12">
           {weddingParty.columns.map((column, index) => (
             <div
               key={`${column.title}-${index}`}
+              className="wedding-party-card"
               style={{
                 borderRadius: theme.borderRadius.xl,
-                padding: theme.spacing['2xl'],
               }}
             >
               <p
@@ -252,12 +238,11 @@ export function Details() {
 
         {/* Ceremony & Reception */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
+          className="details-event-grid grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: theme.spacing.xl,
-            marginBottom: theme.spacing['4xl'],
+            gap: 'var(--details-event-gap, 2rem)',
             alignItems: 'stretch',
           }}
         >
@@ -274,8 +259,9 @@ export function Details() {
             return (
               <article
                 key={index}
+                className="details-event-card"
                 style={{
-                  padding: `${theme.spacing['2xl']} ${theme.spacing.xl}`,
+                  padding: `var(--details-event-card-padding, ${theme.spacing['2xl']} ${theme.spacing.xl})`,
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',

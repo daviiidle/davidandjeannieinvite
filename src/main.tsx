@@ -5,6 +5,7 @@ import './styles/heroOpener.css';
 import './styles/forms.css';
 import './styles/navigation.css';
 import './styles/etiquette.css';
+import './styles/details.css';
 import './styles/uploadcare.css';
 import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext.tsx';
