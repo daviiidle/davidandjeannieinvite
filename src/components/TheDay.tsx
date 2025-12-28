@@ -46,7 +46,6 @@ export function TheDay() {
         style={{
           maxWidth: theme.layout.maxWidth,
           margin: '0 auto',
-          textAlign: 'center',
         }}
       >
         <TimelineCard
