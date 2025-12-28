@@ -1,6 +1,11 @@
+
 .uploadcare-card .uploadcare--widget {
   font-family: "Inter", sans-serif;
   color: #64748b;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .uploadcare-card .uploadcare--widget__button {
@@ -15,6 +20,9 @@
   border: none;
   padding: 0.75rem 2.75rem;
   min-height: 44px;
+  width: min(320px, 100%);
+  justify-content: center;
+  margin: 0 auto;
   transition: background-color 200ms ease, color 200ms ease;
 }
 
@@ -46,6 +54,7 @@
   border-radius: 1rem;
   border: 1px dashed rgba(139, 157, 195, 0.6);
   background-color: rgba(139, 157, 195, 0.08);
+  width: 100%;
 }
 
 .uploadcare-card .uploadcare--widget__progress {

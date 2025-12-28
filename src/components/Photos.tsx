@@ -1,30 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 
-declare global {
-  interface Window {
-    uploadcare?: {
-      Widget: (element: HTMLElement) => unknown;
-    };
-  }
-}
-
-const DEFAULT_UPLOADCARE_PUBLIC_KEY = '426af66042cf1f2c59f1';
 const DEFAULT_UPLOADCARE_PORTAL_URL = 'https://daviiidle.github.io/davidandjeannieinvite/photos';
 
 export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
-  const uploadcarePublicKey =
-    import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY || DEFAULT_UPLOADCARE_PUBLIC_KEY;
   const envPortalUrl =
     import.meta.env.VITE_UPLOADCARE_PORTAL_URL || DEFAULT_UPLOADCARE_PORTAL_URL;
   const normalizedEnvPortalUrl = envPortalUrl
     ? `${envPortalUrl}${envPortalUrl.includes('#') ? '' : '#uploadcare-uploader'}`
     : '';
   const [uploadLink, setUploadLink] = useState(normalizedEnvPortalUrl);
-  const uploaderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (uploadLink) return;
@@ -33,32 +21,6 @@ export function Photos() {
     const path = base === '' || base === '/' ? '/photos#uploadcare-uploader' : `${base}/photos#uploadcare-uploader`;
     setUploadLink(`${window.location.origin}${path}`);
   }, [uploadLink]);
-
-  useEffect(() => {
-    if (!uploadcarePublicKey || !uploaderRef.current) return;
-
-    const initializeWidget = () => {
-      if (window.uploadcare && uploaderRef.current) {
-        window.uploadcare.Widget(uploaderRef.current);
-      }
-    };
-
-    if (window.uploadcare) {
-      initializeWidget();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js';
-    script.async = true;
-    script.dataset.uploadcare = 'true';
-    script.onload = initializeWidget;
-    document.body.appendChild(script);
-
-    return () => {
-      script.onload = null;
-    };
-  }, [uploadcarePublicKey]);
 
   const qrImageSrc = useMemo(() => {
     if (!uploadLink) return '';
@@ -216,16 +178,6 @@ export function Photos() {
               </div>
             ))}
           </div>
-          <a
-            href={uploadLink || '#uploadcare-uploader'}
-            className="button-link"
-            style={{
-              width: '100%',
-              marginTop: theme.spacing['2xl'],
-            }}
-          >
-            {photos.ctaLabel}
-          </a>
         </div>
 
         <div
@@ -275,7 +227,6 @@ export function Photos() {
       </div>
 
       <div
-        id="uploadcare-uploader"
         className="uploadcare-card"
         style={{
           margin: `${theme.spacing['3xl']} auto 0`,
@@ -313,39 +264,25 @@ export function Photos() {
           {photos.widgetDescription}
         </p>
 
-        {uploadcarePublicKey ? (
-          <div
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <a
+            href={uploadLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="button-link"
             style={{
-              border: `1px dashed ${theme.colors.primary.dustyBlue}60`,
-              borderRadius: theme.borderRadius['2xl'],
-              padding: theme.spacing['2xl'],
-              backgroundColor: `${theme.colors.primary.dustyBlue}08`,
+              width: '100%',
+              maxWidth: '360px',
             }}
           >
-            <input
-              ref={uploaderRef}
-              type="hidden"
-              role="uploadcare-uploader"
-              data-public-key={uploadcarePublicKey}
-              data-multiple="true"
-              data-images-only="true"
-              data-tabs="file camera url"
-              data-clearable="true"
-              data-multiple-max="30"
-            />
-          </div>
-        ) : (
-          <p
-            className="font-sans"
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.base,
-              color: theme.colors.text.secondary,
-            }}
-          >
-            {photos.widgetUnavailable}
-          </p>
-        )}
+            {photos.ctaLabel}
+          </a>
+        </div>
       </div>
     </section>
   );
