@@ -20,17 +20,8 @@ export function Etiquette() {
   const sections = etiquette.sections ?? details.infoSections ?? [];
 
   return (
-    <section
-      id="etiquette-page"
-      ref={sectionRef}
-      className="py-16 md:py-24"
-    >
-      <div
-        className="mx-auto px-4 sm:px-6 lg:px-8"
-        style={{
-          maxWidth: theme.layout.maxWidth,
-        }}
-      >
+    <section id="etiquette-page" ref={sectionRef} className="py-16 md:py-24">
+      <div className="etiquette-content">
         <button
           type="button"
           onClick={() => navigateWithinApp('/details')}
@@ -43,7 +34,7 @@ export function Etiquette() {
           ← {etiquette.backToDetailsLabel}
         </button>
 
-        <div className="text-center mb-10 md:mb-14">
+        <div className="etiquette-hero">
           <p
             className="font-sans text-xs uppercase tracking-[0.3em] text-slate-500 mb-3"
             style={{
@@ -54,7 +45,7 @@ export function Etiquette() {
             {etiquette.pageLabel}
           </p>
           <h1
-            className="font-serif text-4xl md:text-5xl text-[#8B9DC3] mb-4"
+            className="font-serif text-4xl md:text-5xl text-[#8B9DC3]"
             style={{
               fontFamily: theme.typography.fontFamily.serif,
               color: theme.colors.primary.dustyBlue,
@@ -63,7 +54,7 @@ export function Etiquette() {
             {etiquette.pageTitle}
           </h1>
           <p
-            className="font-sans text-base md:text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto"
+            className="font-sans text-base md:text-lg text-slate-600 leading-relaxed etiquette-hero-intro"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               color: theme.colors.text.secondary,
@@ -73,7 +64,7 @@ export function Etiquette() {
           </p>
         </div>
 
-        <div>
+        <div className="etiquette-sections">
           {sections.map((column, columnIndex) => (
             <div
               key={`${column.title}-${columnIndex}`}
@@ -111,7 +102,7 @@ export function Etiquette() {
                     {section.bullets && (
                       <ul>
                         {section.bullets.map((bullet) => (
-                          <li key={bullet}>• {bullet}</li>
+                          <li key={bullet}>{bullet}</li>
                         ))}
                       </ul>
                     )}

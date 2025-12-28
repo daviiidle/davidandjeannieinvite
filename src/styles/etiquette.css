@@ -1,3 +1,27 @@
+.etiquette-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.etiquette-hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.etiquette-hero h1 {
+  margin-bottom: 1.5rem;
+}
+
+.etiquette-hero-intro {
+  margin: 0 auto;
+  max-width: 38rem;
+}
+
+.etiquette-sections {
+  margin-top: 2.5rem;
+}
+
 .etiquette-section {
   margin-bottom: 2.5rem;
   padding-bottom: 2.5rem;
@@ -24,7 +48,7 @@
 }
 
 .etiquette-subsection {
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
   text-align: center;
 }
 
@@ -35,48 +59,188 @@
 .etiquette-subsection p {
   margin-left: auto;
   margin-right: auto;
-  max-width: 48rem;
+  max-width: 46rem;
 }
 
 .etiquette-subsection ul {
   margin-top: 0.75rem;
-  list-style: none;
   padding: 0;
+  list-style: none;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 34rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .etiquette-subsection li {
   font-family: "Inter", sans-serif;
   font-size: 0.875rem;
   color: #475569;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0;
+  text-align: left;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.etiquette-subsection li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background-color: #8b9dc3;
+  transform: translateY(-50%);
 }
 
 .etiquette-quick-notes {
   background-color: rgba(139, 157, 195, 0.08);
-  border-left: 3px solid rgba(139, 157, 195, 0.8);
+  border: 1px solid rgba(139, 157, 195, 0.3);
+  border-left-width: 3px;
   padding: 1.5rem;
   border-radius: 1rem;
   margin-top: 1.5rem;
 }
 
 .etiquette-quick-notes ul {
-  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 34rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .etiquette-quick-notes li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
+  text-align: left;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.etiquette-quick-notes li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background-color: #8b9dc3;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 430px) {
+  .etiquette-content {
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .etiquette-section-title {
+    text-align: center;
+  }
+
+  .etiquette-subsection,
+  .etiquette-subsection p {
+    text-align: center;
+  }
+
+  .etiquette-subsection ul,
+  .etiquette-quick-notes ul {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 320px;
+  }
+
+  .etiquette-subsection ul,
+  .etiquette-quick-notes ul {
+    max-width: 320px;
+  }
 }
 
 @media (min-width: 768px) {
+  .etiquette-content {
+    max-width: 960px;
+    padding: 0 2rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .etiquette-hero {
+    text-align: center;
+    max-width: 46rem;
+    margin: 0 auto 3.5rem;
+  }
+
+  .etiquette-hero-intro {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .etiquette-section {
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .etiquette-section:not(:first-child) {
+    padding-top: 4rem;
+  }
+
   .etiquette-section-title {
-    text-align: left;
+    text-align: center;
   }
 
   .etiquette-subsection {
-    text-align: left;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 46rem;
+    margin-bottom: 2.25rem;
   }
 
   .etiquette-subsection p {
-    text-align: left;
+    text-align: center;
   }
+
+  .etiquette-subsection ul,
+  .etiquette-quick-notes ul {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 36rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .etiquette-subsection li,
+  .etiquette-quick-notes li {
+    width: auto;
+    max-width: 30rem;
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .etiquette-subsection li::before,
+  .etiquette-quick-notes li::before {
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .etiquette-quick-notes {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 46rem;
+    text-align: center;
+  }
+
+  .etiquette-quick-notes ul {
+    max-width: 30rem;
+  }
+
 }
