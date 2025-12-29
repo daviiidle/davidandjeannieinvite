@@ -2,25 +2,89 @@ import { useEffect, useMemo, useState } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 
-const DEFAULT_UPLOADCARE_PORTAL_URL = 'https://daviiidle.github.io/davidandjeannieinvite/photos';
+declare global {
+  interface Window {
+    uploadcare?: unknown;
+  }
+}
 
 export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
-  const envPortalUrl =
-    import.meta.env.VITE_UPLOADCARE_PORTAL_URL || DEFAULT_UPLOADCARE_PORTAL_URL;
-  const normalizedEnvPortalUrl = envPortalUrl
-    ? `${envPortalUrl}${envPortalUrl.includes('#') ? '' : '#uploadcare-uploader'}`
-    : '';
-  const [uploadLink, setUploadLink] = useState(normalizedEnvPortalUrl);
+  const envPortalUrl = import.meta.env.VITE_UPLOADCARE_PORTAL_URL;
+  const [uploadLink, setUploadLink] = useState(() => {
+    if (!envPortalUrl) return '';
+    return envPortalUrl.includes('#')
+      ? envPortalUrl
+      : `${envPortalUrl}#uploadcare-uploader`;
+  });
+  const uploadcarePublicKey = import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY ?? '';
+  const [widgetReady, setWidgetReady] = useState(false);
+  const [widgetLoadError, setWidgetLoadError] = useState(false);
 
   useEffect(() => {
-    if (uploadLink) return;
-    if (typeof window === 'undefined') return;
+    if (uploadLink || typeof window === 'undefined') return;
     const base = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
-    const path = base === '' || base === '/' ? '/photos#uploadcare-uploader' : `${base}/photos#uploadcare-uploader`;
-    setUploadLink(`${window.location.origin}${path}`);
+    const normalizedBase = base === '' || base === '/' ? '' : base;
+    const relativePath = `${normalizedBase}/photos#uploadcare-uploader`;
+    const url = new URL(
+      relativePath.startsWith('/') ? relativePath : `/${relativePath}`,
+      window.location.origin,
+    );
+    setUploadLink(url.toString());
   }, [uploadLink]);
+
+  useEffect(() => {
+    setWidgetReady(false);
+    setWidgetLoadError(false);
+    if (!uploadcarePublicKey || typeof window === 'undefined') return;
+    if (window.uploadcare) {
+      setWidgetReady(true);
+      return;
+    }
+
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      'script[data-uploadcare-widget]',
+    );
+
+    const handleLoad = () => setWidgetReady(true);
+    const handleError = () => setWidgetLoadError(true);
+
+    if (existingScript) {
+      existingScript.addEventListener('load', handleLoad);
+      existingScript.addEventListener('error', handleError);
+      return () => {
+        existingScript.removeEventListener('load', handleLoad);
+        existingScript.removeEventListener('error', handleError);
+      };
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js';
+    script.async = true;
+    script.dataset.uploadcareWidget = 'true';
+    script.addEventListener('load', handleLoad);
+    script.addEventListener('error', handleError);
+    document.head.appendChild(script);
+
+    return () => {
+      script.removeEventListener('load', handleLoad);
+      script.removeEventListener('error', handleError);
+    };
+  }, [uploadcarePublicKey]);
+
+  const isInternalPortal = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    if (!uploadLink) return true;
+    try {
+      const targetUrl = new URL(uploadLink, window.location.origin);
+      return targetUrl.origin === window.location.origin;
+    } catch {
+      return false;
+    }
+  }, [uploadLink]);
+
+  const widgetUnavailable = !uploadcarePublicKey || widgetLoadError;
 
   const qrImageSrc = useMemo(() => {
     if (!uploadLink) return '';
@@ -265,24 +329,57 @@ export function Photos() {
         </p>
 
         <div
+          id="uploadcare-uploader"
           style={{
-            display: 'flex',
-            justifyContent: 'center',
+            width: '100%',
+            margin: `${theme.spacing.lg} auto`,
+            maxWidth: '480px',
           }}
         >
-          <a
-            href={uploadLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="button-link"
-            style={{
-              width: '100%',
-              maxWidth: '360px',
-            }}
-          >
-            {photos.ctaLabel}
-          </a>
+          {widgetUnavailable && (
+            <p
+              className="font-sans"
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+              }}
+            >
+              {photos.widgetUnavailable}
+            </p>
+          )}
+
+          {!widgetUnavailable && !widgetReady && (
+            <p
+              className="font-sans"
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+              }}
+            >
+              Loading uploader...
+            </p>
+          )}
+
+          {!widgetUnavailable && widgetReady && (
+            <input
+              type="hidden"
+              role="uploadcare-uploader"
+              data-public-key={uploadcarePublicKey}
+              data-tabs="file camera url dropbox gdrive instagram"
+              data-multiple="true"
+              data-multiple-max="50"
+              data-preview-step="true"
+              data-clearable="true"
+              data-image-shrink="1600x1600"
+              data-metadata="source:wedding-invite"
+              data-integration="WeddingInvite/1.0"
+              style={{ width: '100%' }}
+            />
+          )}
         </div>
+
       </div>
     </section>
   );
