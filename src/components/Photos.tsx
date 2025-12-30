@@ -368,9 +368,7 @@ export function Photos() {
             />
           )}
         </div>
-
       </div>
     </section>
   );
 }
-
