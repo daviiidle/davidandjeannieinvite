@@ -73,17 +73,6 @@ export function Photos() {
     };
   }, [uploadcarePublicKey]);
 
-  const isInternalPortal = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    if (!uploadLink) return true;
-    try {
-      const targetUrl = new URL(uploadLink, window.location.origin);
-      return targetUrl.origin === window.location.origin;
-    } catch {
-      return false;
-    }
-  }, [uploadLink]);
-
   const widgetUnavailable = !uploadcarePublicKey || widgetLoadError;
 
   const qrImageSrc = useMemo(() => {
