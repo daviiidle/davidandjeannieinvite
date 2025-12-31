@@ -79,3 +79,77 @@
   height: 1px;
   vertical-align: middle;
 }
+
+.hero-handwriting {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  clip-path: inset(0 100% 0 0);
+  animation: hero-handwriting-reveal 2.8s ease forwards;
+  animation-play-state: paused;
+}
+
+.hero-handwriting::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.4rem;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(139, 157, 195, 0.6), rgba(139, 157, 195, 0.15));
+  box-shadow: 0 0 12px rgba(139, 157, 195, 0.4);
+  left: 0;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: hero-handwriting-pointer 2.8s ease forwards;
+  animation-play-state: paused;
+}
+
+.save-date-intro__content--visible .hero-handwriting,
+.save-date-intro__content--visible .hero-handwriting::after {
+  animation-play-state: running;
+}
+
+@keyframes hero-handwriting-reveal {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-handwriting-pointer {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-handwriting {
+    animation: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  .hero-handwriting::after {
+    animation: none;
+    opacity: 0;
+  }
+}

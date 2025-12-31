@@ -97,6 +97,7 @@ export function Hero() {
     >
         <p
           className="hero-opener__names"
+          data-handwriting="true"
           style={{
             fontFamily: '"Mea Culpa", "Playfair Display", serif',
             fontSize: 'clamp(3rem, 12vw, 6rem)',
@@ -108,7 +109,7 @@ export function Hero() {
             textAlign: 'center',
           }}
         >
-          {heroTitle}
+          <span className="hero-handwriting">{heroTitle}</span>
         </p>
 
         <div className="space-y-2 sm:space-y-3">

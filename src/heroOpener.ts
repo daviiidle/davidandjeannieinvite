@@ -31,6 +31,7 @@ export function initHeroOpener(options: HeroOpenerOptions): void {
 
   const nameEl = document.querySelector<HTMLElement>(options.nameSelector);
   if (!nameEl) return;
+  const handwritingMode = nameEl.dataset.handwriting === 'true';
 
   const dateEl = options.dateSelector
     ? document.querySelector<HTMLElement>(options.dateSelector)
@@ -52,7 +53,7 @@ export function initHeroOpener(options: HeroOpenerOptions): void {
 
   root.classList.add('hero-opener');
 
-  const letters = wrapLetters(nameEl);
+  const letters = handwritingMode ? [] : wrapLetters(nameEl);
   if (dateEl) dateEl.classList.add('hero-opener__date');
   if (dividerEl) dividerEl.classList.add('hero-opener__divider');
   if (backgroundEl) backgroundEl.classList.add('hero-opener__background');
@@ -83,12 +84,14 @@ export function initHeroOpener(options: HeroOpenerOptions): void {
       );
     }
 
-    tl.fromTo(
-      letters,
-      { y: '1.4em', opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.1, stagger: 0.065 },
-      0.15
-    );
+    if (letters.length > 0) {
+      tl.fromTo(
+        letters,
+        { y: '1.4em', opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.1, stagger: 0.065 },
+        0.15
+      );
+    }
 
     if (dividerEl) {
       tl.fromTo(
@@ -132,24 +135,26 @@ export function initHeroOpener(options: HeroOpenerOptions): void {
     );
   }
 
-  letters.forEach((letter, index) => {
-    animations.push(
-      letter
-        .animate(
-          [
-            { transform: 'translateY(1.4em)', opacity: 0 },
-            { transform: 'translateY(0)', opacity: 1 },
-          ],
-          {
-            duration: 950,
-            delay: 200 + index * 60,
-            easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
-            fill: 'forwards',
-          }
-        )
-        .finished.catch(() => undefined)
-    );
-  });
+  if (letters.length > 0) {
+    letters.forEach((letter, index) => {
+      animations.push(
+        letter
+          .animate(
+            [
+              { transform: 'translateY(1.4em)', opacity: 0 },
+              { transform: 'translateY(0)', opacity: 1 },
+            ],
+            {
+              duration: 950,
+              delay: 200 + index * 60,
+              easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
+              fill: 'forwards',
+            }
+          )
+          .finished.catch(() => undefined)
+      );
+    });
+  }
 
   if (dividerEl) {
     animations.push(
