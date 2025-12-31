@@ -9,3 +9,4 @@ export { TheDay } from './TheDay';
 export { ReceptionTimeline } from './ReceptionTimeline';
 export { TimelineCard } from './TimelineCard';
 export { Etiquette } from './Etiquette';
+export { Section } from './Section';

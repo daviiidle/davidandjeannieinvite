@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
+import { Section } from './Section';
 
 interface StoryImage {
   src: string;
@@ -55,31 +56,25 @@ export function Story({
   };
 
   return (
-    <section
+    <Section
       id="story"
       ref={sectionRef}
       aria-labelledby="story-heading"
       style={{
         backgroundColor: theme.colors.background.white,
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
       }}
+      maxWidth={theme.layout.maxWidth}
     >
-      <div
-        style={{
-          maxWidth: theme.layout.maxWidth,
-          margin: '0 auto',
-        }}
-      >
         {/* Section Heading */}
         <h2
           id="story-heading"
           className="font-serif text-center mb-12"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontSize: theme.typography.heading.h2,
             fontWeight: theme.typography.fontWeight.bold,
             color: theme.colors.primary.dustyBlue,
-            marginBottom: theme.spacing['3xl'],
+            marginBottom: theme.spacing.md,
           }}
         >
           {strings.story.heading}
@@ -150,7 +145,6 @@ export function Story({
             </div>
           ))}
         </div>
-      </div>
 
       {/* Image Modal/Lightbox */}
       {selectedImage && (
@@ -217,6 +211,6 @@ export function Story({
           />
         </div>
       )}
-    </section>
+    </Section>
   );
 }

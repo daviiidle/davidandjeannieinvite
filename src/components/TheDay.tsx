@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { TimelineCard, type TimelineItem } from './TimelineCard';
+import { Section } from './Section';
 
 const DAY_TIMELINE: TimelineItem[] = [
   {
@@ -35,26 +36,17 @@ export function TheDay() {
   useScrollReveal(sectionRef, { duration: 0.6 });
 
   return (
-    <section
+    <Section
       ref={sectionRef}
       aria-labelledby="the-day-heading"
-      style={{
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
-      }}
+      maxWidth={theme.layout.maxWidth}
     >
-      <div
-        style={{
-          maxWidth: theme.layout.maxWidth,
-          margin: '0 auto',
-        }}
-      >
-        <TimelineCard
-          title="Wedding Day Timeline"
-          subtitle="David + Jeannie"
-          dateLine="October 3, 2026"
-          items={DAY_TIMELINE}
-        />
-      </div>
-    </section>
+      <TimelineCard
+        title="Wedding Day Timeline"
+        subtitle="David + Jeannie"
+        dateLine="October 3, 2026"
+        items={DAY_TIMELINE}
+      />
+    </Section>
   );
 }

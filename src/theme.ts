@@ -67,6 +67,11 @@ export const theme = {
       serif: '"Playfair Display", serif',
       sans: '"Inter", sans-serif',
     },
+    heading: {
+      h1: 'clamp(2.35rem, 5.5vw, 3.6rem)',
+      h2: 'clamp(2.1rem, 4.8vw, 3.1rem)',
+      h3: 'clamp(1.6rem, 4vw, 2.1rem)',
+    },
     fontSize: {
       xs: '0.75rem',      // 12px
       sm: '0.875rem',     // 14px

@@ -8,6 +8,7 @@ import {
 } from '../utils/calendarLinks';
 import { formatWeekday } from '../utils/time';
 import { StayInLoopForm } from './StayInLoopForm';
+import { Section } from './Section';
 
 interface HeroProps {
   groomName?: string;
@@ -79,8 +80,8 @@ export function Hero({
   };
 
   return (
-    <section
-      className="overflow-hidden hero-opener-root"
+    <Section
+      className="overflow-hidden hero-opener-root hero-section"
       style={{
         backgroundColor: theme.colors.background.white,
         backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
@@ -88,24 +89,22 @@ export function Hero({
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         position: 'relative',
-        padding: `${theme.spacing['3xl']} ${theme.spacing.lg}`,
-        paddingTop: `calc(${theme.spacing['3xl']} + env(safe-area-inset-top))`,
+        paddingTop: 'calc(var(--section-padding-y) + env(safe-area-inset-top))',
       }}
+      beforeInner={
+        <div
+          className="hero-opener__background"
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'rgba(255,255,255,0.3)',
+          }}
+        />
+      }
+      maxWidth="56rem"
+      innerClassName="w-full text-center relative z-10 space-y-4 sm:space-y-6"
     >
-      <div
-        className="hero-opener__background"
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundColor: 'rgba(255,255,255,0.3)',
-        }}
-      />
-
-      <div
-        className="w-full max-w-4xl text-center relative z-10 space-y-5 sm:space-y-6"
-        style={{ margin: '0 auto' }}
-      >
         <p
           className="hero-opener__names font-serif"
           style={{
@@ -288,9 +287,7 @@ export function Hero({
             </a>
           </div>
         </div>
-
         <StayInLoopForm />
-      </div>
-    </section>
+    </Section>
   );
 }

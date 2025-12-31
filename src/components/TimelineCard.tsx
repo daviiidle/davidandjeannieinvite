@@ -171,11 +171,12 @@ export function TimelineCard({ title, subtitle, dateLine, items }: TimelineCardP
           className="timeline-card__title"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2.25rem, 4vw, 3.25rem)',
+            fontSize: theme.typography.heading.h2,
             color: theme.colors.primary.dustyBlue,
             fontWeight: theme.typography.fontWeight.bold,
             fontStyle: 'italic',
             letterSpacing: '0.04em',
+            marginBottom: theme.spacing.md,
           }}
         >
           {title}

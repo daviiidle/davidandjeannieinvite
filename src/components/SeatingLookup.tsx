@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
+import { Section } from './Section';
 
 interface Guest {
   name: string;
@@ -212,22 +213,16 @@ export function SeatingLookup() {
   }, []);
 
   return (
-    <section
+    <Section
       id="seating"
       ref={sectionRef}
       aria-labelledby="seating-heading"
       style={{
         backgroundColor: theme.colors.background.offWhite,
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
       }}
+      maxWidth={theme.layout.maxWidth}
+      innerStyle={{ textAlign: 'center' }}
     >
-      <div
-        style={{
-          maxWidth: theme.layout.maxWidth,
-          margin: '0 auto',
-          textAlign: 'center',
-        }}
-      >
         <p
           className="font-sans"
           style={{
@@ -248,11 +243,11 @@ export function SeatingLookup() {
           className="font-serif"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontSize: theme.typography.heading.h2,
             fontWeight: theme.typography.fontWeight.bold,
             color: theme.colors.primary.dustyBlue,
             letterSpacing: '0.03em',
-            marginBottom: theme.spacing.lg,
+            marginBottom: theme.spacing.md,
           }}
         >
           {seatingText.heading}
@@ -450,7 +445,6 @@ export function SeatingLookup() {
         >
           {seatingText.hint}
         </p>
-      </div>
-    </section>
+    </Section>
   );
 }

@@ -18,6 +18,9 @@ export interface TranslationContent {
     seating: string;
     rsvp: string;
     changeLanguage: string;
+    menuLabel: string;
+    closeMenu: string;
+    moreLabel?: string;
   };
   hero: {
     groomName: string;
@@ -43,6 +46,9 @@ export interface TranslationContent {
     };
     sectionTitle: string;
     infoTitle?: string;
+    moreInfoLabel?: string;
+    lessInfoLabel?: string;
+    scanQrLabel?: string;
     parents: {
       groomTitle: string;
       groomNames: string;
@@ -184,6 +190,9 @@ export interface TranslationContent {
     };
     sections: InfoSection[];
     backToDetailsLabel: string;
+    moreDetailsLabel?: string;
+    lessDetailsLabel?: string;
+    calloutSummary: string;
   };
 }
 
@@ -352,6 +361,9 @@ export const translations: Record<Language, TranslationContent> = {
       seating: 'Seating',
       rsvp: 'RSVP',
       changeLanguage: 'Change Language',
+      menuLabel: 'Menu',
+      closeMenu: 'Close Menu',
+      moreLabel: 'More',
     },
     hero: {
       groomName: 'David',
@@ -377,6 +389,9 @@ export const translations: Record<Language, TranslationContent> = {
       },
       sectionTitle: 'Event Details',
       infoTitle: 'Wedding Etiquette & Important Information',
+      moreInfoLabel: 'More info',
+      lessInfoLabel: 'Hide info',
+      scanQrLabel: 'Scan for map',
       parents: {
         groomTitle: 'Parents of the Groom',
         groomNames: 'Khen Do & Hanh Nguyen',
@@ -566,6 +581,9 @@ export const translations: Record<Language, TranslationContent> = {
       },
       sections: englishInfoSections,
       backToDetailsLabel: 'Back to Details',
+      moreDetailsLabel: 'More details',
+      lessDetailsLabel: 'Hide details',
+      calloutSummary: 'A quick guide to attire, timing, and respectful celebration.',
     },
   },
   vi: {
@@ -576,6 +594,9 @@ export const translations: Record<Language, TranslationContent> = {
       seating: 'Sơ đồ bàn',
       rsvp: 'Phản hồi',
       changeLanguage: 'Đổi ngôn ngữ',
+      menuLabel: 'Menu',
+      closeMenu: 'Đóng Menu',
+      moreLabel: 'Thêm',
     },
     hero: {
       groomName: 'David',
@@ -601,6 +622,9 @@ export const translations: Record<Language, TranslationContent> = {
       },
       sectionTitle: 'Thông tin sự kiện',
       infoTitle: 'Nghi thức & thông tin quan trọng',
+      moreInfoLabel: 'Xem thêm',
+      lessInfoLabel: 'Thu gọn',
+      scanQrLabel: 'Quét để xem bản đồ',
       parents: {
         groomTitle: 'Ba mẹ chú rể',
         groomNames: 'Khen Do & Hanh Nguyen',
@@ -791,6 +815,9 @@ export const translations: Record<Language, TranslationContent> = {
       },
       sections: vietnameseInfoSections,
       backToDetailsLabel: 'Quay lại trang Thông tin',
+      moreDetailsLabel: 'Xem chi tiết',
+      lessDetailsLabel: 'Thu gọn',
+      calloutSummary: 'Hướng dẫn nhanh về trang phục, thời gian và cách ăn mừng tinh tế.',
     },
   },
 };

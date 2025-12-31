@@ -15,6 +15,7 @@ import {
   RadioOption,
   FormErrorText,
 } from './FormPrimitives';
+import { Section } from './Section';
 
 interface RSVPProps {
   heading?: string;
@@ -169,31 +170,25 @@ export function RSVP({
   };
 
   return (
-    <section
+    <Section
       id="rsvp"
       ref={sectionRef}
       aria-labelledby="rsvp-heading"
       style={{
         backgroundColor: theme.colors.background.white,
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
       }}
+      maxWidth={760}
+      innerStyle={{ textAlign: 'center' }}
     >
-      <div
-        style={{
-          maxWidth: '760px',
-          margin: '0 auto',
-          textAlign: 'center',
-        }}
-      >
         <h2
           id="rsvp-heading"
           className="font-serif"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontSize: theme.typography.heading.h2,
             fontWeight: theme.typography.fontWeight.bold,
             color: theme.colors.primary.dustyBlue,
-            marginBottom: theme.spacing.lg,
+            marginBottom: theme.spacing.md,
           }}
         >
           {headingText}
@@ -460,8 +455,7 @@ export function RSVP({
             ))}
           </div>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }
 

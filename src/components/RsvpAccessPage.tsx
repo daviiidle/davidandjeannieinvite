@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import { theme } from '../theme';
 import { RSVP_ENDPOINTS, withQueryParams } from '../api/rsvp';
+import { Section } from './Section';
 
 interface RsvpRecord {
   householdName: string;
@@ -227,33 +228,33 @@ export function RsvpAccessPage({ token }: RsvpAccessPageProps) {
 
   if (loading || !record) {
     return (
-      <section
+      <Section
         style={{
           minHeight: '70vh',
-          padding: '3rem 1.5rem',
           backgroundColor: theme.colors.background.offWhite,
         }}
+        maxWidth={640}
       >
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>{renderStatusMessage()}</div>
-      </section>
+        {renderStatusMessage()}
+      </Section>
     );
   }
 
   return (
-    <section
+    <Section
       style={{
         minHeight: '100vh',
-        padding: '3rem 1.5rem',
         backgroundColor: theme.colors.background.offWhite,
       }}
+      maxWidth={640}
     >
-      <div style={{ maxWidth: '640px', margin: '0 auto' }}>
         <h1
           className="font-serif"
           style={{
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            marginBottom: '0.5rem',
+            fontSize: theme.typography.heading.h1,
+            marginBottom: theme.spacing.md,
             color: theme.colors.primary.dustyBlue,
+            fontWeight: theme.typography.fontWeight.bold,
           }}
         >
           View or edit your RSVP
@@ -508,7 +509,6 @@ export function RsvpAccessPage({ token }: RsvpAccessPageProps) {
             {saveState === 'saving' ? 'Saving…' : 'Save changes'}
           </button>
         </form>
-      </div>
-    </section>
+    </Section>
   );
 }

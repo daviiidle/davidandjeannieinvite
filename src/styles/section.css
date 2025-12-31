@@ -1,0 +1,51 @@
+.app-section {
+  --section-padding-y: 2.5rem;
+  --section-divider-color: rgba(139, 157, 195, 0.18);
+  padding: var(--section-padding-y) 1.25rem;
+  background-color: inherit;
+}
+
+.hero-section {
+  --section-padding-y: 2rem;
+}
+
+.hero-section + .app-section {
+  border-top: none;
+}
+
+@media (min-width: 768px) {
+  .app-section {
+    --section-padding-y: 4rem;
+    padding-top: var(--section-padding-y);
+    padding-bottom: var(--section-padding-y);
+  }
+
+  .hero-section {
+    --section-padding-y: 3.5rem;
+  }
+}
+
+.app-section__inner {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.app-section h1,
+.app-section h2,
+.app-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.app-section p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.app-section p:last-child {
+  margin-bottom: 0;
+}
+
+.app-section + .app-section {
+  border-top: 1px solid var(--section-divider-color);
+}

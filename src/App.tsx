@@ -12,6 +12,7 @@ import { TheDay } from './components/TheDay';
 import { ReceptionTimeline } from './components/ReceptionTimeline';
 import { Etiquette } from './components/Etiquette';
 import { BASE_PATH, buildFullPath, normalizeRelativePath } from './utils/routing';
+import { Section } from './components/Section';
 
 type PageKey =
   | 'save-the-date'
@@ -157,7 +158,7 @@ export default function App() {
         {page === 'view' && viewToken && <RsvpAccessPage token={viewToken} />}
 
         {page === 'not-found' && (
-          <section className="px-4 py-32 text-center">
+          <Section className="text-center">
             <h1 className="font-serif text-4xl mb-4">Page not found</h1>
             <p className="font-sans mb-6">
               This page isn’t available yet. Please check back soon.
@@ -172,7 +173,7 @@ export default function App() {
             >
               Go to Save the Date
             </button>
-          </section>
+          </Section>
         )}
       </main>
 

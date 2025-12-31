@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
+import { Section } from './Section';
 
 declare global {
   interface Window {
@@ -96,19 +97,19 @@ export function Photos() {
   };
 
   return (
-    <section
+    <Section
       id="photos"
       aria-labelledby="photos-heading"
       style={{
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
         backgroundColor: theme.colors.background.offWhite,
       }}
+      maxWidth={theme.layout.maxWidth}
     >
       <div
         style={{
-          maxWidth: theme.layout.maxWidth,
-          margin: '0 auto',
           textAlign: 'center',
+          margin: '0 auto',
+          maxWidth: '720px',
         }}
       >
         <p
@@ -129,7 +130,7 @@ export function Photos() {
           className="font-serif"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontSize: theme.typography.heading.h1,
             fontWeight: theme.typography.fontWeight.bold,
             letterSpacing: '0.03em',
             color: theme.colors.primary.dustyBlue,
@@ -173,8 +174,7 @@ export function Photos() {
           gap: theme.spacing['2xl'],
           alignItems: 'stretch',
           maxWidth: '960px',
-          margin: '0 auto',
-          marginBottom: theme.spacing['4xl'],
+          margin: `${theme.spacing['3xl']} auto`,
         }}
       >
         <div
@@ -369,6 +369,6 @@ export function Photos() {
           )}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

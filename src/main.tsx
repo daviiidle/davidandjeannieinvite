@@ -7,6 +7,7 @@ import './styles/navigation.css';
 import './styles/etiquette.css';
 import './styles/details.css';
 import './styles/uploadcare.css';
+import './styles/section.css';
 import App from './App.tsx';
 import { LanguageProvider } from './context/LanguageContext.tsx';
 import { initHeroOpener } from './heroOpener';
