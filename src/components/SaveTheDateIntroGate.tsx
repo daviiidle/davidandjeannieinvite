@@ -2,8 +2,10 @@ import type { ReactNode } from 'react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const INTRO_STORAGE_KEY = 'save-the-date:intro:seen';
-const INTRO_VIDEO_SRC = '/videos/save-the-date-intro.mov';
-const INTRO_POSTER_SRC = '/images/ceremony.jpg';
+const baseAssetPath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const withBasePath = (path: string) => `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
+const INTRO_VIDEO_SRC = withBasePath('/videos/save-the-date-intro.mov');
+const INTRO_POSTER_SRC = withBasePath('/images/ceremony.jpg');
 const FADE_DURATION_MS = 600;
 
 type IntroPhase = 'playing' | 'fading' | 'hidden';
