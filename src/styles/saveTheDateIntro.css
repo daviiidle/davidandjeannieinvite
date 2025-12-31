@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  transition: opacity 600ms ease;
+  transition: opacity 1500ms ease;
 }
 
 .save-date-intro__overlay--fade {
@@ -24,21 +24,23 @@
   height: 100%;
   object-fit: cover;
   background-color: #000;
+  opacity: 0;
+  transition: opacity 1500ms ease;
+}
+
+.save-date-intro__video--visible {
+  opacity: 1;
 }
 
 .save-date-intro__content {
   opacity: 0;
-  transition: opacity 450ms ease;
+  transition: opacity 1500ms ease;
   pointer-events: none;
 }
 
 .save-date-intro__content--visible {
   opacity: 1;
   pointer-events: auto;
-}
-
-html[data-save-date-intro="active"] .language-selector {
-  display: none !important;
 }
 
 .save-date-intro__manual-cta {
@@ -53,8 +55,4 @@ html[data-save-date-intro="active"] .language-selector {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
-}
-
-html[data-save-date-intro="active"] .language-selector {
-  display: none !important;
 }

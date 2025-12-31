@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Navigation } from './components';
 import { Hero } from './components/Hero';
 import { Details } from './components/Details';
@@ -14,6 +14,8 @@ import { Etiquette } from './components/Etiquette';
 import { BASE_PATH, buildFullPath, normalizeRelativePath } from './utils/routing';
 import { Section } from './components/Section';
 import { SaveTheDateIntroGate } from './components/SaveTheDateIntroGate';
+import { LanguageProvider } from './context/LanguageContext';
+import type { Language } from './i18n';
 
 type PageKey =
   | 'save-the-date'
@@ -53,6 +55,39 @@ const navLinks = [
   { path: '/our-story', label: 'Our Story' },
 ];
 
+const SUPPORTED_LANGUAGES: Language[] = ['en', 'vi'];
+const DEFAULT_LANGUAGE: Language = 'en';
+
+const isLanguage = (value: string): value is Language =>
+  SUPPORTED_LANGUAGES.some((lang) => lang === value);
+
+const normalizePagePath = (path: string) => {
+  if (!path || path === '/') return '/';
+  const trimmed = path.replace(/^\/+/, '').replace(/\/+$/, '');
+  return trimmed ? `/${trimmed}` : '/';
+};
+
+const parseLocalizedPath = (path: string) => {
+  const segments = path.split('/').filter(Boolean);
+  if (segments.length === 0) {
+    return { language: DEFAULT_LANGUAGE, pagePath: '/' };
+  }
+  const [first, ...rest] = segments;
+  if (isLanguage(first)) {
+    const pagePath = rest.length ? `/${rest.join('/')}` : '/';
+    return { language: first, pagePath: normalizePagePath(pagePath) };
+  }
+  return { language: DEFAULT_LANGUAGE, pagePath: normalizePagePath(path) };
+};
+
+const buildLocalizedPath = (language: Language, pagePath: string) => {
+  const normalizedPage = normalizePagePath(pagePath);
+  if (normalizedPage === '/') {
+    return `/${language}`;
+  }
+  return `/${language}${normalizedPage}`;
+};
+
 function usePathname() {
   const getPath = () => normalizeRelativePath(window.location.pathname);
   const [path, setPath] = useState(getPath);
@@ -63,13 +98,19 @@ function usePathname() {
     return () => window.removeEventListener('popstate', handler);
   }, []);
 
-  const navigate = (nextPath: string) => {
+  const navigate = (nextPath: string, options?: { replace?: boolean; skipScroll?: boolean }) => {
     const normalized = normalizeRelativePath(nextPath);
     if (normalized === path) return;
     const fullPath = buildFullPath(normalized);
-    window.history.pushState({}, '', fullPath || '/');
+    if (options?.replace) {
+      window.history.replaceState({}, '', fullPath || '/');
+    } else {
+      window.history.pushState({}, '', fullPath || '/');
+    }
     setPath(normalized);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!options?.skipScroll) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return { path, navigate };
@@ -77,15 +118,23 @@ function usePathname() {
 
 export default function App() {
   const { path, navigate } = usePathname();
+  const { language, pagePath } = useMemo(() => parseLocalizedPath(path), [path]);
   const viewToken = useMemo(() => {
-    const match = path.match(/^\/r\/([^/]+)$/);
+    const match = pagePath.match(/^\/r\/([^/]+)$/);
     return match ? match[1] : null;
-  }, [path]);
+  }, [pagePath]);
   const page: PageKey = useMemo(() => {
     if (viewToken) return 'view';
-    return routeMap[path] ?? 'not-found';
-  }, [path, viewToken]);
+    return routeMap[pagePath] ?? 'not-found';
+  }, [pagePath, viewToken]);
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const expectedPath = buildLocalizedPath(language, pagePath);
+    if (expectedPath !== path) {
+      navigate(expectedPath, { replace: true, skipScroll: true });
+    }
+  }, [language, pagePath, path, navigate]);
 
   useEffect(() => {
     if (BASE_PATH && !window.location.pathname.startsWith(BASE_PATH)) {
@@ -105,80 +154,92 @@ export default function App() {
     }
   }, [pendingScrollId, page]);
 
+  const handleNavigate = useCallback((href: string, targetId?: string) => {
+    const normalizedPage = normalizePagePath(href);
+    const localizedHref = buildLocalizedPath(language, normalizedPage);
+    if (localizedHref !== path) {
+      setPendingScrollId(targetId ?? null);
+      navigate(localizedHref);
+      return;
+    }
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [language, navigate, path]);
+
+  const handleLanguageChange = useCallback((nextLanguage: Language) => {
+    if (nextLanguage === language) return;
+    const nextPath = buildLocalizedPath(nextLanguage, pagePath);
+    navigate(nextPath);
+  }, [language, pagePath, navigate]);
+
   return (
-    <div>
-      <Navigation
-        currentPath={path}
-        links={navLinks}
-        onNavigate={(href, targetId) => {
-          if (href !== path) {
-            navigate(href);
-            setPendingScrollId(targetId ?? null);
-            return;
-          }
-          if (targetId) {
-            const el = document.getElementById(targetId);
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              return;
-            }
-          }
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
+    <LanguageProvider language={language} onChangeLanguage={handleLanguageChange}>
+      <div>
+        <Navigation
+          currentPath={pagePath}
+          links={navLinks}
+          onNavigate={handleNavigate}
+        />
 
-      <main>
-        {page === 'save-the-date' && (
-          <SaveTheDateIntroGate>
-            <div id="hero">
-              <Hero />
-            </div>
-          </SaveTheDateIntroGate>
-        )}
+        <main>
+          {page === 'save-the-date' && (
+            <SaveTheDateIntroGate>
+              <div id="hero">
+                <Hero />
+              </div>
+            </SaveTheDateIntroGate>
+          )}
 
-        {page === 'rsvp' && <RSVP />}
+          {page === 'rsvp' && <RSVP />}
 
-        {page === 'details' && (
-          <>
-            <Details />
-          </>
-        )}
+          {page === 'details' && (
+            <>
+              <Details />
+            </>
+          )}
 
-        {page === 'etiquette' && <Etiquette />}
+          {page === 'etiquette' && <Etiquette />}
 
-        {page === 'the-day' && <TheDay />}
+          {page === 'the-day' && <TheDay />}
 
-        {page === 'reception' && <ReceptionTimeline />}
+          {page === 'reception' && <ReceptionTimeline />}
 
-        {page === 'story' && <Story />}
+          {page === 'story' && <Story />}
 
-        {page === 'seating' && <SeatingLookup />}
+          {page === 'seating' && <SeatingLookup />}
 
-        {page === 'photos' && <Photos />}
+          {page === 'photos' && <Photos />}
 
-        {page === 'view' && viewToken && <RsvpAccessPage token={viewToken} />}
+          {page === 'view' && viewToken && <RsvpAccessPage token={viewToken} />}
 
-        {page === 'not-found' && (
-          <Section className="text-center">
-            <h1 className="font-serif text-4xl mb-4">Page not found</h1>
-            <p className="font-sans mb-6">
-              This page isn’t available yet. Please check back soon.
-            </p>
-            <button
-              className="btn-primary"
-              style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '9999px',
-              }}
-              onClick={() => navigate('/')}
-            >
-              Go to Save the Date
-            </button>
-          </Section>
-        )}
-      </main>
+          {page === 'not-found' && (
+            <Section className="text-center">
+              <h1 className="font-serif text-4xl mb-4">Page not found</h1>
+              <p className="font-sans mb-6">
+                This page isn’t available yet. Please check back soon.
+              </p>
+              <button
+                className="btn-primary"
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '9999px',
+                }}
+                onClick={() => handleNavigate('/')}
+              >
+                Go to Save the Date
+              </button>
+            </Section>
+          )}
+        </main>
 
-      <Footer coupleName="David & Jeannie" email="daviiidle@gmail.com" showSocials={false} />
-    </div>
+        <Footer coupleName="David & Jeannie" email="daviiidle@gmail.com" showSocials={false} />
+      </div>
+    </LanguageProvider>
   );
 }

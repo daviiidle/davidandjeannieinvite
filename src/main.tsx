@@ -10,7 +10,6 @@ import './styles/uploadcare.css';
 import './styles/section.css';
 import './styles/saveTheDateIntro.css';
 import App from './App.tsx';
-import { LanguageProvider } from './context/LanguageContext.tsx';
 import { initHeroOpener } from './heroOpener';
 
 const SPA_REDIRECT_KEY = 'spa:redirect-path';
@@ -32,9 +31,7 @@ try {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LanguageProvider>
-      <App />
-    </LanguageProvider>
+    <App />
   </StrictMode>,
 );
 

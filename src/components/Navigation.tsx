@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
+import type { Language } from '../i18n';
 
 interface NavigationLink {
   path: string;
@@ -17,9 +18,10 @@ interface NavigationProps {
 
 const HEADER_VAR = '--app-header-height';
 type NavVariant = 'inline' | 'drawer';
+const languageOptions: Language[] = ['en', 'vi'];
 
 export function Navigation({ currentPath, links, onNavigate }: NavigationProps) {
-  const { strings, openLanguageSelector } = useLanguage();
+  const { strings, language, setLanguage } = useLanguage();
   const navRef = useRef<HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -88,23 +90,28 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
       variant === 'drawer' ? `1px solid ${theme.colors.primary.dustyBlue}20` : 'none',
   });
 
-  const languageButtonStyle = (variant: NavVariant): CSSProperties => ({
+  const languageGroupStyle = (variant: NavVariant): CSSProperties => ({
+    display: 'inline-flex',
+    gap: '0.25rem',
+    border: variant === 'inline' ? `1px solid ${theme.colors.primary.dustyBlue}40` : 'none',
+    borderRadius: variant === 'inline' ? theme.borderRadius.full : 0,
+    padding: variant === 'inline' ? '0.25rem' : 0,
+    backgroundColor: variant === 'inline' ? 'rgba(255,255,255,0.65)' : 'transparent',
+  });
+
+  const languageOptionStyle = (active: boolean, variant: NavVariant): CSSProperties => ({
     fontFamily: theme.typography.fontFamily.sans,
     fontSize: variant === 'inline' ? theme.typography.fontSize.sm : '0.8rem',
     fontWeight: theme.typography.fontWeight.medium,
-    color: theme.colors.primary.dustyBlue,
-    textTransform: 'uppercase',
     letterSpacing: '0.05em',
-    border: variant === 'inline' ? `1px solid ${theme.colors.primary.dustyBlue}40` : 'none',
-    borderRadius: variant === 'inline' ? theme.borderRadius.md : 0,
-    padding:
-      variant === 'inline'
-        ? `${theme.spacing.xs} ${theme.spacing.sm}`
-        : '0.5rem 0 0',
-    background: 'transparent',
-    cursor: 'pointer',
-    width: variant === 'drawer' ? '100%' : undefined,
-    textAlign: variant === 'drawer' ? 'left' : 'center',
+    textTransform: 'uppercase',
+    border: active ? `1px solid ${theme.colors.primary.dustyBlue}` : `1px dashed ${theme.colors.primary.dustyBlue}40`,
+    borderRadius: theme.borderRadius.full,
+    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+    backgroundColor: active ? theme.colors.primary.dustyBlue : 'transparent',
+    color: active ? theme.colors.background.white : theme.colors.primary.dustyBlue,
+    cursor: active ? 'default' : 'pointer',
+    opacity: active ? 1 : 0.8,
   });
 
   const renderLinkButtons = (items: NavigationLink[], variant: NavVariant) => (
@@ -126,16 +133,28 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
   );
 
   const renderLanguageButton = (variant: NavVariant) => (
-    <button
-      type="button"
-      onClick={() => {
-        setIsMenuOpen(false);
-        openLanguageSelector();
-      }}
-      style={languageButtonStyle(variant)}
+    <div
+      role="group"
+      aria-label={strings.navigation.changeLanguage}
+      style={languageGroupStyle(variant)}
     >
-      {strings.navigation.changeLanguage}
-    </button>
+      {languageOptions.map((option) => (
+        <button
+          key={`${variant}-language-${option}`}
+          type="button"
+          onClick={() => {
+            if (language === option) return;
+            setIsMenuOpen(false);
+            setLanguage(option);
+          }}
+          style={languageOptionStyle(language === option, variant)}
+          aria-pressed={language === option}
+          disabled={language === option}
+        >
+          {option.toUpperCase()}
+        </button>
+      ))}
+    </div>
   );
 
   const drawerId = 'navigation-drawer';

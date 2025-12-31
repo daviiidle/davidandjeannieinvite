@@ -10,24 +10,14 @@ import { formatWeekday } from '../utils/time';
 import { StayInLoopForm } from './StayInLoopForm';
 import { Section } from './Section';
 
-interface HeroProps {
-  groomName?: string;
-  brideName?: string;
-}
-
-export function Hero({
-  groomName,
-  brideName,
-}: HeroProps) {
+export function Hero() {
   const { strings, language } = useLanguage();
-  const resolvedGroom = (groomName ?? strings.hero.groomName).trim();
-  const resolvedBride = (brideName ?? strings.hero.brideName).trim();
+  const heroTitle = (strings.hero.title || 'Save the Date').trim();
   const resolvedDate = strings.details.dateLabel;
   const locationText = strings.hero.locationLine;
   const invitationLine = strings.hero.invitationLine;
   const rsvpStatus = strings.hero.rsvpStatus;
   const { googleLabel, appleLabel } = strings.hero.calendar;
-  const namesText = `${resolvedGroom} &\n${resolvedBride}`;
   const backgroundImageUrl =
     'https://images.unsplash.com/photo-1520854223477-08661d33a360?w=1600&auto=format&fit=crop&q=80';
   const calendarDate = '2026-10-03';
@@ -106,19 +96,19 @@ export function Hero({
       innerClassName="w-full text-center relative z-10 space-y-4 sm:space-y-6"
     >
         <p
-          className="hero-opener__names font-serif"
+          className="hero-opener__names"
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
-            fontSize: 'clamp(2rem, 7vw, 5rem)',
-            fontWeight: theme.typography.fontWeight.bold,
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
+            fontSize: 'clamp(3rem, 12vw, 6rem)',
+            fontWeight: 400,
             color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.02em',
-            whiteSpace: 'pre-wrap',
-            lineHeight: 1.05,
+            letterSpacing: '0.05em',
+            whiteSpace: 'normal',
+            lineHeight: 1.1,
             textAlign: 'center',
           }}
         >
-          {namesText}
+          {heroTitle}
         </p>
 
         <div className="space-y-2 sm:space-y-3">

@@ -23,6 +23,7 @@ export interface TranslationContent {
     moreLabel?: string;
   };
   hero: {
+    title: string;
     groomName: string;
     brideName: string;
     date: string;
@@ -366,6 +367,7 @@ export const translations: Record<Language, TranslationContent> = {
       moreLabel: 'More',
     },
     hero: {
+      title: 'Save the Date',
       groomName: 'David',
       brideName: 'Jeannie',
       date: 'October 3, 2026',
@@ -599,6 +601,7 @@ export const translations: Record<Language, TranslationContent> = {
       moreLabel: 'Thêm',
     },
     hero: {
+      title: 'Save the Date',
       groomName: 'David',
       brideName: 'Jeannie',
       date: 'Ngày 3 tháng 10 năm 2026',

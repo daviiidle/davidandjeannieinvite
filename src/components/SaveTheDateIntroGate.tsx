@@ -3,10 +3,13 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 
 const INTRO_STORAGE_KEY = 'save-the-date:intro:seen';
 const baseAssetPath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
-const withBasePath = (path: string) => `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
+const withBasePath = (path: string) =>
+  `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
 const INTRO_VIDEO_SRC = withBasePath('/videos/save-the-date-intro.mov');
 const INTRO_POSTER_SRC = withBasePath('/images/ceremony.jpg');
-const FADE_DURATION_MS = 600;
+const OVERLAY_FADE_DURATION_MS = 1500;
+const CONTENT_REVEAL_DURATION_MS = 1500;
+const VIDEO_DURATION_FALLBACK_SEC = 5;
 
 type IntroPhase = 'playing' | 'fading' | 'hidden';
 
@@ -38,8 +41,12 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
   );
   const [contentVisible, setContentVisible] = useState(!shouldPlayIntro);
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const [videoReady, setVideoReady] = useState(!shouldPlayIntro);
   const fadeTimeoutRef = useRef<number | null>(null);
   const hasMarkedViewRef = useRef(!shouldPlayIntro);
+  const hasStartedPlaybackRef = useRef(!shouldPlayIntro);
+  const revealStartedRef = useRef(!shouldPlayIntro);
+  const videoDurationRef = useRef<number>(VIDEO_DURATION_FALLBACK_SEC);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -62,6 +69,7 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
 
   const skipIntro = useCallback(() => {
     markIntroSeen();
+    revealStartedRef.current = true;
     setContentVisible(true);
     setVideoPhase('hidden');
   }, [markIntroSeen]);
@@ -74,30 +82,87 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     setVideoPhase('fading');
     fadeTimeoutRef.current = window.setTimeout(() => {
       setVideoPhase('hidden');
-    }, FADE_DURATION_MS);
+    }, OVERLAY_FADE_DURATION_MS);
   }, [videoPhase]);
+
+  const beginReveal = useCallback(() => {
+    if (revealStartedRef.current) return;
+    revealStartedRef.current = true;
+    setContentVisible(true);
+    startFadeOut();
+  }, [startFadeOut]);
 
   const handleVideoEnd = useCallback(() => {
     markIntroSeen();
-    setContentVisible(true);
-    startFadeOut();
-  }, [markIntroSeen, startFadeOut]);
+    beginReveal();
+    const node = videoRef.current;
+    if (node) {
+      node.pause();
+      if (Number.isFinite(node.duration)) {
+        node.currentTime = node.duration;
+      }
+    }
+  }, [markIntroSeen, beginReveal]);
 
   const handleVideoPlay = useCallback(() => {
     markIntroSeen();
+    hasStartedPlaybackRef.current = true;
+    setVideoReady(true);
   }, [markIntroSeen]);
+
+  const handleLoadedMetadata = useCallback(() => {
+    const node = videoRef.current;
+    if (!node) return;
+    if (Number.isFinite(node.duration) && node.duration > 0) {
+      videoDurationRef.current = node.duration;
+    }
+  }, []);
+
+  const handleTimeUpdate = useCallback(() => {
+    if (!shouldPlayIntro) return;
+    if (revealStartedRef.current) return;
+    const node = videoRef.current;
+    if (!node) return;
+    const durationSec =
+      Number.isFinite(node.duration) && node.duration > 0
+        ? node.duration
+        : videoDurationRef.current;
+    const threshold = Math.max(durationSec - CONTENT_REVEAL_DURATION_MS / 1000, 0);
+    if (node.currentTime >= threshold) {
+      beginReveal();
+    }
+  }, [shouldPlayIntro, beginReveal]);
 
   useEffect(() => {
     if (!shouldPlayIntro) return;
     if (autoplayBlocked) return;
     const node = videoRef.current;
     if (!node) return;
+    node.muted = true;
+    node.defaultMuted = true;
+    node.playsInline = true;
+    node.setAttribute('playsinline', '');
+    node.setAttribute('webkit-playsinline', '');
+    node.setAttribute('muted', '');
+    node.setAttribute('autoplay', '');
     const playPromise = node.play();
     if (playPromise?.catch) {
       playPromise.catch(() => {
         setAutoplayBlocked(true);
       });
     }
+  }, [shouldPlayIntro, autoplayBlocked]);
+
+  useEffect(() => {
+    if (!shouldPlayIntro) return;
+    if (hasStartedPlaybackRef.current) return;
+    if (autoplayBlocked) return;
+    const timeout = window.setTimeout(() => {
+      if (!hasStartedPlaybackRef.current) {
+        setAutoplayBlocked(true);
+      }
+    }, 1500);
+    return () => window.clearTimeout(timeout);
   }, [shouldPlayIntro, autoplayBlocked]);
 
   const isOverlayVisible = videoPhase !== 'hidden';
@@ -127,8 +192,11 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
         >
           <video
             ref={videoRef}
-            className="save-date-intro__video"
-            src={INTRO_VIDEO_SRC}
+            className={
+              videoReady
+                ? 'save-date-intro__video save-date-intro__video--visible'
+                : 'save-date-intro__video'
+            }
             playsInline
             muted
             autoPlay
@@ -138,8 +206,15 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
             onEnded={handleVideoEnd}
             onError={skipIntro}
             onPlay={handleVideoPlay}
+            onLoadedMetadata={handleLoadedMetadata}
+            onTimeUpdate={handleTimeUpdate}
             disablePictureInPicture
-          />
+            controls={false}
+            aria-hidden="true"
+            disableRemotePlayback
+          >
+            <source src={INTRO_VIDEO_SRC} type="video/quicktime" />
+          </video>
           {autoplayBlocked && (
             <button
               type="button"
