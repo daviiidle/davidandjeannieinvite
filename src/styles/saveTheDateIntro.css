@@ -40,3 +40,21 @@
 html[data-save-date-intro="active"] .language-selector {
   display: none !important;
 }
+
+.save-date-intro__manual-cta {
+  position: absolute;
+  inset: auto 1.5rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-family-sans, 'Inter', sans-serif);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+html[data-save-date-intro="active"] .language-selector {
+  display: none !important;
+}

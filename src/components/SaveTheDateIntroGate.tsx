@@ -35,6 +35,7 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     shouldPlayIntro ? 'playing' : 'hidden',
   );
   const [contentVisible, setContentVisible] = useState(!shouldPlayIntro);
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const fadeTimeoutRef = useRef<number | null>(null);
   const hasMarkedViewRef = useRef(!shouldPlayIntro);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -86,15 +87,16 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
 
   useEffect(() => {
     if (!shouldPlayIntro) return;
+    if (autoplayBlocked) return;
     const node = videoRef.current;
     if (!node) return;
     const playPromise = node.play();
     if (playPromise?.catch) {
       playPromise.catch(() => {
-        skipIntro();
+        setAutoplayBlocked(true);
       });
     }
-  }, [shouldPlayIntro, skipIntro]);
+  }, [shouldPlayIntro, autoplayBlocked]);
 
   const isOverlayVisible = videoPhase !== 'hidden';
 
@@ -136,6 +138,24 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
             onPlay={handleVideoPlay}
             disablePictureInPicture
           />
+          {autoplayBlocked && (
+            <button
+              type="button"
+              className="save-date-intro__manual-cta"
+              onClick={() => {
+                setAutoplayBlocked(false);
+                const node = videoRef.current;
+                if (!node) return;
+                node.muted = true;
+                node.playsInline = true;
+                node.play().catch(() => {
+                  skipIntro();
+                });
+              }}
+            >
+              Tap to play the intro
+            </button>
+          )}
         </div>
       )}
 
