@@ -1,0 +1,42 @@
+.save-date-intro {
+  position: relative;
+}
+
+.save-date-intro__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  transition: opacity 600ms ease;
+}
+
+.save-date-intro__overlay--fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.save-date-intro__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #000;
+}
+
+.save-date-intro__content {
+  opacity: 0;
+  transition: opacity 450ms ease;
+  pointer-events: none;
+}
+
+.save-date-intro__content--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+html[data-save-date-intro="active"] .language-selector {
+  display: none !important;
+}

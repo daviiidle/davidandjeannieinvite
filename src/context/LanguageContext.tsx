@@ -87,6 +87,7 @@ interface LanguageSelectorProps {
 function LanguageSelector({ onSelect, onClose }: LanguageSelectorProps) {
   return (
     <div
+      className="language-selector"
       style={{
         position: 'fixed',
         inset: 0,

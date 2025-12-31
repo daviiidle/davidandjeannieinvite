@@ -13,6 +13,7 @@ import { ReceptionTimeline } from './components/ReceptionTimeline';
 import { Etiquette } from './components/Etiquette';
 import { BASE_PATH, buildFullPath, normalizeRelativePath } from './utils/routing';
 import { Section } from './components/Section';
+import { SaveTheDateIntroGate } from './components/SaveTheDateIntroGate';
 
 type PageKey =
   | 'save-the-date'
@@ -128,11 +129,11 @@ export default function App() {
 
       <main>
         {page === 'save-the-date' && (
-          <>
+          <SaveTheDateIntroGate>
             <div id="hero">
               <Hero />
             </div>
-          </>
+          </SaveTheDateIntroGate>
         )}
 
         {page === 'rsvp' && <RSVP />}
