@@ -18,6 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      PREVIEW_KEY: ${{ secrets.PREVIEW_KEY }}
       VITE_UPLOADCARE_PUBLIC_KEY: ${{ secrets.VITE_UPLOADCARE_PUBLIC_KEY }}
       VITE_UPLOADCARE_PORTAL_URL: https://daviiidle.github.io/davidandjeannieinvite/photos
     steps:
