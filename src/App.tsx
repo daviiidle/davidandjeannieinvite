@@ -16,6 +16,7 @@ import { Section } from './components/Section';
 import { SaveTheDateIntroGate } from './components/SaveTheDateIntroGate';
 import { LanguageProvider } from './context/LanguageContext';
 import type { Language } from './i18n';
+import { LAUNCH_SITE, PREVIEW_KEY } from './config/launch';
 
 type PageKey =
   | 'save-the-date'
@@ -57,9 +58,37 @@ const navLinks = [
 
 const SUPPORTED_LANGUAGES: Language[] = ['en', 'vi'];
 const DEFAULT_LANGUAGE: Language = 'en';
+const PREVIEW_COOKIE = 'preview_access';
+const PREVIEW_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
 
 const isLanguage = (value: string): value is Language =>
   SUPPORTED_LANGUAGES.some((lang) => lang === value);
+
+const getCookie = (name: string) => {
+  if (typeof document === 'undefined') return '';
+  const match = document.cookie
+    .split('; ')
+    .find((entry) => entry.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.split('=')[1] ?? '') : '';
+};
+
+const setCookie = (name: string, value: string, options?: { maxAge?: number }) => {
+  if (typeof document === 'undefined') return;
+  const parts = [`${name}=${encodeURIComponent(value)}`, 'SameSite=Lax'];
+  if (options?.maxAge) {
+    parts.push(`Max-Age=${options.maxAge}`);
+  }
+  if (import.meta.env.MODE === 'production') {
+    parts.push('Secure');
+  }
+  const path = BASE_PATH || '/';
+  parts.push(`Path=${path}`);
+  document.cookie = parts.join('; ');
+};
+
+const clearCookie = (name: string) => {
+  setCookie(name, '', { maxAge: 0 });
+};
 
 const normalizePagePath = (path: string) => {
   if (!path || path === '/') return '/';
@@ -134,6 +163,9 @@ export default function App() {
     if (viewToken) return 'view';
     return routeMap[pagePath] ?? 'not-found';
   }, [pagePath, viewToken]);
+  const visibleNavLinks = LAUNCH_SITE
+    ? navLinks
+    : navLinks.filter((link) => link.path === '/');
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -142,6 +174,31 @@ export default function App() {
       navigate(expectedPath, { replace: true, skipScroll: true });
     }
   }, [language, pagePath, path, navigate]);
+
+  useEffect(() => {
+    if (LAUNCH_SITE) return;
+    if (pagePath === '/clear-preview') {
+      clearCookie(PREVIEW_COOKIE);
+      navigate(buildLocalizedPath(language, '/'), { replace: true, skipScroll: true });
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const previewValue = params.get('preview');
+    if (previewValue === 'logout') {
+      clearCookie(PREVIEW_COOKIE);
+      navigate(buildLocalizedPath(language, '/'), { replace: true, skipScroll: true });
+      return;
+    }
+    if (previewValue && PREVIEW_KEY && previewValue === PREVIEW_KEY) {
+      setCookie(PREVIEW_COOKIE, '1', { maxAge: PREVIEW_COOKIE_MAX_AGE });
+      window.history.replaceState({}, '', window.location.pathname);
+      return;
+    }
+    if (getCookie(PREVIEW_COOKIE) === '1') return;
+    if (page === 'save-the-date') return;
+    const target = buildLocalizedPath(language, '/');
+    navigate(target, { replace: true, skipScroll: true });
+  }, [language, navigate, page, pagePath, PREVIEW_KEY]);
 
   useEffect(() => {
     if (BASE_PATH && !window.location.pathname.startsWith(BASE_PATH)) {
@@ -190,7 +247,7 @@ export default function App() {
       <div>
         <Navigation
           currentPath={pagePath}
-          links={navLinks}
+          links={visibleNavLinks}
           onNavigate={handleNavigate}
         />
 
