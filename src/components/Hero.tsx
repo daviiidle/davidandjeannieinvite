@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 import { Countdown } from './Countdown';
@@ -25,6 +25,7 @@ export function Hero() {
   const weekdayLabel = useMemo(() => formatWeekday(locale), [locale]);
   const [lockedButton, setLockedButton] = useState<string | null>(null);
   const resetTimerRef = useRef<number | null>(null);
+  const scrollTargetId = 'updates-and-rsvp';
 
   const googleCalendarLink = useMemo(
     () =>
@@ -68,6 +69,13 @@ export function Hero() {
     }
     resetTimerRef.current = window.setTimeout(() => setLockedButton(null), 1500);
   };
+
+  const handleScrollToUpdates = useCallback(() => {
+    const target = document.getElementById(scrollTargetId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
 
   return (
     <Section
@@ -277,8 +285,57 @@ export function Hero() {
               {appleLabel}
             </a>
           </div>
+
+          <button
+            type="button"
+            onClick={handleScrollToUpdates}
+            className="font-sans hero-calendar-button"
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              borderRadius: theme.borderRadius.full,
+              border: 'none',
+              backgroundColor: theme.colors.primary.dustyBlue,
+              color: theme.colors.background.white,
+              padding: `${theme.spacing.sm} ${theme.spacing['2xl']}`,
+              minHeight: '48px',
+              cursor: 'pointer',
+              marginTop: theme.spacing.sm,
+            }}
+            aria-label="Stay in the loop form"
+          >
+            Stay in the loop
+          </button>
         </div>
-        <StayInLoopForm />
+
+        <div className="hero-scroll-indicator" aria-hidden="true">
+          <span>Scroll for details</span>
+          <span className="hero-scroll-indicator__arrow" />
+        </div>
+
+        <div
+          id={scrollTargetId}
+          className="updates-section-bridge"
+          style={{
+            marginTop: theme.spacing['3xl'],
+            paddingTop: theme.spacing.lg,
+            borderTop: `1px solid ${theme.colors.primary.dustyBlue}33`,
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: theme.typography.fontFamily.serif,
+              fontSize: theme.typography.fontSize['2xl'],
+              color: theme.colors.primary.dustyBlue,
+              marginBottom: theme.spacing.lg,
+            }}
+          >
+            Updates & RSVP
+          </h2>
+          <StayInLoopForm />
+        </div>
     </Section>
   );
 }

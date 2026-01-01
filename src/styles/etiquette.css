@@ -6,106 +6,89 @@
 
 .etiquette-hero {
   text-align: center;
-  margin-bottom: 2.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .etiquette-hero h1 {
-  margin: 0;
+  margin-bottom: 1.5rem;
 }
 
 .etiquette-hero-intro {
   margin: 0 auto;
   max-width: 38rem;
-  line-height: 1.7;
-}
-
-.etiquette-toc {
-  margin: 2.5rem auto 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem 1.25rem;
-  font-family: "Inter", sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.etiquette-toc a {
-  color: #475569;
-  text-decoration: none;
-  padding-bottom: 0.25rem;
-  border-bottom: 1px solid rgba(139, 157, 195, 0.3);
 }
 
 .etiquette-sections {
-  margin-top: 2.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+  margin-top: 2.5rem;
 }
 
-.etiquette-block {
+.etiquette-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.etiquette-section:not(:first-child) {
+  border-top: 1px solid rgba(100, 116, 139, 0.2);
   padding-top: 2.5rem;
-  border-top: 1px solid rgba(139, 157, 195, 0.2);
 }
 
-.etiquette-block__heading h2 {
-  font-family: "Playfair Display", serif;
-  font-size: clamp(1.75rem, 4.5vw, 2.6rem);
-  font-weight: 700;
-  color: #8b9dc3;
-  margin: 0 0 0.85rem;
+.etiquette-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
-.etiquette-block__summary {
+.etiquette-section-title {
   font-family: "Inter", sans-serif;
-  font-size: 1rem;
-  color: #334155;
-  margin: 0;
-  line-height: 1.65;
+  font-size: 0.875rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
 }
 
-.etiquette-block__details {
-  margin-top: 1.25rem;
+.etiquette-subsection {
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.etiquette-subsection:last-child {
+  margin-bottom: 0;
+}
+
+.etiquette-subsection p {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 46rem;
+}
+
+.etiquette-subsection ul {
+  margin-top: 0.75rem;
+  padding: 0;
+  list-style: none;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 34rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.etiquette-block__details p {
+.etiquette-subsection li {
   font-family: "Inter", sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   color: #475569;
-  margin: 0;
-  line-height: 1.6;
-}
-
-.etiquette-block__details ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.etiquette-block__details li {
-  font-family: "Inter", sans-serif;
-  font-size: 0.9rem;
-  color: #475569;
-  padding-left: 1rem;
+  margin-bottom: 0;
+  text-align: left;
+  padding-left: 1.2rem;
   position: relative;
 }
 
-.etiquette-block__details li::before {
+.etiquette-subsection li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.6em;
+  top: 0.55em;
   width: 0.35rem;
   height: 0.35rem;
   border-radius: 50%;
@@ -113,18 +96,43 @@
   transform: translateY(-50%);
 }
 
-.etiquette-block__toggle {
-  margin-top: 1rem;
-  border: none;
-  background: transparent;
-  color: #8b9dc3;
-  font-family: "Inter", sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 0.35rem 0;
-  display: none;
+.etiquette-quick-notes {
+  background-color: rgba(139, 157, 195, 0.08);
+  border: 1px solid rgba(139, 157, 195, 0.3);
+  border-left-width: 3px;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-top: 1.5rem;
+}
+
+.etiquette-quick-notes ul {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 34rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.etiquette-quick-notes li {
+  margin-bottom: 0;
+  text-align: left;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.etiquette-quick-notes li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background-color: #8b9dc3;
+  transform: translateY(-50%);
 }
 
 @media (max-width: 430px) {
@@ -135,30 +143,25 @@
     text-align: center;
   }
 
-  .etiquette-hero-intro {
+  .etiquette-section-title {
     text-align: center;
   }
 
-  .etiquette-block__heading h2 {
-    font-size: 1.65rem;
+  .etiquette-subsection,
+  .etiquette-subsection p {
+    text-align: center;
   }
 
-  .etiquette-block__summary {
-    font-size: 0.95rem;
-  }
-
-  .etiquette-block__details {
-    display: none;
-  }
-
-  .etiquette-block__details.is-open {
-    display: flex;
-  }
-
-  .etiquette-block__toggle {
-    display: inline-flex;
+  .etiquette-subsection ul,
+  .etiquette-quick-notes ul {
     margin-left: auto;
     margin-right: auto;
+    max-width: 320px;
+  }
+
+  .etiquette-subsection ul,
+  .etiquette-quick-notes ul {
+    max-width: 320px;
   }
 }
 
@@ -181,16 +184,63 @@
     margin-right: auto;
   }
 
-  .etiquette-toc {
-    max-width: 720px;
+  .etiquette-section {
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
   }
 
-  .etiquette-block {
-    padding-top: 3rem;
-    text-align: left;
+  .etiquette-section:not(:first-child) {
+    padding-top: 4rem;
   }
 
-  .etiquette-block__details {
-    display: flex !important;
+  .etiquette-section-title {
+    text-align: center;
   }
+
+  .etiquette-subsection {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 46rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .etiquette-subsection p {
+    text-align: center;
+  }
+
+  .etiquette-subsection ul,
+  .etiquette-quick-notes ul {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 36rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .etiquette-subsection li,
+  .etiquette-quick-notes li {
+    width: auto;
+    max-width: 30rem;
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .etiquette-subsection li::before,
+  .etiquette-quick-notes li::before {
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .etiquette-quick-notes {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 46rem;
+    text-align: center;
+  }
+
+  .etiquette-quick-notes ul {
+    max-width: 30rem;
+  }
+
 }
