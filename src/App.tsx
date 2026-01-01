@@ -44,7 +44,7 @@ const routeMap: Record<string, PageKey> = {
 };
 
 const navLinks = [
-  { path: '/', label: 'Save the Date', targetId: 'hero' },
+  { path: '/', label: 'Save the Date' },
   { path: '/rsvp', label: 'RSVP' },
   { path: '/details', label: 'Details' },
   { path: '/etiquette', label: 'Etiquette' },
@@ -93,8 +93,15 @@ function usePathname() {
   const [path, setPath] = useState(getPath);
 
   useEffect(() => {
-    const handler = () => setPath(getPath());
+    const handler = () => {
+      setPath(getPath());
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    };
     window.addEventListener('popstate', handler);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     return () => window.removeEventListener('popstate', handler);
   }, []);
 

@@ -5,7 +5,11 @@ const INTRO_STORAGE_KEY = 'save-the-date:intro:seen';
 const baseAssetPath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 const withBasePath = (path: string) =>
   `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
-const INTRO_VIDEO_SRC = withBasePath('/videos/save-the-date-intro.mov');
+const INTRO_VIDEO_SOURCES = [
+  { src: withBasePath('/videos/save-the-date-intro.mp4'), type: 'video/mp4' },
+  { src: withBasePath('/videos/save-the-date-intro.webm'), type: 'video/webm' },
+  { src: withBasePath('/videos/save-the-date-intro.mov'), type: 'video/quicktime' },
+];
 const INTRO_POSTER_SRC = withBasePath('/images/ceremony.jpg');
 const OVERLAY_FADE_DURATION_MS = 1500;
 const CONTENT_REVEAL_DURATION_MS = 1500;
@@ -73,6 +77,18 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     setContentVisible(true);
     setVideoPhase('hidden');
   }, [markIntroSeen]);
+
+  useEffect(() => {
+    if (!shouldPlayIntro) return;
+    if (typeof document === 'undefined') return;
+    const probe = document.createElement('video');
+    const hasSupportedSource = INTRO_VIDEO_SOURCES.some((source) =>
+      source.type ? probe.canPlayType(source.type) !== '' : true,
+    );
+    if (!hasSupportedSource) {
+      skipIntro();
+    }
+  }, [shouldPlayIntro, skipIntro]);
 
   const startFadeOut = useCallback(() => {
     if (videoPhase !== 'playing') {
@@ -213,7 +229,9 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
             aria-hidden="true"
             disableRemotePlayback
           >
-            <source src={INTRO_VIDEO_SRC} type="video/quicktime" />
+            {INTRO_VIDEO_SOURCES.map((source) => (
+              <source key={source.src} src={source.src} type={source.type} />
+            ))}
           </video>
           {autoplayBlocked && (
             <button
