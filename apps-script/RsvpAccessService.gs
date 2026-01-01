@@ -197,3 +197,4 @@ const RsvpAccessService = (function () {
     applyEditableUpdates: applyEditableUpdates,
   };
 })();
+
