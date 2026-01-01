@@ -132,6 +132,11 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     if (Number.isFinite(node.duration) && node.duration > 0) {
       videoDurationRef.current = node.duration;
     }
+    setVideoReady(true);
+  }, []);
+
+  const handleCanPlay = useCallback(() => {
+    setVideoReady(true);
   }, []);
 
   const handleTimeUpdate = useCallback(() => {
@@ -181,6 +186,23 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     return () => window.clearTimeout(timeout);
   }, [shouldPlayIntro, autoplayBlocked]);
 
+  useEffect(() => {
+    if (autoplayBlocked) {
+      setVideoReady(true);
+    }
+  }, [autoplayBlocked]);
+
+  const attemptManualPlay = useCallback(() => {
+    setAutoplayBlocked(false);
+    const node = videoRef.current;
+    if (!node) return;
+    node.muted = true;
+    node.playsInline = true;
+    node.play().catch(() => {
+      skipIntro();
+    });
+  }, [skipIntro]);
+
   const isOverlayVisible = videoPhase !== 'hidden';
 
   useLayoutEffect(() => {
@@ -223,11 +245,13 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
             onError={skipIntro}
             onPlay={handleVideoPlay}
             onLoadedMetadata={handleLoadedMetadata}
+            onCanPlay={handleCanPlay}
             onTimeUpdate={handleTimeUpdate}
             disablePictureInPicture
             controls={false}
             aria-hidden="true"
             disableRemotePlayback
+            onClick={autoplayBlocked ? attemptManualPlay : undefined}
           >
             {INTRO_VIDEO_SOURCES.map((source) => (
               <source key={source.src} src={source.src} type={source.type} />
@@ -237,18 +261,9 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
             <button
               type="button"
               className="save-date-intro__manual-cta"
-              onClick={() => {
-                setAutoplayBlocked(false);
-                const node = videoRef.current;
-                if (!node) return;
-                node.muted = true;
-                node.playsInline = true;
-                node.play().catch(() => {
-                  skipIntro();
-                });
-              }}
+              onClick={attemptManualPlay}
             >
-              Tap to play the intro
+              Tap or click to play the intro
             </button>
           )}
         </div>
