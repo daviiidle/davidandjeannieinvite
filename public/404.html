@@ -29,7 +29,11 @@
           console.error('Unable to persist redirect path', error);
         }
 
-        window.location.replace('/');
+        var entryPoint = '/en/save-the-date/';
+        if (target.startsWith('/vi')) {
+          entryPoint = '/vi/save-the-date/';
+        }
+        window.location.replace(entryPoint);
       })();
     </script>
   </body>
