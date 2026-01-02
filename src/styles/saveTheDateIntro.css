@@ -23,6 +23,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   background-color: #000;
   opacity: 0;
   transition: opacity 1500ms ease;
@@ -55,4 +56,10 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+@media (max-width: 768px), (max-aspect-ratio: 3/4) {
+  .save-date-intro__video {
+    object-fit: contain;
+  }
 }
