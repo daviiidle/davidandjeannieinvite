@@ -7,11 +7,15 @@ import { navigateWithinApp } from '../utils/routing';
 export function Details() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const familiesHeadingRef = useRef<HTMLHeadingElement>(null);
+  const parentsRef = useRef<HTMLDivElement>(null);
+  const { strings } = useLanguage();
   const activateTitleAnimation = useCallback(() => {
     headingRef.current?.classList.add('page-title-handwriting--active');
+    familiesHeadingRef.current?.classList.add('page-title-handwriting--active');
+    parentsRef.current?.classList.add('page-title-handwriting--active');
   }, []);
   useScrollReveal(sectionRef, { duration: 0.8, onEnter: activateTitleAnimation });
-  const { strings } = useLanguage();
   const { details } = strings;
   const parents = details.parents;
   const weddingParty = details.weddingParty;
@@ -19,6 +23,12 @@ export function Details() {
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
   const etiquettePreview = strings.etiquette?.preview;
+  const scriptTextStyle = {
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden' as const,
+    WebkitFontSmoothing: 'antialiased' as const,
+    textRendering: 'geometricPrecision' as const,
+  };
   const setAddressLinkState = (element: HTMLAnchorElement | null, isActive: boolean) => {
     if (!element) return;
     element.style.color = isActive ? theme.colors.primary.dustyBlue : theme.colors.text.secondary;
@@ -43,7 +53,30 @@ export function Details() {
         }}
       >
         {/* Parents */}
-        <div className="wedding-party-grid mb-12">
+        <h2
+          ref={familiesHeadingRef}
+          className="font-serif text-center mb-12 page-title-handwriting"
+          style={{
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
+            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: 400,
+            color: theme.colors.primary.dustyBlue,
+            letterSpacing: '0.05em',
+            marginBottom: theme.spacing['3xl'],
+            lineHeight: 1.4,
+            paddingTop: '0.6rem',
+            paddingBottom: '0.6rem',
+            paddingLeft: '0.08em',
+            overflow: 'visible',
+          }}
+        >
+          <span className="hero-handwriting hero-handwriting--safe">
+            <span className="hero-handwriting__text" style={scriptTextStyle}>
+              {details.familiesHeading}
+            </span>
+          </span>
+        </h2>
+        <div ref={parentsRef} className="wedding-party-grid mb-12">
           <div
             style={{
               textAlign: 'center',
@@ -60,7 +93,9 @@ export function Details() {
                 marginBottom: theme.spacing.xs,
               }}
             >
-              {parents.groomTitle}
+              <span className="hero-handwriting">
+                <span className="hero-handwriting__text">{parents.groomTitle}</span>
+              </span>
             </p>
             <p
               className="font-serif"
@@ -70,7 +105,9 @@ export function Details() {
                 color: theme.colors.primary.dustyBlue,
               }}
             >
-              {parents.groomNames}
+              <span className="hero-handwriting">
+                <span className="hero-handwriting__text">{parents.groomNames}</span>
+              </span>
             </p>
           </div>
           <div
@@ -89,7 +126,9 @@ export function Details() {
                 marginBottom: theme.spacing.xs,
               }}
             >
-              {parents.brideTitle}
+              <span className="hero-handwriting">
+                <span className="hero-handwriting__text">{parents.brideTitle}</span>
+              </span>
             </p>
             <p
               className="font-serif"
@@ -99,7 +138,9 @@ export function Details() {
                 color: theme.colors.primary.dustyBlue,
               }}
             >
-              {parents.brideNames}
+              <span className="hero-handwriting">
+                <span className="hero-handwriting__text">{parents.brideNames}</span>
+              </span>
             </p>
           </div>
         </div>
@@ -122,7 +163,7 @@ export function Details() {
               marginBottom: theme.spacing.xs,
             }}
           >
-            Principal Sponsors
+            {details.sponsorsLabel}
           </p>
           <p
             className="font-serif"
@@ -237,10 +278,17 @@ export function Details() {
             color: theme.colors.primary.dustyBlue,
             letterSpacing: '0.05em',
             marginBottom: theme.spacing['3xl'],
+            lineHeight: 1.4,
+            paddingTop: '0.6rem',
+            paddingBottom: '0.6rem',
+            paddingLeft: '0.08em',
+            overflow: 'visible',
           }}
         >
-          <span className="hero-handwriting">
-            <span className="hero-handwriting__text">{details.sectionTitle}</span>
+          <span className="hero-handwriting hero-handwriting--safe">
+            <span className="hero-handwriting__text" style={scriptTextStyle}>
+              {details.sectionTitle}
+            </span>
           </span>
         </h2>
 

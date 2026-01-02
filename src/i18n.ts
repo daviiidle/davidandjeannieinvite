@@ -46,6 +46,8 @@ export interface TranslationContent {
   };
   details: {
     saveTheDate: string;
+    familiesHeading: string;
+    sponsorsLabel: string;
     dateLabel: string;
     countdownTitle: string;
     countdownUnits: {
@@ -401,6 +403,8 @@ export const translations: Record<Language, TranslationContent> = {
     },
     details: {
       saveTheDate: 'Save the Date',
+      familiesHeading: 'Our Families',
+      sponsorsLabel: 'Principal Sponsors',
       dateLabel: 'October 3, 2026',
       countdownTitle: 'Countdown to the Wedding Day',
       countdownUnits: {
@@ -646,6 +650,8 @@ export const translations: Record<Language, TranslationContent> = {
     },
     details: {
       saveTheDate: 'Vui lòng ghi nhớ ngày',
+      familiesHeading: 'Gia đình hai bên',
+      sponsorsLabel: 'Gia đình chứng giám',
       dateLabel: 'Ngày 3 tháng 10 năm 2026',
       countdownTitle: 'Thời gian còn lại đến ngày hôn lễ',
       countdownUnits: {

@@ -122,6 +122,24 @@
   animation-play-state: running;
 }
 
+.page-title-handwriting {
+  line-height: 1.4;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  overflow: visible;
+}
+
+.page-title-handwriting .hero-handwriting {
+  overflow: visible;
+  animation-name: hero-handwriting-reveal-title;
+}
+
+.page-title-handwriting .hero-handwriting__text {
+  line-height: 1.4;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
 @keyframes hero-handwriting-reveal {
   0% {
     clip-path: inset(0 100% 0 0);
@@ -142,6 +160,22 @@
   animation-name: hero-handwriting-reveal-loose;
 }
 
+.hero-handwriting--safe {
+  overflow: visible;
+  clip-path: inset(-0.25em 100% -0.25em -0.25em);
+  padding-top: 0.14em;
+  padding-left: 0.1em;
+  margin-top: -0.14em;
+  margin-left: -0.1em;
+  animation-name: hero-handwriting-reveal-safe;
+}
+
+.hero-handwriting--safe .hero-handwriting__text {
+  text-shadow: 0 0 0 currentColor;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
 @keyframes hero-handwriting-reveal-loose {
   0% {
     clip-path: inset(-1em 100% -1em 0);
@@ -152,6 +186,34 @@
   }
   100% {
     clip-path: inset(-1em 0 -1em 0);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-handwriting-reveal-safe {
+  0% {
+    clip-path: inset(-0.25em 100% -0.25em -0.25em);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(-0.25em -0.25em -0.25em -0.25em);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-handwriting-reveal-title {
+  0% {
+    clip-path: inset(-0.45em 100% -0.45em 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(-0.45em 0 -0.45em 0);
     opacity: 1;
   }
 }
