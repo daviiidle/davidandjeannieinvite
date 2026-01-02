@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
@@ -42,7 +42,11 @@ export function Story({
   ]
 }: StoryProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, { duration: 0.9 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const activateTitleAnimation = useCallback(() => {
+    headingRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+  useScrollReveal(sectionRef, { duration: 0.9, onEnter: activateTitleAnimation });
   const { strings } = useLanguage();
 
   const [selectedImage, setSelectedImage] = useState<StoryImage | null>(null);
@@ -68,16 +72,18 @@ export function Story({
         {/* Section Heading */}
         <h2
           id="story-heading"
-          className="font-serif text-center mb-12"
+          ref={headingRef}
+          className="font-serif text-center mb-12 page-title-handwriting"
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
             fontSize: theme.typography.heading.h2,
-            fontWeight: theme.typography.fontWeight.bold,
+            fontWeight: 400,
             color: theme.colors.primary.dustyBlue,
+            letterSpacing: '0.05em',
             marginBottom: theme.spacing.md,
           }}
         >
-          {strings.story.heading}
+          <span className="hero-handwriting">{strings.story.heading}</span>
         </h2>
 
         {/* Photo Gallery Grid */}

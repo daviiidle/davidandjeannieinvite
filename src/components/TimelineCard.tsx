@@ -141,9 +141,16 @@ interface TimelineCardProps {
   subtitle: string;
   dateLine: string;
   items: TimelineItem[];
+  titleRef?: React.Ref<HTMLHeadingElement>;
 }
 
-export function TimelineCard({ title, subtitle, dateLine, items }: TimelineCardProps) {
+export function TimelineCard({
+  title,
+  subtitle,
+  dateLine,
+  items,
+  titleRef,
+}: TimelineCardProps) {
   const containerStyle: CSSProperties = {
     color: theme.colors.text.primary,
   };
@@ -168,18 +175,18 @@ export function TimelineCard({ title, subtitle, dateLine, items }: TimelineCardP
           {subtitle}
         </p>
         <h2
-          className="timeline-card__title"
+          className="timeline-card__title page-title-handwriting"
+          ref={titleRef}
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
             fontSize: theme.typography.heading.h2,
             color: theme.colors.primary.dustyBlue,
-            fontWeight: theme.typography.fontWeight.bold,
-            fontStyle: 'italic',
-            letterSpacing: '0.04em',
+            fontWeight: 400,
+            letterSpacing: '0.05em',
             marginBottom: theme.spacing.md,
           }}
         >
-          {title}
+          <span className="hero-handwriting">{title}</span>
         </h2>
         <p
           className="timeline-card__date"

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { TimelineCard, type TimelineItem } from './TimelineCard';
@@ -33,7 +33,11 @@ const DAY_TIMELINE: TimelineItem[] = [
 
 export function TheDay() {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, { duration: 0.6 });
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const activateTitleAnimation = useCallback(() => {
+    titleRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+  useScrollReveal(sectionRef, { duration: 0.6, onEnter: activateTitleAnimation });
 
   return (
     <Section
@@ -46,6 +50,7 @@ export function TheDay() {
         subtitle="David + Jeannie"
         dateLine="October 3, 2026"
         items={DAY_TIMELINE}
+        titleRef={titleRef}
       />
     </Section>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/LanguageContext';
 import { Section } from './Section';
@@ -12,6 +12,7 @@ declare global {
 export function Photos() {
   const { strings } = useLanguage();
   const { photos } = strings;
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const envPortalUrl = import.meta.env.VITE_UPLOADCARE_PORTAL_URL;
   const [uploadLink, setUploadLink] = useState(() => {
     if (!envPortalUrl) return '';
@@ -74,6 +75,10 @@ export function Photos() {
     };
   }, [uploadcarePublicKey]);
 
+  useEffect(() => {
+    headingRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+
   const widgetUnavailable = !uploadcarePublicKey || widgetLoadError;
 
   const qrImageSrc = useMemo(() => {
@@ -127,17 +132,18 @@ export function Photos() {
         </p>
         <h1
           id="photos-heading"
-          className="font-serif"
+          ref={headingRef}
+          className="font-serif page-title-handwriting"
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
             fontSize: theme.typography.heading.h1,
-            fontWeight: theme.typography.fontWeight.bold,
-            letterSpacing: '0.03em',
+            fontWeight: 400,
+            letterSpacing: '0.05em',
             color: theme.colors.primary.dustyBlue,
             marginBottom: theme.spacing.md,
           }}
         >
-          {photos.heading}
+          <span className="hero-handwriting">{photos.heading}</span>
         </h1>
         <p
           className="font-sans"

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
@@ -15,7 +15,11 @@ interface SeatingData {
 
 export function SeatingLookup() {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, { duration: 0.6 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const activateTitleAnimation = useCallback(() => {
+    headingRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+  useScrollReveal(sectionRef, { duration: 0.6, onEnter: activateTitleAnimation });
   const { strings, formatMessage } = useLanguage();
   const seatingText = strings.seating;
   const cardStyle = {
@@ -240,17 +244,18 @@ export function SeatingLookup() {
         {/* Heading */}
         <h2
           id="seating-heading"
-          className="font-serif"
+          ref={headingRef}
+          className="font-serif page-title-handwriting"
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
             fontSize: theme.typography.heading.h2,
-            fontWeight: theme.typography.fontWeight.bold,
+            fontWeight: 400,
             color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.03em',
+            letterSpacing: '0.05em',
             marginBottom: theme.spacing.md,
           }}
         >
-          {seatingText.heading}
+          <span className="hero-handwriting">{seatingText.heading}</span>
         </h2>
 
         {/* Subtitle */}

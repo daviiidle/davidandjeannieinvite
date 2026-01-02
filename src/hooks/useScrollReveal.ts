@@ -9,6 +9,7 @@ interface UseScrollRevealOptions {
   duration?: number;
   delay?: number;
   yOffset?: number;
+  onEnter?: () => void;
 }
 
 export function useScrollReveal(
@@ -19,6 +20,7 @@ export function useScrollReveal(
     duration = 0.8,
     delay = 0,
     yOffset = 12,
+    onEnter,
   } = options;
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export function useScrollReveal(
     if (prefersReducedMotion) {
       // Skip animation, show final state immediately
       gsap.set(element, { opacity: 1, y: 0 });
+      onEnter?.();
       return;
     }
 
@@ -49,6 +52,9 @@ export function useScrollReveal(
         start: 'top 85%', // Start animation when top of element is 85% down the viewport
         toggleActions: 'play none none none', // Only play once
         once: true, // Animation only happens once
+        onEnter: () => {
+          onEnter?.();
+        },
       },
     });
 
@@ -61,5 +67,5 @@ export function useScrollReveal(
         }
       });
     };
-  }, [ref, duration, delay, yOffset]);
+  }, [ref, duration, delay, yOffset, onEnter]);
 }

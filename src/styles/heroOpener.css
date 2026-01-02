@@ -111,6 +111,11 @@
   animation-play-state: running;
 }
 
+.page-title-handwriting--active .hero-handwriting,
+.page-title-handwriting--active .hero-handwriting::after {
+  animation-play-state: running;
+}
+
 @keyframes hero-handwriting-reveal {
   0% {
     clip-path: inset(0 100% 0 0);
@@ -121,6 +126,26 @@
   }
   100% {
     clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.hero-handwriting--loose {
+  overflow: visible;
+  clip-path: inset(-1em 100% -1em 0);
+  animation-name: hero-handwriting-reveal-loose;
+}
+
+@keyframes hero-handwriting-reveal-loose {
+  0% {
+    clip-path: inset(-1em 100% -1em 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(-1em 0 -1em 0);
     opacity: 1;
   }
 }

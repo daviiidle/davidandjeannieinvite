@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
@@ -57,7 +57,11 @@ export function RSVP({
   emails = ['daviiidle@gmail.com', 'jheea05@gmail.com'],
 }: RSVPProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, { duration: 0.7 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const activateTitleAnimation = useCallback(() => {
+    headingRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+  useScrollReveal(sectionRef, { duration: 0.7, onEnter: activateTitleAnimation });
   const { strings, language } = useLanguage();
   const headingText = heading ?? strings.rsvp.heading;
   const deadlineText = deadline ?? strings.rsvp.deadline;
@@ -182,16 +186,32 @@ export function RSVP({
     >
         <h2
           id="rsvp-heading"
-          className="font-serif"
+          ref={headingRef}
+          className="font-serif page-title-handwriting"
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
+            fontFamily: '"Playball", "Playfair Display", serif',
             fontSize: theme.typography.heading.h2,
-            fontWeight: theme.typography.fontWeight.bold,
+            fontWeight: 400,
             color: theme.colors.primary.dustyBlue,
+            letterSpacing: '0.05em',
             marginBottom: theme.spacing.md,
+            lineHeight: 1.2,
+            paddingTop: '0.2em',
+            paddingBottom: '0.1em',
+            overflow: 'visible',
           }}
         >
-          {headingText}
+          <span
+            className="hero-handwriting hero-handwriting--loose"
+            style={{
+              lineHeight: 1.2,
+              paddingTop: '0.1em',
+              overflow: 'visible',
+            }}
+          >
+            {headingText}
+            {'\u00A0\u00A0'}
+          </span>
         </h2>
 
         <p
@@ -458,4 +478,3 @@ export function RSVP({
     </Section>
   );
 }
-

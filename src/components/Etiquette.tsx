@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
 import { theme } from '../theme';
@@ -14,7 +14,11 @@ const quickNotesMatch = (heading: string) => {
 
 export function Etiquette() {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, { duration: 0.8 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const activateTitleAnimation = useCallback(() => {
+    headingRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+  useScrollReveal(sectionRef, { duration: 0.8, onEnter: activateTitleAnimation });
   const { strings } = useLanguage();
   const { etiquette, details } = strings;
   const sections = etiquette.sections ?? details.infoSections ?? [];
@@ -45,13 +49,16 @@ export function Etiquette() {
             {etiquette.pageLabel}
           </p>
           <h1
-            className="font-serif text-4xl md:text-5xl text-[#8B9DC3]"
+            className="font-serif text-4xl md:text-5xl text-[#8B9DC3] page-title-handwriting"
+            ref={headingRef}
             style={{
-              fontFamily: theme.typography.fontFamily.serif,
+              fontFamily: '"Mea Culpa", "Playfair Display", serif',
+              fontWeight: 400,
+              letterSpacing: '0.05em',
               color: theme.colors.primary.dustyBlue,
             }}
           >
-            {etiquette.pageTitle}
+            <span className="hero-handwriting">{etiquette.pageTitle}</span>
           </h1>
           <p
             className="font-sans text-base md:text-lg text-slate-600 leading-relaxed etiquette-hero-intro"

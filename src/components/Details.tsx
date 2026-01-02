@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/LanguageContext';
@@ -6,7 +6,11 @@ import { navigateWithinApp } from '../utils/routing';
 
 export function Details() {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, { duration: 0.8 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const activateTitleAnimation = useCallback(() => {
+    headingRef.current?.classList.add('page-title-handwriting--active');
+  }, []);
+  useScrollReveal(sectionRef, { duration: 0.8, onEnter: activateTitleAnimation });
   const { strings } = useLanguage();
   const { details } = strings;
   const parents = details.parents;
@@ -224,16 +228,18 @@ export function Details() {
         {/* Section Title */}
         <h2
           id="details-heading"
-          className="font-serif text-center mb-12"
+          ref={headingRef}
+          className="font-serif text-center mb-12 page-title-handwriting"
           style={{
-            fontFamily: theme.typography.fontFamily.serif,
+            fontFamily: '"Mea Culpa", "Playfair Display", serif',
             fontSize: 'clamp(2rem, 5vw, 3rem)',
-            fontWeight: theme.typography.fontWeight.bold,
+            fontWeight: 400,
             color: theme.colors.primary.dustyBlue,
+            letterSpacing: '0.05em',
             marginBottom: theme.spacing['3xl'],
           }}
         >
-          {details.sectionTitle}
+          <span className="hero-handwriting">{details.sectionTitle}</span>
         </h2>
 
         {/* Ceremony & Reception */}
