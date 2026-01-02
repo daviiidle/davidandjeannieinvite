@@ -1,15 +1,13 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const GITHUB_PAGES_BASE = '/davidandjeannieinvite/';
-
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const previewKey = env.PREVIEW_KEY ?? '';
   const shouldLogPreview = command === 'serve' && mode !== 'production' && previewKey;
 
   return {
-    base: command === 'build' ? GITHUB_PAGES_BASE : '/',
+    base: '/',
     plugins: [
       react(),
       {

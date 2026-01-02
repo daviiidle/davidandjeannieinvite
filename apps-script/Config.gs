@@ -24,7 +24,7 @@ const SAVE_THE_DATE_HEADERS = [
   'Notes',
 ];
 const OUTBOX_SHEET_NAME = 'OUTBOX';
-const BASE_SITE_URL = 'https://daviiidle.github.io/davidandjeannieinvite';
+const BASE_SITE_URL = 'https://davidandjeanniewedding.site';
 const TOKEN_BYTE_LENGTH = 24;
 
 const HEADER_CONFIG = [

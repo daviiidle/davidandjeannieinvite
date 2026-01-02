@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Redirecting…</title>
+    <title>Redirecting...</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
     </style>
   </head>
   <body>
-    <p>Redirecting…</p>
+    <p>Redirecting...</p>
     <script>
       (function () {
         var storageKey = 'spa:redirect-path';
@@ -29,11 +29,7 @@
           console.error('Unable to persist redirect path', error);
         }
 
-        var basePath = '/davidandjeannieinvite/';
-        if (!target.startsWith(basePath)) {
-          basePath = '/';
-        }
-        window.location.replace(basePath);
+        window.location.replace('/');
       })();
     </script>
   </body>
