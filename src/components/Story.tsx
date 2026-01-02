@@ -83,7 +83,9 @@ export function Story({
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">{strings.story.heading}</span>
+          <span className="hero-handwriting">
+            <span className="hero-handwriting__text">{strings.story.heading}</span>
+          </span>
         </h2>
 
         {/* Photo Gallery Grid */}

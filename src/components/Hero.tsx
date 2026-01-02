@@ -13,6 +13,10 @@ import { Section } from './Section';
 export function Hero() {
   const { strings, language } = useLanguage();
   const heroTitle = (strings.hero.title || 'Save the Date').trim();
+  const heroSubtitle = (strings.hero.subtitle || '').trim();
+  const heroCtaLabel = (strings.hero.ctaLabel || 'Receive Updates').trim();
+  const updatesHeading = (strings.hero.updatesHeading || 'Updates & RSVP').trim();
+  const scrollHint = (strings.hero.scrollHint || 'Scroll for details').trim();
   const resolvedDate = strings.details.dateLabel;
   const locationText = strings.hero.locationLine;
   const invitationLine = strings.hero.invitationLine;
@@ -117,8 +121,26 @@ export function Hero() {
             textAlign: 'center',
           }}
         >
-          <span className="hero-handwriting">{heroTitle}</span>
+          <span className="hero-handwriting">
+            <span className="hero-handwriting__text">{heroTitle}</span>
+          </span>
         </p>
+        {heroSubtitle ? (
+          <p
+            className="hero-opener__fade-item font-sans"
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              color: theme.colors.secondary.slate,
+              letterSpacing: '0.04em',
+              marginBottom: 0,
+              lineHeight: 1.4,
+              transitionDelay: '0.05s',
+            }}
+          >
+            {heroSubtitle}
+          </p>
+        ) : null}
 
         <div className="space-y-2 sm:space-y-3">
           <p
@@ -304,14 +326,14 @@ export function Hero() {
               cursor: 'pointer',
               marginTop: theme.spacing.sm,
             }}
-            aria-label="Stay in the loop form"
+            aria-label={heroCtaLabel}
           >
-            Stay in the loop
+            {heroCtaLabel}
           </button>
         </div>
 
         <div className="hero-scroll-indicator" aria-hidden="true">
-          <span>Scroll for details</span>
+          <span>{scrollHint}</span>
           <span className="hero-scroll-indicator__arrow" />
         </div>
 
@@ -332,7 +354,7 @@ export function Hero() {
               marginBottom: theme.spacing.lg,
             }}
           >
-            Updates & RSVP
+            {updatesHeading}
           </h2>
           <StayInLoopForm />
         </div>

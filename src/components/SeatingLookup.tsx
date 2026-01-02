@@ -255,7 +255,9 @@ export function SeatingLookup() {
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">{seatingText.heading}</span>
+          <span className="hero-handwriting">
+            <span className="hero-handwriting__text">{seatingText.heading}</span>
+          </span>
         </h2>
 
         {/* Subtitle */}

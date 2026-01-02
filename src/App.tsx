@@ -16,6 +16,7 @@ import { Section } from './components/Section';
 import { SaveTheDateIntroGate } from './components/SaveTheDateIntroGate';
 import { LanguageProvider } from './context/LanguageContext';
 import type { Language } from './i18n';
+import { translations } from './i18n';
 import { isPreviewEnabled } from './utils/preview';
 
 type PageKey =
@@ -43,18 +44,6 @@ const routeMap: Record<string, PageKey> = {
   '/seating': 'seating',
   '/photos': 'photos',
 };
-
-const navLinks = [
-  { path: '/', label: 'Save the Date' },
-  { path: '/rsvp', label: 'RSVP' },
-  { path: '/details', label: 'Details' },
-  { path: '/etiquette', label: 'Etiquette' },
-  { path: '/the-day', label: 'The Day' },
-  { path: '/reception', label: 'Reception' },
-  { path: '/seating', label: 'Seating' },
-  { path: '/photos', label: 'Photos' },
-  { path: '/our-story', label: 'Our Story' },
-];
 
 const SUPPORTED_LANGUAGES: Language[] = ['en', 'vi'];
 const DEFAULT_LANGUAGE: Language = 'en';
@@ -137,6 +126,21 @@ export default function App() {
   }, [pagePath, viewToken]);
   const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
   const [previewEnabled, setPreviewEnabled] = useState(() => isPreviewEnabled());
+  const navCopy = translations[language].navigation;
+  const navLinks = useMemo(
+    () => [
+      { path: '/', label: navCopy.saveTheDate },
+      { path: '/rsvp', label: navCopy.rsvp },
+      { path: '/details', label: navCopy.details },
+      { path: '/etiquette', label: navCopy.etiquette },
+      { path: '/the-day', label: navCopy.theDay },
+      { path: '/reception', label: navCopy.reception },
+      { path: '/seating', label: navCopy.seating },
+      { path: '/photos', label: navCopy.photos },
+      { path: '/our-story', label: navCopy.story },
+    ],
+    [navCopy]
+  );
 
   useEffect(() => {
     const expectedPath = buildLocalizedPath(language, pagePath);
@@ -200,7 +204,7 @@ export default function App() {
 
   const visibleNavLinks = useMemo(
     () => (previewEnabled ? navLinks : navLinks.filter((link) => link.path === '/')),
-    [previewEnabled],
+    [previewEnabled, navLinks],
   );
 
   return (

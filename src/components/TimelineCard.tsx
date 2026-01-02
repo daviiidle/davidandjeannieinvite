@@ -186,7 +186,9 @@ export function TimelineCard({
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">{title}</span>
+          <span className="hero-handwriting">
+            <span className="hero-handwriting__text">{title}</span>
+          </span>
         </h2>
         <p
           className="timeline-card__date"

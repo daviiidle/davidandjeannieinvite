@@ -90,6 +90,12 @@
   animation-play-state: paused;
 }
 
+.hero-handwriting__text {
+  display: inline-block;
+  line-height: 1.1;
+  padding-bottom: 0.15em;
+}
+
 .hero-handwriting::after {
   content: '';
   position: absolute;

@@ -209,7 +209,7 @@ export function RSVP({
               overflow: 'visible',
             }}
           >
-            {headingText}
+            <span className="hero-handwriting__text">{headingText}</span>
             {'\u00A0\u00A0'}
           </span>
         </h2>

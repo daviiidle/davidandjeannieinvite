@@ -13,10 +13,15 @@ interface InfoSection {
 export interface TranslationContent {
   navigation: {
     skipToContent: string;
+    saveTheDate: string;
     details: string;
     story: string;
     seating: string;
     rsvp: string;
+    etiquette: string;
+    theDay: string;
+    reception: string;
+    photos: string;
     changeLanguage: string;
     menuLabel: string;
     closeMenu: string;
@@ -24,6 +29,10 @@ export interface TranslationContent {
   };
   hero: {
     title: string;
+    subtitle: string;
+    ctaLabel: string;
+    updatesHeading: string;
+    scrollHint: string;
     groomName: string;
     brideName: string;
     date: string;
@@ -82,6 +91,7 @@ export interface TranslationContent {
   stayInLoop: {
     heading: string;
     subtitle: string;
+    reassurance: string;
     firstNameLabel: string;
     lastNameLabel: string;
     phoneLabel: string;
@@ -171,6 +181,7 @@ export interface TranslationContent {
   footer: {
     rights: string;
     madeWith: string;
+    formalLine: string;
   };
   languageSelector: {
     title: string;
@@ -357,10 +368,15 @@ export const translations: Record<Language, TranslationContent> = {
   en: {
     navigation: {
       skipToContent: 'Skip to main content',
+      saveTheDate: 'Save the Date',
       details: 'Details',
       story: 'Our Story',
       seating: 'Seating',
       rsvp: 'RSVP',
+      etiquette: 'Etiquette',
+      theDay: 'The Day',
+      reception: 'Reception',
+      photos: 'Photos',
       changeLanguage: 'Change Language',
       menuLabel: 'Menu',
       closeMenu: 'Close Menu',
@@ -368,6 +384,10 @@ export const translations: Record<Language, TranslationContent> = {
     },
     hero: {
       title: 'Save the Date',
+      subtitle: '',
+      ctaLabel: 'Receive Updates',
+      updatesHeading: 'Updates & RSVP',
+      scrollHint: 'Scroll for details',
       groomName: 'David',
       brideName: 'Jeannie',
       date: 'October 3, 2026',
@@ -382,7 +402,7 @@ export const translations: Record<Language, TranslationContent> = {
     details: {
       saveTheDate: 'Save the Date',
       dateLabel: 'October 3, 2026',
-      countdownTitle: 'Countdown to the big day',
+      countdownTitle: 'Countdown to the Wedding Day',
       countdownUnits: {
         days: 'DAYS',
         hours: 'HOURS',
@@ -443,14 +463,15 @@ export const translations: Record<Language, TranslationContent> = {
       ],
     },
     stayInLoop: {
-      heading: 'Want to stay in the loop?',
+      heading: 'Would you like to receive updates?',
       subtitle: 'Leave your name and number so we can keep you updated. This is not a formal RSVP.',
+      reassurance: '',
       firstNameLabel: 'First name',
       lastNameLabel: 'Last name',
       phoneLabel: 'Mobile number',
       phonePlaceholder: '04XX XXX XXX',
       phoneHelper: 'Use an Australian mobile number.',
-      likelyLabel: 'Likely to attend? (optional)',
+      likelyLabel: 'Planning to attend? (Optional)',
       dropdownPlaceholder: 'Select one (optional)',
       optionYes: 'Yes',
       optionMaybe: 'Maybe',
@@ -557,6 +578,7 @@ export const translations: Record<Language, TranslationContent> = {
     footer: {
       rights: 'All Rights Reserved',
       madeWith: 'Made with ♡',
+      formalLine: '',
     },
     languageSelector: {
       title: 'Choose your language',
@@ -591,22 +613,31 @@ export const translations: Record<Language, TranslationContent> = {
   vi: {
     navigation: {
       skipToContent: 'Bỏ qua tới nội dung chính',
-      details: 'Thông tin',
-      story: 'Chuyện tình',
-      seating: 'Sơ đồ bàn',
-      rsvp: 'Phản hồi',
+      saveTheDate: 'Báo ngày cưới',
+      details: 'Thông tin chi tiết',
+      story: 'Câu chuyện của chúng tôi',
+      seating: 'Sắp xếp chỗ ngồi',
+      rsvp: 'Xác nhận tham dự',
+      etiquette: 'Lưu ý tham dự',
+      theDay: 'Ngày hôn lễ',
+      reception: 'Tiệc cưới',
+      photos: 'Hình ảnh',
       changeLanguage: 'Đổi ngôn ngữ',
       menuLabel: 'Menu',
       closeMenu: 'Đóng Menu',
       moreLabel: 'Thêm',
     },
     hero: {
-      title: 'Save the Date',
+      title: 'Trân trọng báo ngày',
+      subtitle: 'Gia đình chúng tôi trân trọng thông báo ngày hôn lễ của con em chúng tôi.',
+      ctaLabel: 'Nhận cập nhật',
+      updatesHeading: 'Cập nhật & Phản hồi tham dự',
+      scrollHint: 'Cuộn xuống để xem chi tiết',
       groomName: 'David',
       brideName: 'Jeannie',
       date: 'Ngày 3 tháng 10 năm 2026',
       locationLine: 'Melbourne, Victoria',
-      invitationLine: 'Thiệp mời chính thức sẽ được gửi sau',
+      invitationLine: 'Thiệp mời chính thức sẽ được trân trọng gửi đến quý khách sau.',
       rsvpStatus: 'Chúng tôi sẽ mở RSVP gần ngày cưới',
       calendar: {
         googleLabel: 'Thêm vào Google Calendar',
@@ -614,9 +645,9 @@ export const translations: Record<Language, TranslationContent> = {
       },
     },
     details: {
-      saveTheDate: 'Lưu ngày trọng đại',
+      saveTheDate: 'Vui lòng ghi nhớ ngày',
       dateLabel: 'Ngày 3 tháng 10 năm 2026',
-      countdownTitle: 'Đếm ngược đến ngày cưới',
+      countdownTitle: 'Thời gian còn lại đến ngày hôn lễ',
       countdownUnits: {
         days: 'NGÀY',
         hours: 'GIỜ',
@@ -677,15 +708,17 @@ export const translations: Record<Language, TranslationContent> = {
       ],
     },
     stayInLoop: {
-      heading: 'Muốn nhận thông tin mới nhất?',
+      heading: 'Để tiện cập nhật thông tin hôn lễ',
       subtitle:
         'Để lại tên và số điện thoại để chúng tôi gửi cập nhật cho bạn. Đây không phải là RSVP chính thức.',
+      reassurance:
+        'Việc đăng ký này chỉ nhằm mục đích cập nhật thông tin, không thay thế cho thiệp mời chính thức.',
       firstNameLabel: 'Tên',
       lastNameLabel: 'Họ',
       phoneLabel: 'Số điện thoại',
       phonePlaceholder: '04XX XXX XXX',
       phoneHelper: 'Vui lòng dùng số di động Úc.',
-      likelyLabel: 'Bạn có thể tham dự? (không bắt buộc)',
+      likelyLabel: 'Quý khách có thể sắp xếp tham dự không? (Không bắt buộc)',
       dropdownPlaceholder: 'Chọn một tùy chọn (không bắt buộc)',
       optionYes: 'Có',
       optionMaybe: 'Có thể',
@@ -792,6 +825,7 @@ export const translations: Record<Language, TranslationContent> = {
     footer: {
       rights: 'Bảo lưu mọi quyền',
       madeWith: 'Được tạo nên với ♡',
+      formalLine: 'Chúng tôi hân hạnh được đón tiếp quý khách trong ngày trọng đại này.',
     },
     languageSelector: {
       title: 'Chọn ngôn ngữ',

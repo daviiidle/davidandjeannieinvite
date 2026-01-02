@@ -58,7 +58,9 @@ export function Etiquette() {
               color: theme.colors.primary.dustyBlue,
             }}
           >
-            <span className="hero-handwriting">{etiquette.pageTitle}</span>
+            <span className="hero-handwriting">
+              <span className="hero-handwriting__text">{etiquette.pageTitle}</span>
+            </span>
           </h1>
           <p
             className="font-sans text-base md:text-lg text-slate-600 leading-relaxed etiquette-hero-intro"

@@ -239,7 +239,9 @@ export function Details() {
             marginBottom: theme.spacing['3xl'],
           }}
         >
-          <span className="hero-handwriting">{details.sectionTitle}</span>
+          <span className="hero-handwriting">
+            <span className="hero-handwriting__text">{details.sectionTitle}</span>
+          </span>
         </h2>
 
         {/* Ceremony & Reception */}

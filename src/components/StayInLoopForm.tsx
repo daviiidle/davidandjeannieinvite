@@ -159,6 +159,19 @@ export function StayInLoopForm() {
         >
           {stayInLoop.subtitle}
         </p>
+        {stayInLoop.reassurance ? (
+          <p
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.xs,
+              color: theme.colors.text.secondary,
+              letterSpacing: '0.04em',
+              marginTop: theme.spacing.xs,
+            }}
+          >
+            {stayInLoop.reassurance}
+          </p>
+        ) : null}
       </div>
 
       <form

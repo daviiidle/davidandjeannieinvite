@@ -116,6 +116,19 @@ export function Footer({
         >
           We can’t wait to celebrate with you.
         </p>
+        {strings.footer.formalLine ? (
+          <p
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              color: theme.colors.text.inverse,
+              marginBottom: theme.spacing.md,
+              opacity: 0.85,
+            }}
+          >
+            {strings.footer.formalLine}
+          </p>
+        ) : null}
 
         {/* Copyright */}
         <p

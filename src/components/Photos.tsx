@@ -143,7 +143,9 @@ export function Photos() {
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">{photos.heading}</span>
+          <span className="hero-handwriting">
+            <span className="hero-handwriting__text">{photos.heading}</span>
+          </span>
         </h1>
         <p
           className="font-sans"
