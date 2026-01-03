@@ -22,15 +22,10 @@ export function SeatingLookup() {
   useScrollReveal(sectionRef, { duration: 0.6, onEnter: activateTitleAnimation });
   const { strings, formatMessage } = useLanguage();
   const seatingText = strings.seating;
-  const cardStyle = {
-    backgroundColor: theme.colors.background.white,
-    borderRadius: theme.borderRadius['3xl'],
-    padding: theme.spacing['2xl'],
-    boxShadow: theme.shadows.lg,
+  const formWrapperStyle = {
     maxWidth: '680px',
     width: '100%',
     margin: '0 auto',
-    border: `1px solid ${theme.colors.primary.dustyBlue}20`,
     textAlign: 'center' as const,
   };
   const inputStyle = {
@@ -222,7 +217,7 @@ export function SeatingLookup() {
       ref={sectionRef}
       aria-labelledby="seating-heading"
       style={{
-        backgroundColor: theme.colors.background.offWhite,
+        backgroundColor: theme.colors.background.white,
       }}
       maxWidth={theme.layout.maxWidth}
       innerStyle={{ textAlign: 'center' }}
@@ -275,7 +270,7 @@ export function SeatingLookup() {
           {seatingText.subtitle}
         </p>
 
-        <div style={cardStyle}>
+        <div style={formWrapperStyle}>
           <p
             className="font-sans"
             style={{
