@@ -6,6 +6,7 @@ import './styles/forms.css';
 import './styles/navigation.css';
 import './styles/etiquette.css';
 import './styles/details.css';
+import './styles/photos.css';
 import './styles/uploadcare.css';
 import './styles/section.css';
 import './styles/saveTheDateIntro.css';

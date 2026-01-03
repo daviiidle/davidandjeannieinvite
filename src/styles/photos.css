@@ -1,0 +1,13 @@
+.photos-steps-panel {
+  text-align: left;
+}
+
+@media (max-width: 430px) {
+  .photos-steps-panel {
+    text-align: center;
+  }
+
+  .photos-step {
+    text-align: center;
+  }
+}

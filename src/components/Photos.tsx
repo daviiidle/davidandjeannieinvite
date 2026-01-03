@@ -91,11 +91,11 @@ export function Photos() {
   }, [uploadLink]);
 
   const cardStyle = {
-    borderRadius: theme.borderRadius['3xl'],
-    padding: theme.spacing['2xl'],
-    backgroundColor: theme.colors.background.white,
-    boxShadow: theme.shadows.lg,
-    border: `1px solid ${theme.colors.primary.dustyBlue}15`,
+    borderRadius: 0,
+    padding: 0,
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+    border: 'none',
   };
 
   return (
@@ -103,7 +103,7 @@ export function Photos() {
       id="photos"
       aria-labelledby="photos-heading"
       style={{
-        backgroundColor: theme.colors.background.offWhite,
+        backgroundColor: theme.colors.background.white,
       }}
       maxWidth={theme.layout.maxWidth}
     >
@@ -173,6 +173,7 @@ export function Photos() {
       </div>
 
       <div
+        className="photos-steps-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -183,6 +184,7 @@ export function Photos() {
         }}
       >
         <div
+          className="photos-steps-panel"
           style={{
             ...cardStyle,
             textAlign: 'left',
@@ -210,7 +212,7 @@ export function Photos() {
             }}
           >
             {photos.steps.map((step) => (
-              <div key={step.title}>
+              <div key={step.title} className="photos-step">
                 <p
                   className="font-serif"
                   style={{
@@ -239,6 +241,7 @@ export function Photos() {
         </div>
 
         <div
+          className="photos-qr-panel"
           style={{
             ...cardStyle,
             display: 'flex',
@@ -252,9 +255,9 @@ export function Photos() {
               style={{
                 width: '100%',
                 maxWidth: '280px',
-                backgroundColor: theme.colors.background.offWhite,
-                padding: theme.spacing.md,
-                borderRadius: theme.borderRadius['2xl'],
+                backgroundColor: 'transparent',
+                padding: 0,
+                borderRadius: 0,
             }}
           >
             <img
@@ -289,11 +292,11 @@ export function Photos() {
         style={{
           margin: `${theme.spacing['3xl']} auto 0`,
           maxWidth: '720px',
-          backgroundColor: theme.colors.background.white,
-          borderRadius: theme.borderRadius['3xl'],
-          padding: theme.spacing['2xl'],
-          boxShadow: theme.shadows.lg,
-          border: `1px solid ${theme.colors.primary.dustyBlue}15`,
+          backgroundColor: 'transparent',
+          borderRadius: 0,
+          padding: 0,
+          boxShadow: 'none',
+          border: 'none',
           textAlign: 'center',
           marginBottom: theme.spacing['4xl'],
         }}
