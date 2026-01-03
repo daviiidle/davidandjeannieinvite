@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 import { theme } from '../theme';
 import { navigateWithinApp } from '../utils/routing';
 
@@ -8,7 +8,9 @@ const quickNotesMatch = (heading: string) => {
   const normalized = heading.toLowerCase();
   return (
     normalized.includes('quick notes') ||
-    normalized.includes('ghi chú nhanh')
+    normalized.includes('at a glance') ||
+    normalized.includes('ghi chú nhanh') ||
+    normalized.includes('thông tin chính')
   );
 };
 
@@ -83,7 +85,7 @@ export function Etiquette() {
               {column.subsections.map((section, idx) => {
                 const isQuickNotes = quickNotesMatch(section.heading);
                 const blockClass = isQuickNotes
-                  ? 'etiquette-quick-notes'
+                  ? 'etiquette-quick-notes etiquette-glance font-sans text-sm text-slate-600 leading-relaxed'
                   : 'etiquette-subsection';
 
                 return (
@@ -108,7 +110,7 @@ export function Etiquette() {
                         {section.body}
                       </p>
                     )}
-                    {section.bullets && (
+                    {section.bullets && !isQuickNotes && (
                       <ul>
                         {section.bullets.map((bullet) => (
                           <li key={bullet}>{bullet}</li>

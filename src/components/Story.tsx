@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 import { Section } from './Section';
 
 interface StoryImage {

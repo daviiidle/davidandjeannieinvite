@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { theme } from '../theme';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 import type { Language } from '../i18n';
 
 interface NavigationLink {
@@ -49,10 +49,6 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
       window.removeEventListener('resize', updateHeaderHeight);
     };
   }, []);
-
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [currentPath]);
 
   useEffect(() => {
     if (!isMenuOpen) return;

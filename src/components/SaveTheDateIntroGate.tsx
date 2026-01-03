@@ -35,7 +35,13 @@ const shouldPlayIntroVideo = () => {
   } catch {
     // Ignore storage read errors and default to playing the intro.
   }
-  return !shouldRespectReducedMotion();
+  if (shouldRespectReducedMotion()) return false;
+  if (typeof document === 'undefined') return true;
+  const probe = document.createElement('video');
+  const hasSupportedSource = INTRO_VIDEO_SOURCES.some((source) =>
+    source.type ? probe.canPlayType(source.type) !== '' : true,
+  );
+  return hasSupportedSource;
 };
 
 export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
@@ -77,18 +83,6 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     setContentVisible(true);
     setVideoPhase('hidden');
   }, [markIntroSeen]);
-
-  useEffect(() => {
-    if (!shouldPlayIntro) return;
-    if (typeof document === 'undefined') return;
-    const probe = document.createElement('video');
-    const hasSupportedSource = INTRO_VIDEO_SOURCES.some((source) =>
-      source.type ? probe.canPlayType(source.type) !== '' : true,
-    );
-    if (!hasSupportedSource) {
-      skipIntro();
-    }
-  }, [shouldPlayIntro, skipIntro]);
 
   const startFadeOut = useCallback(() => {
     if (videoPhase !== 'playing') {
@@ -186,11 +180,7 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     return () => window.clearTimeout(timeout);
   }, [shouldPlayIntro, autoplayBlocked]);
 
-  useEffect(() => {
-    if (autoplayBlocked) {
-      setVideoReady(true);
-    }
-  }, [autoplayBlocked]);
+  const isVideoReady = videoReady || autoplayBlocked;
 
   const attemptManualPlay = useCallback(() => {
     setAutoplayBlocked(false);
@@ -231,7 +221,7 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
           <video
             ref={videoRef}
             className={
-              videoReady
+              isVideoReady
                 ? 'save-date-intro__video save-date-intro__video--visible'
                 : 'save-date-intro__video'
             }

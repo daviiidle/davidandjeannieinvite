@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { theme } from '../theme';
 import { SAVE_THE_DATE_WEBHOOK_URL } from '../api/rsvp';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 import {
   FormCard,
   FormField,

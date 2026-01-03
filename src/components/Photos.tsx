@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { theme } from '../theme';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 import { Section } from './Section';
 
 declare global {
@@ -14,18 +14,13 @@ export function Photos() {
   const { photos } = strings;
   const headingRef = useRef<HTMLHeadingElement>(null);
   const envPortalUrl = import.meta.env.VITE_UPLOADCARE_PORTAL_URL;
-  const [uploadLink, setUploadLink] = useState(() => {
-    if (!envPortalUrl) return '';
-    return envPortalUrl.includes('#')
-      ? envPortalUrl
-      : `${envPortalUrl}#uploadcare-uploader`;
-  });
-  const uploadcarePublicKey = import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY ?? '';
-  const [widgetReady, setWidgetReady] = useState(false);
-  const [widgetLoadError, setWidgetLoadError] = useState(false);
-
-  useEffect(() => {
-    if (uploadLink || typeof window === 'undefined') return;
+  const uploadLink = useMemo(() => {
+    if (envPortalUrl) {
+      return envPortalUrl.includes('#')
+        ? envPortalUrl
+        : `${envPortalUrl}#uploadcare-uploader`;
+    }
+    if (typeof window === 'undefined') return '';
     const base = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
     const normalizedBase = base === '' || base === '/' ? '' : base;
     const relativePath = `${normalizedBase}/photos#uploadcare-uploader`;
@@ -33,15 +28,17 @@ export function Photos() {
       relativePath.startsWith('/') ? relativePath : `/${relativePath}`,
       window.location.origin,
     );
-    setUploadLink(url.toString());
-  }, [uploadLink]);
+    return url.toString();
+  }, [envPortalUrl]);
+  const uploadcarePublicKey = import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY ?? '';
+  const [widgetReady, setWidgetReady] = useState(
+    () => typeof window !== 'undefined' && Boolean(window.uploadcare),
+  );
+  const [widgetLoadError, setWidgetLoadError] = useState(false);
 
   useEffect(() => {
-    setWidgetReady(false);
-    setWidgetLoadError(false);
     if (!uploadcarePublicKey || typeof window === 'undefined') return;
     if (window.uploadcare) {
-      setWidgetReady(true);
       return;
     }
 

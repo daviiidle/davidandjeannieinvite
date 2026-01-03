@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback, useRef, useState } from 'react';
 import { Navigation } from './components';
 import { Hero } from './components/Hero';
 import { Details } from './components/Details';
@@ -14,7 +14,7 @@ import { Etiquette } from './components/Etiquette';
 import { BASE_PATH, buildFullPath, normalizeRelativePath } from './utils/routing';
 import { Section } from './components/Section';
 import { SaveTheDateIntroGate } from './components/SaveTheDateIntroGate';
-import { LanguageProvider } from './context/LanguageContext';
+import { LanguageProvider } from './context/LanguageProvider';
 import type { Language } from './i18n';
 import { translations } from './i18n';
 import { isPreviewEnabled } from './utils/preview';
@@ -124,8 +124,8 @@ export default function App() {
     if (viewToken) return 'view';
     return routeMap[pagePath] ?? 'not-found';
   }, [pagePath, viewToken]);
-  const [pendingScrollId, setPendingScrollId] = useState<string | null>(null);
-  const [previewEnabled, setPreviewEnabled] = useState(() => isPreviewEnabled());
+  const pendingScrollIdRef = useRef<string | null>(null);
+  const previewEnabled = isPreviewEnabled();
   const navCopy = translations[language].navigation;
   const navLinks = useMemo(
     () => [
@@ -150,10 +150,6 @@ export default function App() {
   }, [language, pagePath, path, navigate]);
 
   useEffect(() => {
-    setPreviewEnabled(isPreviewEnabled());
-  }, [path]);
-
-  useEffect(() => {
     if (previewEnabled) return;
     if (page === 'save-the-date') return;
     const target = buildLocalizedPath(language, '/');
@@ -169,20 +165,20 @@ export default function App() {
   }, [path]);
 
   useEffect(() => {
-    if (!pendingScrollId) return;
+    if (!pendingScrollIdRef.current) return;
     if (page !== 'save-the-date') return;
-    const el = document.getElementById(pendingScrollId);
+    const el = document.getElementById(pendingScrollIdRef.current);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setPendingScrollId(null);
     }
-  }, [pendingScrollId, page]);
+    pendingScrollIdRef.current = null;
+  }, [page]);
 
   const handleNavigate = useCallback((href: string, targetId?: string) => {
     const normalizedPage = normalizePagePath(href);
     const localizedHref = buildLocalizedPath(language, normalizedPage);
     if (localizedHref !== path) {
-      setPendingScrollId(targetId ?? null);
+      pendingScrollIdRef.current = targetId ?? null;
       navigate(localizedHref);
       return;
     }
@@ -211,6 +207,7 @@ export default function App() {
     <LanguageProvider language={language} onChangeLanguage={handleLanguageChange}>
       <div>
         <Navigation
+          key={`${language}-${pagePath}`}
           currentPath={pagePath}
           links={visibleNavLinks}
           onNavigate={handleNavigate}

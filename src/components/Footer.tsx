@@ -1,5 +1,5 @@
 import { theme } from '../theme';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 
 interface SocialLink {
   platform: string;

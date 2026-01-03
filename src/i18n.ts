@@ -217,20 +217,15 @@ const englishInfoSections: InfoSection[] = [
     subsections: [
       {
         heading: 'Reception Timing',
-        body: 'Reception winds down at 11:00 PM, with guests beginning to depart from 11:15 PM. We kindly ask that the venue be fully cleared by 11:30 PM to respect venue regulations and ensure a smooth conclusion to the evening.',
+        body: 'The reception will conclude at 11:00 PM. For guests requiring transportation, departures will begin at 11:15 PM. Kindly note that the venue will close at 11:30 PM.',
       },
       {
-        heading: 'Photography & Phones',
-        body: 'We invite you to be fully present and enjoy the moment with us.',
-        bullets: [
-          'Please refrain from stepping into aisles during the ceremony',
-          'Kindly avoid using flash photography',
-          'Our photographers will capture the evening so you can relax and celebrate',
-        ],
+        heading: 'Photography & Mobile Phones',
+        body: 'We warmly invite you to be fully present and enjoy the celebration with us. Kindly avoid stepping into aisles or using flash photography during key moments. Our photographers will capture the evening, allowing you to relax and celebrate.',
       },
       {
         heading: 'Seating Arrangements',
-        body: 'All seating arrangements are available on this website. Please enter your name exactly as shown on your invitation to view your assigned table for the reception.',
+        body: 'All seating details are available on this website. Please enter your name exactly as shown on your invitation to view your assigned table.',
       },
     ],
   },
@@ -240,20 +235,20 @@ const englishInfoSections: InfoSection[] = [
     subsections: [
       {
         heading: 'Dress Code: Semi-Formal / Elegant',
-        body: 'We kindly ask guests to dress in polished, evening-appropriate attire to match the tone of the celebration.',
+        body: 'We kindly ask guests to dress in polished, evening-appropriate attire.',
         bullets: [
-          'Cocktail dresses, evening dresses, suits, or dress shirts are welcome',
-          'Neutral, pastel, or rich evening colours are encouraged',
-          'Please avoid overly casual clothing such as jeans, sneakers, or T-shirts',
+          'Cocktail dresses, elegant evening wear, or dress shirts are most welcome',
+          'Neutral, pastel, or rich evening tones are encouraged',
+          'Please avoid casual clothing such as jeans, sneakers, or T-shirts',
         ],
       },
       {
         heading: 'Children',
-        body: 'This will be an adults-focused celebration to allow everyone to fully enjoy the evening. A small number of children from our immediate family will be in attendance. Thank you for your understanding.',
+        body: 'This will be an adults-focused celebration to allow everyone to fully enjoy the evening. A small number of children from our immediate family will be in attendance. Thank you sincerely for your understanding.',
       },
       {
         heading: 'Gifts & Well-Wishes',
-        body: 'Your presence truly means the world to us. For those who wish to share their well-wishes in a traditional way, a wishing table will be available at the reception.',
+        body: 'Your presence is the greatest gift to us. For those who wish to share their well-wishes in a traditional way, a wishing table will be available at the reception.',
       },
     ],
   },
@@ -262,27 +257,21 @@ const englishInfoSections: InfoSection[] = [
     layoutIndex: 2,
     subsections: [
       {
-        heading: 'Food & Celebration Style',
-        body: 'Dinner will be served as individual plated courses throughout the evening. Relax, enjoy each course, and celebrate with us.',
+        heading: 'Celebration Notes',
+        body: 'Dinner will be served as individual plated courses throughout the evening. We invite everyone to enjoy each course at a relaxed pace.',
       },
       {
         heading: 'Respectful Celebration',
-        body: 'We kindly ask all guests to help make the night enjoyable for everyone.',
+        body: 'To ensure a pleasant evening for all, we kindly ask guests to:',
         bullets: [
           'Celebrate responsibly',
           'Be mindful of volume as the evening progresses',
-          'Respect venue staff and fellow guests',
+          'Show respect to venue staff and fellow guests',
         ],
       },
       {
-        heading: 'Quick Notes (Mobile Summary)',
-        bullets: [
-          'Semi-formal attire',
-          'Adults-focused celebration',
-          'Wishing table available',
-          'Assigned seating via website',
-          'Reception winds down by 11:00 PM (departures from 11:15 PM, venue clear by 11:30 PM)',
-        ],
+        heading: 'At a Glance',
+        body: 'Semi-formal / elegant attire | Adults-focused celebration | Assigned seating via website | Reception ends at 11:00 PM | Venue closes at 11:30 PM',
       },
     ],
   },
@@ -295,20 +284,15 @@ const vietnameseInfoSections: InfoSection[] = [
     subsections: [
       {
         heading: 'Thời gian tiệc',
-        body: 'Tiệc sẽ nhẹ nhàng kết thúc vào 11:00 PM, khách bắt đầu rời tiệc từ 11:15 PM. Mong mọi người giúp chúng tôi rời địa điểm trước 11:30 PM để tôn trọng quy định và khép lại buổi tối thật trọn vẹn.',
+        body: 'Tiệc cưới sẽ kết thúc lúc 11:00 PM. Xe đưa đón sẽ bắt đầu khởi hành từ 11:15 PM. Địa điểm tổ chức sẽ đóng cửa lúc 11:30 PM.',
       },
       {
         heading: 'Chụp hình & điện thoại',
-        body: 'Mong mọi người hãy tận hưởng khoảnh khắc cùng chúng tôi.',
-        bullets: [
-          'Vui lòng không bước vào lối đi trong lúc làm lễ',
-          'Hạn chế sử dụng đèn flash khi chụp ảnh',
-          'Đã có nhiếp ảnh gia ghi lại trọn vẹn buổi tối để bạn yên tâm vui tiệc',
-        ],
+        body: 'Kính mong quý khách dành thời gian tận hưởng khoảnh khắc cùng chúng tôi. Xin vui lòng tránh di chuyển vào lối đi hoặc sử dụng đèn flash trong các nghi thức chính. Đội ngũ nhiếp ảnh sẽ ghi lại những khoảnh khắc đẹp trong suốt buổi tiệc.',
       },
       {
         heading: 'Sắp xếp chỗ ngồi',
-        body: 'Sơ đồ chỗ ngồi được hiển thị ngay trên website. Vui lòng nhập đúng họ tên như trên thiệp mời để xem bàn tiệc được sắp xếp cho bạn.',
+        body: 'Thông tin chỗ ngồi được cập nhật trên website. Xin vui lòng nhập đúng họ tên như trên thiệp mời để xem bàn được sắp xếp.',
       },
     ],
   },
@@ -317,21 +301,21 @@ const vietnameseInfoSections: InfoSection[] = [
     layoutIndex: 1,
     subsections: [
       {
-        heading: 'Trang phục: Bán trang trọng / thanh lịch',
-        body: 'Rất mong mọi người chọn trang phục chỉn chu, phù hợp không khí ấm áp của buổi tối.',
+        heading: 'Trang phục: Bán trang trọng / Thanh lịch',
+        body: 'Chúng tôi trân trọng kính mời quý khách mặc trang phục lịch sự, phù hợp với không khí buổi tiệc.',
         bullets: [
-          'Khuyến khích váy cocktail, đầm dạ tiệc, vest, sơ mi lịch sự',
-          'Màu trung tính, pastel hoặc sắc tối sang trọng đều phù hợp',
-          'Vui lòng hạn chế đồ quá casual như quần jeans, giày thể thao hoặc áo thun',
+          'Váy dạ hội nhẹ, trang phục cocktail hoặc áo sơ mi lịch sự đều rất phù hợp',
+          'Khuyến khích các tông màu trung tính, pastel hoặc trang nhã',
+          'Xin vui lòng hạn chế trang phục quá giản dị như quần jeans, giày thể thao hoặc áo thun',
         ],
       },
       {
         heading: 'Trẻ em',
-        body: 'Buổi tiệc ưu tiên người lớn để mọi người có thể tận hưởng trọn vẹn. Một vài bé trong gia đình hai bên sẽ tham dự cùng chúng tôi. Cảm ơn bạn đã thông cảm.',
+        body: 'Buổi tiệc được tổ chức chủ yếu dành cho người lớn để đảm bảo sự trang trọng. Một số ít trẻ em trong gia đình gần sẽ tham dự. Rất mong quý khách thông cảm và thấu hiểu.',
       },
       {
         heading: 'Quà tặng & lời chúc',
-        body: 'Sự hiện diện của bạn là món quà quý giá nhất. Nếu muốn gửi lời chúc theo cách truyền thống, xin mời ghé “wishing table” tại tiệc.',
+        body: 'Sự hiện diện của quý khách là niềm vinh hạnh lớn nhất đối với chúng tôi. Nếu quý khách muốn gửi lời chúc theo truyền thống, xin mời ghé bàn chúc mừng tại buổi tiệc.',
       },
     ],
   },
@@ -340,27 +324,21 @@ const vietnameseInfoSections: InfoSection[] = [
     layoutIndex: 2,
     subsections: [
       {
-        heading: 'Phong cách tiệc & ẩm thực',
-        body: 'Bữa tối được phục vụ theo từng phần riêng cho mỗi khách, với nhiều món nối tiếp nhau. Mời mọi người thư giãn, thưởng thức và cùng nhau chúc mừng.',
+        heading: 'Lưu ý trong buổi tiệc',
+        body: 'Các món ăn sẽ được phục vụ theo từng phần trong suốt buổi tối. Kính mong quý khách thưởng thức một cách thong thả và thoải mái.',
       },
       {
         heading: 'Ăn mừng văn minh',
-        body: 'Để buổi tối trọn vẹn hơn, mong mọi người:',
+        body: 'Để buổi tiệc diễn ra văn minh và trọn vẹn, xin quý khách vui lòng:',
         bullets: [
-          'Vui hết mình nhưng vẫn điều độ',
-          'Giữ âm lượng vừa phải khi đêm về khuya',
-          'Tôn trọng nhân viên phục vụ và khách mời khác',
+          'Vui mừng chừng mực',
+          'Giữ âm lượng vừa phải về cuối buổi',
+          'Tôn trọng nhân viên và các khách mời khác',
         ],
       },
       {
-        heading: 'Ghi chú nhanh',
-        bullets: [
-          'Trang phục bán trang trọng',
-          'Tiệc ưu tiên người lớn',
-          'Có bàn nhận lời chúc',
-          'Xem chỗ ngồi ngay trên website',
-          'Tiệc kết thúc 11:00 PM (bắt đầu rời tiệc từ 11:15 PM, rời địa điểm trước 11:30 PM)',
-        ],
+        heading: 'Thông tin chính',
+        body: 'Trang phục lịch sự, thanh lịch | Tiệc chủ yếu dành cho người lớn | Có sắp xếp chỗ ngồi theo danh sách | Tiệc kết thúc lúc 11:00 PM | Địa điểm đóng cửa lúc 11:30 PM',
       },
     ],
   },
@@ -595,7 +573,7 @@ export const translations: Record<Language, TranslationContent> = {
       pageLabel: 'A gentle guide',
       pageTitle: 'Wedding Etiquette',
       intro:
-        'We gathered every helpful note about attire, timing, and celebration etiquette so you can feel confident and relaxed on the day.',
+        'We have prepared a few gentle notes regarding attire, timing, and celebration etiquette, so everyone can feel comfortable and enjoy the evening with peace of mind.',
       preview: {
         title: 'Wedding Etiquette',
         summary:
@@ -842,9 +820,9 @@ export const translations: Record<Language, TranslationContent> = {
     },
     etiquette: {
       pageLabel: 'Ghi chú nhẹ nhàng',
-      pageTitle: 'Nghi thức cưới',
+      pageTitle: 'Nghi thức tiệc cưới',
       intro:
-        'Chúng tôi đã gom những lưu ý về trang phục, thời gian và tinh thần buổi tiệc để mọi người chuẩn bị thật yên tâm.',
+        'Chúng tôi xin gửi đến quý khách một vài lưu ý nhỏ về trang phục, thời gian và cách tham dự tiệc, để buổi lễ diễn ra trang trọng và trọn vẹn.',
       preview: {
         title: 'Nghi thức cưới',
         summary:

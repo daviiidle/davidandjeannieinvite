@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { theme } from '../theme';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 import { EVENT_START } from '../utils/time';
 
 interface Remaining {
