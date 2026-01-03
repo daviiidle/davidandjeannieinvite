@@ -35,6 +35,7 @@ type PageKey =
 const routeMap: Record<string, PageKey> = {
   '/': 'save-the-date',
   '/save-the-date': 'save-the-date',
+  '/save-the-date-2026': 'save-the-date',
   '/rsvp': 'rsvp',
   '/details': 'details',
   '/etiquette': 'etiquette',
