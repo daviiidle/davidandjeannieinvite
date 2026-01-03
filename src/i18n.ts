@@ -93,6 +93,7 @@ export interface TranslationContent {
   stayInLoop: {
     heading: string;
     subtitle: string;
+    instruction: string;
     reassurance: string;
     firstNameLabel: string;
     lastNameLabel: string;
@@ -447,6 +448,7 @@ export const translations: Record<Language, TranslationContent> = {
     stayInLoop: {
       heading: 'Would you like to receive updates?',
       subtitle: 'Leave your name and number so we can keep you updated. This is not a formal RSVP.',
+      instruction: 'Please scroll down and enter your details to receive updates.',
       reassurance: '',
       firstNameLabel: 'First name',
       lastNameLabel: 'Last name',
@@ -695,6 +697,7 @@ export const translations: Record<Language, TranslationContent> = {
       heading: 'Để tiện cập nhật thông tin hôn lễ',
       subtitle:
         'Để lại tên và số điện thoại để chúng tôi gửi cập nhật cho bạn. Đây không phải là RSVP chính thức.',
+      instruction: 'Sau khi truy cập đường dẫn, xin vui lòng kéo xuống và điền thông tin để nhận cập nhật.',
       reassurance:
         'Việc đăng ký này chỉ nhằm mục đích cập nhật thông tin, không thay thế cho thiệp mời chính thức.',
       firstNameLabel: 'Tên',

@@ -356,6 +356,19 @@ export function Hero() {
           >
             {updatesHeading}
           </h2>
+          <p
+            className="font-sans"
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.base,
+              color: theme.colors.text.secondary,
+              lineHeight: theme.typography.lineHeight.relaxed,
+              maxWidth: '640px',
+              margin: `0 auto ${theme.spacing.lg}`,
+            }}
+          >
+            {strings.stayInLoop.instruction}
+          </p>
           <StayInLoopForm />
         </div>
     </Section>
