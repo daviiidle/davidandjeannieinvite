@@ -42,8 +42,12 @@ export function Details() {
       id="details"
       ref={sectionRef}
       aria-labelledby="details-heading"
+      className="details-section"
       style={{
-        padding: `${theme.spacing['4xl']} ${theme.spacing.lg}`,
+        paddingTop: `var(--details-section-padding-top, ${theme.spacing['4xl']})`,
+        paddingBottom: theme.spacing['4xl'],
+        paddingLeft: theme.spacing.lg,
+        paddingRight: theme.spacing.lg,
       }}
     >
       <div
@@ -76,7 +80,7 @@ export function Details() {
             </span>
           </span>
         </h2>
-        <div ref={parentsRef} className="wedding-party-grid mb-12">
+        <div ref={parentsRef} className="wedding-party-grid wedding-party-grid--parents mb-12">
           <div
             style={{
               textAlign: 'center',
