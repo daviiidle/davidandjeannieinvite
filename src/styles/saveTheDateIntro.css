@@ -11,12 +11,13 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  transition: opacity 1500ms ease;
+  transition: opacity 1500ms ease, filter 1500ms ease;
 }
 
 .save-date-intro__overlay--fade {
   opacity: 0;
   pointer-events: none;
+  filter: blur(1.5px) contrast(0.92);
 }
 
 .save-date-intro__video {
@@ -27,6 +28,39 @@
   background-color: #000;
   opacity: 0;
   transition: opacity 1500ms ease;
+}
+
+.save-date-intro__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.save-date-intro__image--zoom {
+  animation: save-date-intro-zoom 2900ms ease-in-out forwards;
+  transform: scale(1);
+}
+
+@keyframes save-date-intro-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .save-date-intro__overlay {
+    transition: opacity 500ms ease;
+    filter: none;
+  }
+
+  .save-date-intro__image--zoom {
+    animation: none;
+  }
 }
 
 .save-date-intro__video--visible {

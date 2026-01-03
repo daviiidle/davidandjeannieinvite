@@ -13,7 +13,10 @@ const INTRO_VIDEO_SOURCES = [
 const INTRO_POSTER_SRC = withBasePath('/images/ceremony.jpg');
 const OVERLAY_FADE_DURATION_MS = 1500;
 const CONTENT_REVEAL_DURATION_MS = 1500;
+const MOBILE_SPLASH_DURATION_MS = 2900;
+const MOBILE_SPLASH_FADE_MS = 450;
 const VIDEO_DURATION_FALLBACK_SEC = 5;
+const MOBILE_SPLASH_SRC = withBasePath('/images/splash-mobile.png');
 
 type IntroPhase = 'playing' | 'fading' | 'hidden';
 
@@ -44,18 +47,29 @@ const shouldPlayIntroVideo = () => {
   return hasSupportedSource;
 };
 
+const isMobileViewport = () => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia?.('(max-width: 768px)').matches ?? false;
+};
+
 export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
-  const [shouldPlayIntro] = useState(() => shouldPlayIntroVideo());
+  const [isMobile] = useState(() => isMobileViewport());
+  const [shouldPlayVideoIntro] = useState(() => !isMobile && shouldPlayIntroVideo());
   const [videoPhase, setVideoPhase] = useState<IntroPhase>(
-    shouldPlayIntro ? 'playing' : 'hidden',
+    shouldPlayVideoIntro ? 'playing' : 'hidden',
   );
-  const [contentVisible, setContentVisible] = useState(!shouldPlayIntro);
+  const [mobileSplashPhase, setMobileSplashPhase] = useState<IntroPhase>(
+    isMobile ? 'playing' : 'hidden',
+  );
+  const [contentVisible, setContentVisible] = useState(
+    () => (isMobile ? false : !shouldPlayVideoIntro),
+  );
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
-  const [videoReady, setVideoReady] = useState(!shouldPlayIntro);
+  const [videoReady, setVideoReady] = useState(!shouldPlayVideoIntro);
   const fadeTimeoutRef = useRef<number | null>(null);
-  const hasMarkedViewRef = useRef(!shouldPlayIntro);
-  const hasStartedPlaybackRef = useRef(!shouldPlayIntro);
-  const revealStartedRef = useRef(!shouldPlayIntro);
+  const hasMarkedViewRef = useRef(!shouldPlayVideoIntro);
+  const hasStartedPlaybackRef = useRef(!shouldPlayVideoIntro);
+  const revealStartedRef = useRef(!shouldPlayVideoIntro);
   const videoDurationRef = useRef<number>(VIDEO_DURATION_FALLBACK_SEC);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -134,7 +148,7 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
   }, []);
 
   const handleTimeUpdate = useCallback(() => {
-    if (!shouldPlayIntro) return;
+    if (!shouldPlayVideoIntro) return;
     if (revealStartedRef.current) return;
     const node = videoRef.current;
     if (!node) return;
@@ -146,10 +160,10 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     if (node.currentTime >= threshold) {
       beginReveal();
     }
-  }, [shouldPlayIntro, beginReveal]);
+  }, [shouldPlayVideoIntro, beginReveal]);
 
   useEffect(() => {
-    if (!shouldPlayIntro) return;
+    if (!shouldPlayVideoIntro) return;
     if (autoplayBlocked) return;
     const node = videoRef.current;
     if (!node) return;
@@ -166,10 +180,10 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
         setAutoplayBlocked(true);
       });
     }
-  }, [shouldPlayIntro, autoplayBlocked]);
+  }, [shouldPlayVideoIntro, autoplayBlocked]);
 
   useEffect(() => {
-    if (!shouldPlayIntro) return;
+    if (!shouldPlayVideoIntro) return;
     if (hasStartedPlaybackRef.current) return;
     if (autoplayBlocked) return;
     const timeout = window.setTimeout(() => {
@@ -178,7 +192,18 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
       }
     }, 1500);
     return () => window.clearTimeout(timeout);
-  }, [shouldPlayIntro, autoplayBlocked]);
+  }, [shouldPlayVideoIntro, autoplayBlocked]);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const fadeTimer = window.setTimeout(() => {
+      setMobileSplashPhase('fading');
+      setContentVisible(true);
+    }, MOBILE_SPLASH_DURATION_MS);
+    return () => {
+      window.clearTimeout(fadeTimer);
+    };
+  }, [isMobile]);
 
   const isVideoReady = videoReady || autoplayBlocked;
 
@@ -193,7 +218,8 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
     });
   }, [skipIntro]);
 
-  const isOverlayVisible = videoPhase !== 'hidden';
+  const overlayPhase = isMobile ? mobileSplashPhase : videoPhase;
+  const isOverlayVisible = overlayPhase !== 'hidden';
 
   useLayoutEffect(() => {
     if (typeof document === 'undefined') return;
@@ -212,49 +238,68 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
       {isOverlayVisible && (
         <div
           className={
-            videoPhase === 'fading'
+            overlayPhase === 'fading'
               ? 'save-date-intro__overlay save-date-intro__overlay--fade'
               : 'save-date-intro__overlay'
           }
+          style={{
+            transitionDuration: `${isMobile ? MOBILE_SPLASH_FADE_MS : OVERLAY_FADE_DURATION_MS}ms`,
+          }}
+          onTransitionEnd={() => {
+            if (isMobile && overlayPhase === 'fading') {
+              setMobileSplashPhase('hidden');
+            }
+          }}
           aria-hidden="true"
         >
-          <video
-            ref={videoRef}
-            className={
-              isVideoReady
-                ? 'save-date-intro__video save-date-intro__video--visible'
-                : 'save-date-intro__video'
-            }
-            playsInline
-            muted
-            autoPlay
-            preload="auto"
-            poster={INTRO_POSTER_SRC}
-            tabIndex={-1}
-            onEnded={handleVideoEnd}
-            onError={skipIntro}
-            onPlay={handleVideoPlay}
-            onLoadedMetadata={handleLoadedMetadata}
-            onCanPlay={handleCanPlay}
-            onTimeUpdate={handleTimeUpdate}
-            disablePictureInPicture
-            controls={false}
-            aria-hidden="true"
-            disableRemotePlayback
-            onClick={autoplayBlocked ? attemptManualPlay : undefined}
-          >
-            {INTRO_VIDEO_SOURCES.map((source) => (
-              <source key={source.src} src={source.src} type={source.type} />
-            ))}
-          </video>
-          {autoplayBlocked && (
-            <button
-              type="button"
-              className="save-date-intro__manual-cta"
-              onClick={attemptManualPlay}
-            >
-              Tap or click to play the intro
-            </button>
+          {isMobile ? (
+            <img
+              className="save-date-intro__image save-date-intro__image--zoom"
+              src={MOBILE_SPLASH_SRC}
+              alt=""
+              aria-hidden="true"
+            />
+          ) : (
+            <>
+              <video
+                ref={videoRef}
+                className={
+                  isVideoReady
+                    ? 'save-date-intro__video save-date-intro__video--visible'
+                    : 'save-date-intro__video'
+                }
+                playsInline
+                muted
+                autoPlay
+                preload="auto"
+                poster={INTRO_POSTER_SRC}
+                tabIndex={-1}
+                onEnded={handleVideoEnd}
+                onError={skipIntro}
+                onPlay={handleVideoPlay}
+                onLoadedMetadata={handleLoadedMetadata}
+                onCanPlay={handleCanPlay}
+                onTimeUpdate={handleTimeUpdate}
+                disablePictureInPicture
+                controls={false}
+                aria-hidden="true"
+                disableRemotePlayback
+                onClick={autoplayBlocked ? attemptManualPlay : undefined}
+              >
+                {INTRO_VIDEO_SOURCES.map((source) => (
+                  <source key={source.src} src={source.src} type={source.type} />
+                ))}
+              </video>
+              {autoplayBlocked && (
+                <button
+                  type="button"
+                  className="save-date-intro__manual-cta"
+                  onClick={attemptManualPlay}
+                >
+                  Tap or click to play the intro
+                </button>
+              )}
+            </>
           )}
         </div>
       )}
