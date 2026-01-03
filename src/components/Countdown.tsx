@@ -95,3 +95,4 @@ function calculate(): Remaining {
     seconds: Math.floor((total / 1000) % 60),
   };
 }
+
