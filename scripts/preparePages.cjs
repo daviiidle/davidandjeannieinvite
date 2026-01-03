@@ -33,7 +33,7 @@ const metaByLocale = {
     htmlLang: 'vi-VN',
     title: 'David &amp; Jeannie — Lễ Thành Hôn',
     description:
-      '03 tháng 10 năm 2026 • Melbourne, Victoria. Sau khi truy cập, xin vui lòng kéo xuống và điền thông tin để nhận cập nhật về hôn lễ.',
+      'Kính mời quý khách truy cập đường dẫn bên dưới và vui lòng điền thông tin để nhận thêm cập nhật về lễ cưới.',
     url: 'https://davidandjeanniewedding.site/vi/save-the-date/',
     locale: 'vi_VN',
     localeAlternate: 'en_AU',
