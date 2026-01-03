@@ -17,7 +17,7 @@ const appRoutes = [
   path.join('vi', 'save-the-date'),
 ];
 
-const shareImageUrl = 'https://davidandjeanniewedding.site/images/share-landscape-v3.jpg?v=20260103c';
+const shareImageUrl = 'https://davidandjeanniewedding.site/images/share-landscape-final.jpg';
 
 const metaByLocale = {
   en: {
