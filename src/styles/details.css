@@ -47,6 +47,28 @@
   margin-top: 3rem;
 }
 
+.details-etiquette-preview__card {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border-top: 1px solid rgba(100, 116, 139, 0.2);
+  border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+  padding: 2.5rem 0;
+}
+
+.details-etiquette-preview__card .button-link {
+  background-color: transparent;
+  color: #8b9dc3;
+  border: 1px solid rgba(139, 157, 195, 0.45);
+  letter-spacing: 0.2em;
+}
+
+.details-etiquette-preview__card .button-link:hover,
+.details-etiquette-preview__card .button-link:focus-visible {
+  background-color: rgba(139, 157, 195, 0.08);
+  color: #7a8db5;
+}
+
 @media (max-width: 768px) {
   .details-etiquette-preview {
     margin-top: 0.25rem;
@@ -56,6 +78,10 @@
 @media (max-width: 430px) {
   .details-etiquette-preview {
     margin-top: 0;
+  }
+
+  .details-etiquette-preview__card {
+    padding: 2rem 0;
   }
 }
 

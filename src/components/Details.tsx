@@ -469,12 +469,7 @@ export function Details() {
         {etiquettePreview && (
           <div className="details-etiquette-preview">
             <article
-              className="flex flex-col gap-6 rounded-[1.5rem] p-6 md:p-10 lg:flex-row lg:items-center lg:gap-10"
-              style={{
-                backgroundColor: theme.colors.background.lightGray,
-                borderRadius: theme.borderRadius['3xl'],
-                boxShadow: theme.shadows.md,
-              }}
+              className="details-etiquette-preview__card flex flex-col gap-6 p-6 md:p-10 lg:flex-row lg:items-center lg:gap-10"
             >
               <div className="flex-1 text-center lg:text-left space-y-4">
                 <p
