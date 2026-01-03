@@ -24,7 +24,7 @@ const metaByLocale = {
     htmlLang: 'en-AU',
     title: 'David &amp; Jeannie — Save the Date',
     description:
-      'October 3, 2026 • Melbourne, Victoria. Please visit the link, scroll down, and enter your details to receive updates.',
+      'October 3, 2026 • Melbourne, Victoria. Thank you for your kind response.',
     url: 'https://davidandjeanniewedding.site/en/save-the-date/',
     locale: 'en_AU',
     localeAlternate: 'vi_VN',
@@ -33,7 +33,7 @@ const metaByLocale = {
     htmlLang: 'vi-VN',
     title: 'David &amp; Jeannie — Lễ Thành Hôn',
     description:
-      'Kính mời quý khách truy cập đường dẫn bên dưới và vui lòng điền thông tin để nhận thêm cập nhật về lễ cưới.',
+      'Ngày 03 tháng 10 năm 2026 · Melbourne, Victoria. Chân thành cảm ơn quý khách.',
     url: 'https://davidandjeanniewedding.site/vi/save-the-date/',
     locale: 'vi_VN',
     localeAlternate: 'en_AU',
