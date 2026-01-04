@@ -9,6 +9,43 @@
   gap: clamp(1.5rem, 4vw, 3rem);
 }
 
+.timeline-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.timeline-decor__top,
+.timeline-decor__bottom {
+  position: absolute;
+  display: block;
+  height: auto;
+  opacity: 0.7;
+}
+
+.timeline-decor__top {
+  top: clamp(-1.25rem, -1vw, -0.25rem);
+  left: clamp(-1.25rem, -1vw, -0.25rem);
+  width: min(62vw, 676px);
+}
+
+.timeline-decor__bottom {
+  right: clamp(-1.25rem, -1vw, -0.25rem);
+  bottom: clamp(-1.25rem, -1vw, -0.25rem);
+  width: min(68vw, 728px);
+}
+
+.timeline-section .timeline-card {
+  position: relative;
+  z-index: 1;
+}
+
 .timeline-card__header {
   text-align: center;
   margin-bottom: clamp(2rem, 5vw, 3.5rem);
@@ -94,6 +131,16 @@
 }
 
 @media (max-width: 640px) {
+  .timeline-decor__top {
+    width: min(80vw, 416px);
+    opacity: 0.55;
+  }
+
+  .timeline-decor__bottom {
+    width: min(90vw, 468px);
+    opacity: 0.55;
+  }
+
   .timeline-card {
     padding: 0 1rem;
   }

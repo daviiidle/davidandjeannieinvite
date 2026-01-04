@@ -42,6 +42,30 @@
   z-index: -1;
 }
 
+.details-time-wash {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0;
+  z-index: 0;
+}
+
+.details-time-wash::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: clamp(-240px, -30vw, -130px);
+  width: clamp(403px, 134.4vw, 717px);
+  height: clamp(134px, 31.36vw, 202px);
+  background-image: url('/images/wash-detail.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.2;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
 .details-event-grid {
   --details-event-gap: 1.75rem;
   --details-event-card-padding: 3rem 2rem;

@@ -102,6 +102,7 @@ export function Photos() {
     <Section
       id="photos"
       aria-labelledby="photos-heading"
+      className="page-photos"
       style={{
         backgroundColor: theme.colors.background.white,
       }}
@@ -115,7 +116,7 @@ export function Photos() {
         }}
       >
         <p
-          className="font-sans"
+          className="font-sans veil-text"
           style={{
             fontFamily: theme.typography.fontFamily.sans,
             fontSize: theme.typography.fontSize.sm,
@@ -140,7 +141,7 @@ export function Photos() {
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">
+          <span className="hero-handwriting veil-text">
             <span className="hero-handwriting__text">{photos.heading}</span>
           </span>
         </h1>

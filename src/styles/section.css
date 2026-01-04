@@ -63,6 +63,50 @@
   display: block;
 }
 
+.page-seating,
+.page-photos {
+  position: relative;
+  isolation: isolate;
+}
+
+.page-seating::before,
+.page-photos::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/top-flower-seating-photos.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: contain;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-seating > .app-section__inner,
+.page-photos > .app-section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.page-seating .veil-text,
+.page-photos .veil-text {
+  position: relative;
+  display: inline-block;
+  padding: 0.2em 0.55em;
+}
+
+.page-seating .veil-text::before,
+.page-photos .veil-text::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.75);
+  filter: blur(6px);
+  border-radius: 999px;
+  z-index: -1;
+}
+
 @media (min-width: 360px) and (max-width: 430px) {
   .hero-section {
     --section-padding-y: 3rem;

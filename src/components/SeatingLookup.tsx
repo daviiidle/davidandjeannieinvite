@@ -216,6 +216,7 @@ export function SeatingLookup() {
       id="seating"
       ref={sectionRef}
       aria-labelledby="seating-heading"
+      className="page-seating"
       style={{
         backgroundColor: theme.colors.background.white,
       }}
@@ -223,7 +224,7 @@ export function SeatingLookup() {
       innerStyle={{ textAlign: 'center' }}
     >
         <p
-          className="font-sans"
+          className="font-sans veil-text"
           style={{
             fontFamily: theme.typography.fontFamily.sans,
             fontSize: theme.typography.fontSize.sm,
@@ -250,7 +251,7 @@ export function SeatingLookup() {
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">
+          <span className="hero-handwriting veil-text">
             <span className="hero-handwriting__text">{seatingText.heading}</span>
           </span>
         </h2>

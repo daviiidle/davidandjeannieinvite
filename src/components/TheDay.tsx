@@ -38,12 +38,20 @@ export function TheDay() {
     titleRef.current?.classList.add('page-title-handwriting--active');
   }, []);
   useScrollReveal(sectionRef, { duration: 0.6, onEnter: activateTitleAnimation });
+  const decor = (
+    <div className="timeline-decor" aria-hidden="true">
+      <img className="timeline-decor__top" src="/images/Timeline Top.png" alt="" />
+      <img className="timeline-decor__bottom" src="/images/Timeline Bottom.png" alt="" />
+    </div>
+  );
 
   return (
     <Section
       ref={sectionRef}
       aria-labelledby="the-day-heading"
       maxWidth={theme.layout.maxWidth}
+      className="timeline-section"
+      beforeInner={decor}
     >
       <TimelineCard
         title="Wedding Day Timeline"

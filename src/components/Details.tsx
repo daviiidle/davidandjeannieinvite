@@ -347,7 +347,7 @@ export function Details() {
 
                 {card.time && (
                   <p
-                    className="font-serif"
+                    className="font-serif details-time-wash"
                     style={{
                       fontFamily: theme.typography.fontFamily.serif,
                       fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
