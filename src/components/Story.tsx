@@ -98,23 +98,35 @@ export function Story({
       innerStyle={{ position: 'relative', zIndex: 1 }}
     >
         {/* Section Heading */}
-        <h2
-          id="story-heading"
-          ref={headingRef}
-          className="font-serif text-center mb-12 page-title-handwriting"
+        <div
           style={{
-            fontFamily: '"Mea Culpa", "Playfair Display", serif',
-            fontSize: theme.typography.heading.h2,
-            fontWeight: 400,
-            color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.05em',
-            marginBottom: theme.spacing.md,
+            textAlign: 'center',
+            position: 'relative',
+            zIndex: 3,
           }}
         >
-          <span className="hero-handwriting">
-            <span className="hero-handwriting__text">{strings.story.heading}</span>
-          </span>
-        </h2>
+          <h2
+            id="story-heading"
+            ref={headingRef}
+            className="font-serif text-center mb-12 page-title-handwriting"
+            style={{
+              fontFamily: '"Mea Culpa", "Playfair Display", serif',
+              fontSize: theme.typography.heading.h2,
+              fontWeight: 400,
+              color: theme.colors.primary.dustyBlue,
+              letterSpacing: '0.05em',
+              marginBottom: theme.spacing.md,
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              padding: '0.35rem 1.25rem',
+              borderRadius: theme.borderRadius.full,
+              display: 'inline-block',
+            }}
+          >
+            <span className="hero-handwriting">
+              <span className="hero-handwriting__text">{strings.story.heading}</span>
+            </span>
+          </h2>
+        </div>
 
         {/* Photo Gallery Grid */}
         <div
@@ -122,6 +134,8 @@ export function Story({
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: theme.spacing.lg,
+            position: 'relative',
+            zIndex: 1,
           }}
         >
           {images.map((image, index) => (
