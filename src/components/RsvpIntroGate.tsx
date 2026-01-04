@@ -7,8 +7,9 @@ const withBasePath = (path: string) =>
 const RSVP_BACKGROUND_SRC = withBasePath(encodeURI('/images/envelope.png'));
 const RSVP_CTA_SRC = withBasePath(encodeURI('/images/the golden button.png'));
 const RSVP_INTRO_FADE_MS = 900;
+const RSVP_INTRO_OPEN_MS = 1100;
 
-type IntroPhase = 'visible' | 'fading' | 'hidden';
+type IntroPhase = 'visible' | 'opening' | 'hidden';
 
 interface RsvpIntroGateProps {
   children: ReactNode;
@@ -28,10 +29,10 @@ export function RsvpIntroGate({ children }: RsvpIntroGateProps) {
 
   const handleDismiss = useCallback(() => {
     if (phase !== 'visible') return;
-    setPhase('fading');
+    setPhase('opening');
     fadeTimeoutRef.current = window.setTimeout(() => {
       setPhase('hidden');
-    }, RSVP_INTRO_FADE_MS);
+    }, RSVP_INTRO_OPEN_MS);
   }, [phase]);
 
   const isOverlayVisible = phase !== 'hidden';
@@ -52,19 +53,21 @@ export function RsvpIntroGate({ children }: RsvpIntroGateProps) {
     <div className="rsvp-intro" data-intro-active={isOverlayVisible}>
       {isOverlayVisible && (
         <div
-          className={
-            phase === 'fading'
-              ? 'rsvp-intro__overlay rsvp-intro__overlay--fade'
-              : 'rsvp-intro__overlay'
-          }
+          className="rsvp-intro__overlay"
+          data-phase={phase}
           style={{ transitionDuration: `${RSVP_INTRO_FADE_MS}ms` }}
         >
-          <img
-            className="rsvp-intro__background"
-            src={RSVP_BACKGROUND_SRC}
-            alt=""
-            aria-hidden="true"
-          />
+          <div className="rsvp-intro__doors" aria-hidden="true">
+            <span
+              className="rsvp-intro__door rsvp-intro__door--left"
+              style={{ backgroundImage: `url(${RSVP_BACKGROUND_SRC})` }}
+            />
+            <span
+              className="rsvp-intro__door rsvp-intro__door--right"
+              style={{ backgroundImage: `url(${RSVP_BACKGROUND_SRC})` }}
+            />
+          </div>
+          <div className="rsvp-intro__light" aria-hidden="true" />
           <div className="rsvp-intro__stack">
             <p className="rsvp-intro__monogram">JD</p>
             <button
