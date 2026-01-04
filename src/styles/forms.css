@@ -94,6 +94,13 @@
   z-index: 0;
 }
 
+@media (min-width: 1024px) {
+  .page-rsvp::before {
+    width: clamp(1080px, 216vw, 1560px);
+    height: clamp(1080px, 216vw, 1560px);
+  }
+}
+
 .page-rsvp .rsvp-header > * {
   position: relative;
   z-index: 1;

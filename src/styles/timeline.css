@@ -41,6 +41,24 @@
   width: min(68vw, 728px);
 }
 
+@media (min-width: 1024px) {
+  .timeline-decor__top {
+    width: min(79vw, 862px);
+  }
+
+  .timeline-decor__bottom {
+    width: min(87vw, 928px);
+  }
+
+  .timeline-section--reception .timeline-decor__top {
+    width: min(107vw, 1164px);
+  }
+
+  .timeline-section--reception .timeline-decor__bottom {
+    width: min(117vw, 1253px);
+  }
+}
+
 .timeline-section .timeline-card {
   position: relative;
   z-index: 1;

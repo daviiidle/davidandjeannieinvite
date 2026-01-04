@@ -81,11 +81,7 @@ export function Details() {
           </span>
         </h2>
         <div ref={parentsRef} className="wedding-party-grid wedding-party-grid--parents mb-12">
-          <div
-            style={{
-              textAlign: 'center',
-            }}
-          >
+          <div className="wedding-party-parents-column">
             <p
               className="font-sans details-name-veil"
               style={{
@@ -114,11 +110,7 @@ export function Details() {
               </span>
             </p>
           </div>
-          <div
-            style={{
-              textAlign: 'center',
-            }}
-          >
+          <div className="wedding-party-parents-column">
             <p
               className="font-sans details-name-veil"
               style={{

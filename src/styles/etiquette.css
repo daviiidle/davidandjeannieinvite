@@ -20,6 +20,15 @@
   z-index: 0;
 }
 
+@media (min-width: 1024px) {
+  .page-etiquette::before {
+    top: clamp(-108px, -12vw, -30px);
+    right: clamp(-84px, -9vw, -30px);
+    width: clamp(840px, 121.8vw, 1311px);
+    height: clamp(840px, 121.8vw, 1311px);
+  }
+}
+
 .page-etiquette > * {
   position: relative;
   z-index: 1;

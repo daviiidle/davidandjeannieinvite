@@ -107,6 +107,12 @@
   display: inline-block;
 }
 
+@media (min-width: 1024px) {
+  .page-photos::before {
+    background-size: 61% auto;
+  }
+}
+
 .page-seating .veil-text::before,
 .page-photos .veil-text::before {
   content: "";

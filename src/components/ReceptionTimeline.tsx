@@ -110,7 +110,7 @@ export function ReceptionTimeline() {
       ref={sectionRef}
       aria-labelledby="reception-heading"
       maxWidth={theme.layout.maxWidth}
-      className="timeline-section"
+      className="timeline-section timeline-section--reception"
       beforeInner={decor}
     >
       <TimelineCard
