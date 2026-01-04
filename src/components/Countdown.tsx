@@ -26,14 +26,14 @@ export function Countdown() {
 
   return (
     <div
-      className="font-sans text-center"
+      className="font-sans text-center countdown-block"
       role="timer"
       aria-live="polite"
       style={{
         fontFamily: theme.typography.fontFamily.sans,
         color: theme.colors.primary.dustyBlue,
         maxWidth: '560px',
-        margin: `${theme.spacing.lg} auto`,
+        margin: `var(--countdown-margin, ${theme.spacing.lg} auto)`,
       }}
     >
       <p

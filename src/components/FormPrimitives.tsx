@@ -5,10 +5,10 @@ export const FORM_ERROR_COLOR = '#B3261E';
 
 const cardStyle: CSSProperties = {
   border: `1px solid ${theme.colors.primary.dustyBlue}30`,
-  borderRadius: theme.borderRadius['2xl'],
-  padding: theme.spacing['2xl'],
+  borderRadius: `var(--form-card-radius, ${theme.borderRadius['2xl']})`,
+  padding: `var(--form-card-padding, ${theme.spacing['2xl']})`,
   backgroundColor: theme.colors.background.white,
-  boxShadow: theme.shadows.md,
+  boxShadow: `var(--form-card-shadow, ${theme.shadows.md})`,
   width: '100%',
   maxWidth: '760px',
   margin: '0 auto',
@@ -63,7 +63,10 @@ export function FormCard({
   style?: CSSProperties;
 }) {
   return (
-    <section className={className} style={{ ...cardStyle, ...style }}>
+    <section
+      className={['form-card', className].filter(Boolean).join(' ')}
+      style={{ ...cardStyle, ...style }}
+    >
       {children}
     </section>
   );

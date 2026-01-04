@@ -86,23 +86,40 @@ export function Hero() {
       className="overflow-hidden hero-opener-root hero-section"
       style={{
         backgroundColor: theme.colors.background.white,
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        backgroundImage: `var(--hero-wash, none), linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
+        backgroundSize: `var(--hero-wash-size, auto), cover, cover`,
+        backgroundPosition: `var(--hero-wash-position, center), center, center`,
+        backgroundRepeat: 'no-repeat, no-repeat, no-repeat',
         position: 'relative',
-        paddingTop: 'calc(var(--section-padding-y) + env(safe-area-inset-top))',
+        paddingTop:
+          'calc(var(--section-padding-y) + env(safe-area-inset-top) + var(--hero-safe-offset, 0px))',
       }}
       beforeInner={
-        <div
-          className="hero-opener__background"
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: 'rgba(255,255,255,0.3)',
-          }}
-        />
+        <>
+          <div
+            className="hero-opener__background"
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: 'rgba(255,255,255,0.3)',
+            }}
+          />
+          <div
+            className="hero-floral-corner"
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: 'calc(env(safe-area-inset-top) - 0.5rem)',
+              left: '-2.25rem',
+              width: 'min(52vw, 220px)',
+              pointerEvents: 'none',
+              zIndex: 1,
+            }}
+          >
+            <img src="/images/floral-corner.svg" alt="" />
+          </div>
+        </>
       }
       maxWidth="56rem"
       innerClassName="w-full text-center relative z-10 space-y-4 sm:space-y-6"
@@ -341,9 +358,11 @@ export function Hero() {
           id={scrollTargetId}
           className="updates-section-bridge"
           style={{
-            marginTop: theme.spacing['3xl'],
-            paddingTop: theme.spacing.lg,
-            borderTop: `1px solid ${theme.colors.primary.dustyBlue}33`,
+            marginTop: `var(--updates-section-margin, ${theme.spacing['3xl']})`,
+            paddingTop: `var(--updates-section-padding, ${theme.spacing.lg})`,
+            paddingBottom: 'var(--updates-section-padding-bottom, 0px)',
+            borderTop: `1px solid var(--updates-divider-color, ${theme.colors.primary.dustyBlue}33)`,
+            backgroundColor: 'var(--updates-section-bg, transparent)',
           }}
         >
           <h2

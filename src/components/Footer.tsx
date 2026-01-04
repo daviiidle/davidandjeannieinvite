@@ -25,9 +25,10 @@ export function Footer({
 
   return (
     <footer
+      className="app-footer"
       style={{
         backgroundColor: theme.colors.primary.dustyBlue,
-        padding: `${theme.spacing['3xl']} ${theme.spacing.lg}`,
+        padding: `var(--footer-padding-y, ${theme.spacing['3xl']}) var(--footer-padding-x, ${theme.spacing.lg})`,
         textAlign: 'center',
       }}
     >
