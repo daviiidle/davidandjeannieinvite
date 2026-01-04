@@ -86,10 +86,10 @@ export function Hero() {
       className="overflow-hidden hero-opener-root hero-section"
       style={{
         backgroundColor: theme.colors.background.white,
-        backgroundImage: `var(--hero-wash, none), linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
-        backgroundSize: `var(--hero-wash-size, auto), cover, cover`,
-        backgroundPosition: `var(--hero-wash-position, center), center, center`,
-        backgroundRepeat: 'no-repeat, no-repeat, no-repeat',
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${backgroundImageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         position: 'relative',
         paddingTop:
           'calc(var(--section-padding-y) + env(safe-area-inset-top) + var(--hero-safe-offset, 0px))',
@@ -103,21 +103,24 @@ export function Hero() {
               position: 'absolute',
               inset: 0,
               backgroundColor: 'rgba(255,255,255,0.3)',
+              zIndex: 0,
             }}
           />
-          <div
-            className="hero-floral-corner"
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              top: 'calc(env(safe-area-inset-top) - 0.5rem)',
-              left: '-2.25rem',
-              width: 'min(52vw, 220px)',
-              pointerEvents: 'none',
-              zIndex: 1,
-            }}
-          >
-            <img src="/images/floral-corner.svg" alt="" />
+          <div className="heroDecor" aria-hidden="true">
+            <img
+              className="heroWash"
+              src="/images/wash-8.webp"
+              alt=""
+              decoding="async"
+              fetchPriority="high"
+            />
+            <img
+              className="heroFloralTL"
+              src="/images/floral-14.webp"
+              alt=""
+              decoding="async"
+              loading="eager"
+            />
           </div>
         </>
       }

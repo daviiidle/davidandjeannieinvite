@@ -50,17 +50,27 @@
   border-top: 1px solid var(--section-divider-color);
 }
 
-.hero-floral-corner {
+.heroDecor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
   display: none;
+}
+
+.heroDecor img {
+  position: absolute;
+  display: block;
 }
 
 @media (min-width: 360px) and (max-width: 430px) {
   .hero-section {
     --section-padding-y: 3rem;
     --hero-safe-offset: 0.75rem;
-    --hero-wash: url('/images/hero-wash.svg');
-    --hero-wash-size: 165% auto;
-    --hero-wash-position: top 10% left;
+  }
+
+  .hero-section .hero-opener__background {
+    background-color: rgba(255, 255, 255, 0.2) !important;
   }
 
   .hero-section .hero-opener__names {
@@ -79,22 +89,29 @@
     --updates-divider-color: rgba(139, 157, 195, 0.2);
   }
 
-  .hero-floral-corner {
+  .heroDecor {
     display: block;
-    position: absolute;
-    top: calc(env(safe-area-inset-top) - 0.5rem);
-    left: -2.25rem;
-    width: min(52vw, 220px);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 1;
-    animation: hero-floral-fade 1.4s ease forwards;
   }
 
-  .hero-floral-corner img {
-    width: 100%;
+  .heroWash {
+    position: absolute;
+    left: 50%;
+    top: 26%;
+    transform: translate(-50%, -50%);
+    width: 115%;
     height: auto;
-    display: block;
+    max-width: none;
+    opacity: 0.2;
+  }
+
+  .heroFloralTL {
+    position: absolute;
+    left: -20px;
+    top: -30px;
+    width: 210px;
+    height: auto;
+    max-width: none;
+    opacity: 0.35;
   }
 
   .form-card {
@@ -106,14 +123,5 @@
   .app-footer {
     --footer-padding-y: 4.75rem;
     --footer-padding-x: 1.75rem;
-  }
-}
-
-@keyframes hero-floral-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.35;
   }
 }
