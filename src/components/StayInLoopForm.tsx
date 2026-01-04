@@ -44,6 +44,11 @@ export function StayInLoopForm() {
   const stayInLoop = strings.stayInLoop;
   const [formState, setFormState] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState({
+    firstName: false,
+    lastName: false,
+    phone: false,
+  });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [submitError, setSubmitError] = useState<SubmitErrorState>(null);
 
@@ -59,6 +64,10 @@ export function StayInLoopForm() {
     }));
   };
 
+  const markTouched = (field: keyof typeof touched) => {
+    setTouched((prev) => (prev[field] ? prev : { ...prev, [field]: true }));
+  };
+
   const validate = (): FormErrors => {
     const nextErrors: FormErrors = {};
     if (!formState.firstName.trim()) {
@@ -72,6 +81,13 @@ export function StayInLoopForm() {
     }
     return nextErrors;
   };
+
+  const showFirstNameError =
+    (!formState.firstName.trim() && (touched.firstName || errors.firstName)) ?? false;
+  const showLastNameError =
+    (!formState.lastName.trim() && (touched.lastName || errors.lastName)) ?? false;
+  const showPhoneError =
+    ((!formState.phone.trim() || !isPhoneValid) && (touched.phone || errors.phone)) ?? false;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -187,28 +203,30 @@ export function StayInLoopForm() {
             label={stayInLoop.firstNameLabel}
             htmlFor="intent-first-name"
             required
-            error={errors.firstName ? stayInLoop.errors.firstName : undefined}
+            error={showFirstNameError ? stayInLoop.errors.firstName : undefined}
           >
             <FormInput
               id="intent-first-name"
               value={formState.firstName}
               onChange={(event) => handleChange('firstName', event.target.value)}
+              onBlur={() => markTouched('firstName')}
               required
-              hasError={Boolean(errors.firstName)}
+              hasError={Boolean(showFirstNameError)}
             />
           </FormField>
           <FormField
             label={stayInLoop.lastNameLabel}
             htmlFor="intent-last-name"
             required
-            error={errors.lastName ? stayInLoop.errors.lastName : undefined}
+            error={showLastNameError ? stayInLoop.errors.lastName : undefined}
           >
             <FormInput
               id="intent-last-name"
               value={formState.lastName}
               onChange={(event) => handleChange('lastName', event.target.value)}
+              onBlur={() => markTouched('lastName')}
               required
-              hasError={Boolean(errors.lastName)}
+              hasError={Boolean(showLastNameError)}
             />
           </FormField>
         </FormGrid>
@@ -217,7 +235,7 @@ export function StayInLoopForm() {
           label={stayInLoop.phoneLabel}
           htmlFor="intent-phone"
           required
-          error={errors.phone ? stayInLoop.errors.phone : undefined}
+          error={showPhoneError ? stayInLoop.errors.phone : undefined}
           helperText={stayInLoop.phoneHelper}
         >
           <FormInput
@@ -227,7 +245,8 @@ export function StayInLoopForm() {
             placeholder={stayInLoop.phonePlaceholder}
             value={formState.phone}
             onChange={(event) => handleChange('phone', event.target.value)}
-            hasError={Boolean(errors.phone)}
+            onBlur={() => markTouched('phone')}
+            hasError={Boolean(showPhoneError)}
             required
           />
         </FormField>

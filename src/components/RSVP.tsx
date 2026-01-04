@@ -76,6 +76,15 @@ export function RSVP({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successHint, setSuccessHint] = useState<string | null>(null);
   const [showValidation, setShowValidation] = useState(false);
+  const [touched, setTouched] = useState({
+    firstName: false,
+    lastName: false,
+    phone: false,
+  });
+
+  const markTouched = (field: keyof typeof touched) => {
+    setTouched((prev) => (prev[field] ? prev : { ...prev, [field]: true }));
+  };
 
   const handleChange = (field: keyof FormState, value: string) => {
     setFormState((prev) => {
@@ -118,9 +127,16 @@ export function RSVP({
     isPartySizeValid &&
     isEmailValid;
 
-  const firstNameError = showValidation && !formState.firstName.trim() ? t.firstNameError : null;
-  const lastNameError = showValidation && !formState.lastName.trim() ? t.lastNameError : null;
-  const phoneError = showValidation && !isPhoneValid ? t.phoneError : null;
+  const firstNameError =
+    (showValidation || touched.firstName) && !formState.firstName.trim()
+      ? t.firstNameError
+      : null;
+  const lastNameError =
+    (showValidation || touched.lastName) && !formState.lastName.trim()
+      ? t.lastNameError
+      : null;
+  const phoneError =
+    (showValidation || touched.phone) && !isPhoneValid ? t.phoneError : null;
   const attendanceError = showValidation && !formState.attendance ? t.attendanceError : null;
   const partySizeError = showValidation && !isPartySizeValid ? t.partySizeError : null;
   const emailError = showValidation && !isEmailValid ? t.emailError : null;
@@ -266,6 +282,7 @@ export function RSVP({
                   required
                   value={formState.firstName}
                   onChange={(e) => handleChange('firstName', e.target.value)}
+                  onBlur={() => markTouched('firstName')}
                   hasError={Boolean(firstNameError)}
                 />
               </FormField>
@@ -280,6 +297,7 @@ export function RSVP({
                   required
                   value={formState.lastName}
                   onChange={(e) => handleChange('lastName', e.target.value)}
+                  onBlur={() => markTouched('lastName')}
                   hasError={Boolean(lastNameError)}
                 />
               </FormField>
@@ -307,6 +325,7 @@ export function RSVP({
                 required
                 value={formState.phone}
                 onChange={(e) => handleChange('phone', e.target.value)}
+                onBlur={() => markTouched('phone')}
                 hasError={Boolean(phoneError)}
               />
             </FormField>

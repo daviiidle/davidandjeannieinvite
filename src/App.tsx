@@ -175,6 +175,11 @@ export default function App() {
     pendingScrollIdRef.current = null;
   }, [page]);
 
+  useEffect(() => {
+    if (pendingScrollIdRef.current) return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [pagePath]);
+
   const handleNavigate = useCallback((href: string, targetId?: string) => {
     const normalizedPage = normalizePagePath(href);
     const localizedHref = buildLocalizedPath(language, normalizedPage);
