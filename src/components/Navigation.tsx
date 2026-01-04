@@ -4,6 +4,11 @@ import { theme } from '../theme';
 import { useLanguage } from '../context/useLanguage';
 import type { Language } from '../i18n';
 
+const baseAssetPath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const withBasePath = (path: string) =>
+  `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
+const RSVP_CTA_SRC = withBasePath(encodeURI('/images/the golden button.png'));
+
 interface NavigationLink {
   path: string;
   label: string;
@@ -172,6 +177,21 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
       }}
     >
       <div className="navigation-inner">
+        {currentPath === '/details' && (
+          <button
+            type="button"
+            className="navigation-rsvp-cta"
+            onClick={() => handleNavigate('/rsvp')}
+            aria-label={strings.navigation.rsvpCta}
+          >
+            <span
+              className="navigation-rsvp-cta__icon"
+              aria-hidden="true"
+              style={{ backgroundImage: `url(${RSVP_CTA_SRC})` }}
+            />
+            <span className="navigation-rsvp-cta__label">{strings.navigation.rsvpCta}</span>
+          </button>
+        )}
         <div className="navigation-links">
           {renderLinkButtons(links, 'inline')}
           {renderLanguageButton('inline')}
@@ -181,9 +201,17 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
           className="navigation-menu-toggle"
           aria-expanded={isMenuOpen}
           aria-controls={drawerId}
+          aria-label={isMenuOpen ? strings.navigation.closeMenu : strings.navigation.menuLabel}
           onClick={() => setIsMenuOpen((prev) => !prev)}
         >
-          {isMenuOpen ? strings.navigation.closeMenu : strings.navigation.menuLabel}
+          <span className={`navigation-menu-toggle__icon${isMenuOpen ? ' is-open' : ''}`}>
+            <span />
+            <span />
+            <span />
+          </span>
+          <span className="navigation-menu-toggle__label visually-hidden">
+            {isMenuOpen ? strings.navigation.closeMenu : strings.navigation.menuLabel}
+          </span>
         </button>
       </div>
 

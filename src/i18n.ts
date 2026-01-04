@@ -18,6 +18,7 @@ export interface TranslationContent {
     story: string;
     seating: string;
     rsvp: string;
+    rsvpCta: string;
     etiquette: string;
     theDay: string;
     reception: string;
@@ -354,6 +355,7 @@ export const translations: Record<Language, TranslationContent> = {
       story: 'Our Story',
       seating: 'Seating',
       rsvp: 'RSVP',
+      rsvpCta: 'Kindly click to RSVP',
       etiquette: 'Etiquette',
       theDay: 'The Day',
       reception: 'Reception',
@@ -602,6 +604,7 @@ export const translations: Record<Language, TranslationContent> = {
       story: 'Câu chuyện của chúng tôi',
       seating: 'Sắp xếp chỗ ngồi',
       rsvp: 'Xác nhận tham dự',
+      rsvpCta: 'Kính mời nhấn để RSVP',
       etiquette: 'Lưu ý tham dự',
       theDay: 'Ngày hôn lễ',
       reception: 'Tiệc cưới',
