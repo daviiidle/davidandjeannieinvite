@@ -63,3 +63,106 @@
   border-color: #8b9dc3 !important;
   box-shadow: 0 0 0 3px rgba(139, 157, 195, 0.25);
 }
+
+.page-rsvp {
+  overflow-x: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+.page-rsvp .rsvp-header {
+  position: relative;
+  isolation: isolate;
+  padding-top: clamp(96px, 16vw, 140px);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.page-rsvp::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--app-header-height, 80px) - 52px);
+  right: 0px;
+  width: clamp(360px, 72vw, 520px);
+  height: clamp(360px, 72vw, 520px);
+  background-image: url('/images/Untitled design(9).png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.74;
+  transform: rotate(90deg) scale(1.05);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-rsvp .rsvp-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.page-rsvp::after {
+  content: "";
+  position: absolute;
+  top: clamp(200px, 24vw, 280px);
+  left: 50%;
+  width: clamp(360px, 95vw, 640px);
+  height: clamp(420px, 105vw, 720px);
+  background-image: url('/images/Untitled design(7).png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.14;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-rsvp > .app-section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.page-rsvp .rsvp-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.page-rsvp .rsvp-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/Untitled design(7).png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.14;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-rsvp .rsvp-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 420px) {
+  .page-rsvp .rsvp-header {
+    padding-top: clamp(84px, 20vw, 124px);
+  }
+
+  .page-rsvp::before {
+    top: calc(var(--app-header-height, 80px) - 44px);
+    width: clamp(260px, 78vw, 360px);
+    height: clamp(260px, 78vw, 360px);
+    opacity: 0.66;
+  }
+
+  .page-rsvp::after {
+    top: clamp(220px, 38vw, 320px);
+    width: clamp(320px, 110vw, 520px);
+    height: clamp(380px, 120vw, 620px);
+    opacity: 0.12;
+  }
+}

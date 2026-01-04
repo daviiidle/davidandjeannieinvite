@@ -178,70 +178,73 @@ export function RSVP({
       id="rsvp"
       ref={sectionRef}
       aria-labelledby="rsvp-heading"
+      className="page-rsvp"
       style={{
         backgroundColor: theme.colors.background.white,
       }}
       maxWidth={760}
       innerStyle={{ textAlign: 'center' }}
     >
-        <h2
-          id="rsvp-heading"
-          ref={headingRef}
-          className="font-serif page-title-handwriting"
-          style={{
-            fontFamily: '"Playball", "Playfair Display", serif',
-            fontSize: theme.typography.heading.h2,
-            fontWeight: 400,
-            color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.05em',
-            marginBottom: theme.spacing.md,
-            lineHeight: 1.2,
-            paddingTop: '0.2em',
-            paddingBottom: '0.1em',
-            overflow: 'visible',
-          }}
-        >
-          <span
-            className="hero-handwriting hero-handwriting--loose"
+        <div className="rsvp-header">
+          <h2
+            id="rsvp-heading"
+            ref={headingRef}
+            className="font-serif page-title-handwriting"
             style={{
+              fontFamily: '"Playball", "Playfair Display", serif',
+              fontSize: theme.typography.heading.h2,
+              fontWeight: 400,
+              color: theme.colors.primary.dustyBlue,
+              letterSpacing: '0.05em',
+              marginBottom: theme.spacing.md,
               lineHeight: 1.2,
-              paddingTop: '0.1em',
+              paddingTop: '0.2em',
+              paddingBottom: '0.1em',
               overflow: 'visible',
             }}
           >
-            <span className="hero-handwriting__text">{headingText}</span>
-            {'\u00A0\u00A0'}
-          </span>
-        </h2>
+            <span
+              className="hero-handwriting hero-handwriting--loose"
+              style={{
+                lineHeight: 1.2,
+                paddingTop: '0.1em',
+                overflow: 'visible',
+              }}
+            >
+              <span className="hero-handwriting__text">{headingText}</span>
+              {'\u00A0\u00A0'}
+            </span>
+          </h2>
 
-        <p
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.sm,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: theme.colors.primary.dustyBlue,
-            marginBottom: theme.spacing.sm,
-          }}
-        >
-          {deadlineText}
-        </p>
+          <p
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: theme.colors.primary.dustyBlue,
+              marginBottom: theme.spacing.sm,
+            }}
+          >
+            {deadlineText}
+          </p>
 
-        <p
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            fontSize: theme.typography.fontSize.xs,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: theme.colors.text.secondary,
-            marginBottom: theme.spacing['2xl'],
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {t.adultNote}
-        </p>
+          <p
+            style={{
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.xs,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: theme.colors.text.secondary,
+              marginBottom: theme.spacing['2xl'],
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {t.adultNote}
+          </p>
+        </div>
 
-        <FormCard style={{ marginBottom: theme.spacing['2xl'] }}>
+        <FormCard className="rsvp-card" style={{ marginBottom: theme.spacing['2xl'] }}>
           <form
             onSubmit={handleSubmit}
             style={{
