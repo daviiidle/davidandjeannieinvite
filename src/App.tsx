@@ -14,6 +14,7 @@ import { Etiquette } from './components/Etiquette';
 import { BASE_PATH, buildFullPath, normalizeRelativePath } from './utils/routing';
 import { Section } from './components/Section';
 import { SaveTheDateIntroGate } from './components/SaveTheDateIntroGate';
+import { RsvpIntroGate } from './components/RsvpIntroGate';
 import { LanguageProvider } from './context/LanguageProvider';
 import type { Language } from './i18n';
 import { translations } from './i18n';
@@ -222,7 +223,11 @@ export default function App() {
             </SaveTheDateIntroGate>
           )}
 
-          {page === 'rsvp' && <RSVP />}
+          {page === 'rsvp' && (
+            <RsvpIntroGate>
+              <RSVP />
+            </RsvpIntroGate>
+          )}
 
           {page === 'details' && (
             <>
