@@ -26,12 +26,12 @@ export function Etiquette() {
   const sections = etiquette.sections ?? details.infoSections ?? [];
 
   return (
-    <section id="etiquette-page" ref={sectionRef} className="py-16 md:py-24">
+    <section id="etiquette-page" ref={sectionRef} className="py-16 md:py-24 page-etiquette">
       <div className="etiquette-content">
         <button
           type="button"
           onClick={() => navigateWithinApp('/details')}
-          className="mb-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.08em] text-left text-slate-600 hover:text-slate-800"
+          className="mb-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.08em] text-left text-slate-600 hover:text-slate-800 veil-text"
           style={{
             fontFamily: theme.typography.fontFamily.sans,
             letterSpacing: '0.12em',
@@ -42,7 +42,7 @@ export function Etiquette() {
 
         <div className="etiquette-hero">
           <p
-            className="font-sans text-xs uppercase tracking-[0.3em] text-slate-500 mb-3"
+            className="font-sans text-xs uppercase tracking-[0.3em] text-slate-500 mb-3 veil-text"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               letterSpacing: '0.35em',
@@ -60,7 +60,7 @@ export function Etiquette() {
               color: theme.colors.primary.dustyBlue,
             }}
           >
-            <span className="hero-handwriting">
+            <span className="hero-handwriting veil-text">
               <span className="hero-handwriting__text">{etiquette.pageTitle}</span>
             </span>
           </h1>

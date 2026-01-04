@@ -87,7 +87,7 @@ export function Details() {
             }}
           >
             <p
-              className="font-sans"
+              className="font-sans details-name-veil"
               style={{
                 fontFamily: theme.typography.fontFamily.sans,
                 fontSize: theme.typography.fontSize.sm,
@@ -120,7 +120,7 @@ export function Details() {
             }}
           >
             <p
-              className="font-sans"
+              className="font-sans details-name-veil"
               style={{
                 fontFamily: theme.typography.fontFamily.sans,
                 fontSize: theme.typography.fontSize.sm,

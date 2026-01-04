@@ -58,6 +58,30 @@ export function Story({
   const closeImage = () => {
     setSelectedImage(null);
   };
+  const decor = (
+    <div
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 2,
+      }}
+    >
+      <img
+        src="/images/Our Story Flower.png"
+        alt=""
+        style={{
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          width: 'min(90vw, 920px)',
+          height: 'auto',
+          opacity: 0.5,
+        }}
+      />
+    </div>
+  );
 
   return (
     <Section
@@ -66,8 +90,12 @@ export function Story({
       aria-labelledby="story-heading"
       style={{
         backgroundColor: theme.colors.background.white,
+        position: 'relative',
+        overflow: 'hidden',
       }}
       maxWidth={theme.layout.maxWidth}
+      beforeInner={decor}
+      innerStyle={{ position: 'relative', zIndex: 1 }}
     >
         {/* Section Heading */}
         <h2
