@@ -131,8 +131,8 @@ export default function App() {
   const navLinks = useMemo(
     () => [
       { path: '/', label: navCopy.saveTheDate },
-      { path: '/rsvp', label: navCopy.rsvp },
       { path: '/details', label: navCopy.details },
+      { path: '/rsvp', label: navCopy.rsvp },
       { path: '/etiquette', label: navCopy.etiquette },
       { path: '/the-day', label: navCopy.theDay },
       { path: '/reception', label: navCopy.reception },
@@ -223,16 +223,12 @@ export default function App() {
             </SaveTheDateIntroGate>
           )}
 
-          {page === 'rsvp' && (
-            <RsvpIntroGate>
-              <RSVP />
-            </RsvpIntroGate>
-          )}
+          {page === 'rsvp' && <RSVP />}
 
           {page === 'details' && (
-            <>
+            <RsvpIntroGate>
               <Details />
-            </>
+            </RsvpIntroGate>
           )}
 
           {page === 'etiquette' && <Etiquette />}
