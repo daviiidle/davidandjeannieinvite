@@ -4,10 +4,8 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 const baseAssetPath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
 const withBasePath = (path: string) =>
   `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
-const RSVP_BACKGROUND_SRC = withBasePath(
-  encodeURI('/images/Untitled design(4).png'),
-);
-const RSVP_CTA_SRC = withBasePath(encodeURI('/images/Your paragraph text.png'));
+const RSVP_BACKGROUND_SRC = withBasePath(encodeURI('/images/envelope.png'));
+const RSVP_CTA_SRC = withBasePath(encodeURI('/images/the golden button.png'));
 const RSVP_INTRO_FADE_MS = 900;
 
 type IntroPhase = 'visible' | 'fading' | 'hidden';
