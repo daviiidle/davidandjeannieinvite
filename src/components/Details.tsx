@@ -74,7 +74,7 @@ export function Details() {
             overflow: 'visible',
           }}
         >
-          <span className="hero-handwriting hero-handwriting--safe">
+          <span className="hero-handwriting hero-handwriting--safe details-name-veil">
             <span className="hero-handwriting__text" style={scriptTextStyle}>
               {details.familiesHeading}
             </span>
@@ -102,7 +102,7 @@ export function Details() {
               </span>
             </p>
             <p
-              className="font-serif"
+              className="font-serif details-name-veil"
               style={{
                 fontFamily: theme.typography.fontFamily.serif,
                 fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
@@ -135,7 +135,7 @@ export function Details() {
               </span>
             </p>
             <p
-              className="font-serif"
+              className="font-serif details-name-veil"
               style={{
                 fontFamily: theme.typography.fontFamily.serif,
                 fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',

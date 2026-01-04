@@ -25,6 +25,23 @@
   z-index: 1;
 }
 
+.details-name-veil {
+  position: relative;
+  display: inline-block;
+  padding: 0.22em 0.6em;
+}
+
+.details-name-veil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.88);
+  filter: blur(5px);
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.5);
+  z-index: -1;
+}
+
 .details-event-grid {
   --details-event-gap: 1.75rem;
   --details-event-card-padding: 3rem 2rem;
