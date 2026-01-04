@@ -3,6 +3,7 @@ import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { TimelineCard, type TimelineItem } from './TimelineCard';
 import { Section } from './Section';
+import { useLanguage } from '../context/useLanguage';
 
 const RECEPTION_ITEMS: TimelineItem[] = [
   {
@@ -20,7 +21,7 @@ const RECEPTION_ITEMS: TimelineItem[] = [
   {
     time: '6:40 PM',
     label: 'Entrées Served',
-    description: 'Shared starters are served to the table.',
+    description: 'Plated starters are served to each guest.',
     icon: 'dinner',
   },
   {
@@ -32,7 +33,7 @@ const RECEPTION_ITEMS: TimelineItem[] = [
   {
     time: '7:35 PM',
     label: 'Main Courses Begin',
-    description: 'Banquet-style mains are served progressively.',
+    description: 'Plated main courses are served to each guest.',
     icon: 'dinner',
   },
   {
@@ -94,10 +95,42 @@ const RECEPTION_ITEMS: TimelineItem[] = [
 export function ReceptionTimeline() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const { language } = useLanguage();
   const activateTitleAnimation = useCallback(() => {
     titleRef.current?.classList.add('page-title-handwriting--active');
   }, []);
   useScrollReveal(sectionRef, { duration: 0.6, onEnter: activateTitleAnimation });
+  const items = RECEPTION_ITEMS.map((item) => {
+    if (item.label === 'Entrées Served') {
+      if (language === 'vi') {
+        return {
+          ...item,
+          label: 'Phục vụ món khai vị',
+          description: 'Kính mời quý khách dùng món khai vị theo phần phục vụ riêng.',
+        };
+      }
+      return {
+        ...item,
+        label: 'Entrées Served',
+        description: 'Plated starters are served to each guest.',
+      };
+    }
+    if (item.label === 'Main Courses Begin') {
+      if (language === 'vi') {
+        return {
+          ...item,
+          label: 'Phục vụ món chính',
+          description: 'Kính mời quý khách dùng món chính theo phần phục vụ riêng.',
+        };
+      }
+      return {
+        ...item,
+        label: 'Main Courses Begin',
+        description: 'Plated main courses are served to each guest.',
+      };
+    }
+    return item;
+  });
   const decor = (
     <div className="timeline-decor" aria-hidden="true">
       <img className="timeline-decor__top" src="/images/Timeline Top.png" alt="" />
@@ -117,7 +150,7 @@ export function ReceptionTimeline() {
         title="Reception Timeline"
         subtitle="David + Jeannie"
         dateLine="October 3, 2026"
-        items={RECEPTION_ITEMS}
+        items={items}
         titleRef={titleRef}
       />
     </Section>
