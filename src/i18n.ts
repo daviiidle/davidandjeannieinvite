@@ -382,7 +382,7 @@ export const translations: Record<Language, TranslationContent> = {
     },
     details: {
       saveTheDate: 'Save the Date',
-      familiesHeading: 'Our Families',
+      familiesHeading: 'Jeannie & David',
       sponsorsLabel: 'Principal Sponsors',
       dateLabel: 'October 3, 2026',
       countdownTitle: 'Countdown to the Wedding Day',
@@ -630,7 +630,7 @@ export const translations: Record<Language, TranslationContent> = {
     },
     details: {
       saveTheDate: 'Vui lòng ghi nhớ ngày',
-      familiesHeading: 'Gia đình hai bên',
+      familiesHeading: 'Jeannie & David',
       sponsorsLabel: 'Gia đình chứng giám',
       dateLabel: 'Ngày 3 tháng 10 năm 2026',
       countdownTitle: 'Thời gian còn lại đến ngày hôn lễ',
