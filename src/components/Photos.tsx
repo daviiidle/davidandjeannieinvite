@@ -141,7 +141,7 @@ export function Photos() {
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting veil-text">
+          <span className="hero-handwriting veil-text photos-heading-veil">
             <span className="hero-handwriting__text">{photos.heading}</span>
           </span>
         </h1>

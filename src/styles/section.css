@@ -98,7 +98,13 @@
 }
 
 .page-photos #photos-heading {
+  display: flex;
+  justify-content: center;
   text-align: center;
+}
+
+.page-photos #photos-heading .photos-heading-veil {
+  display: inline-block;
 }
 
 .page-seating .veil-text::before,
