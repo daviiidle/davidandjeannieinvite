@@ -47,6 +47,30 @@
   --details-event-card-padding: 3rem 2rem;
   row-gap: var(--details-event-gap);
   margin-bottom: 4rem;
+  position: relative;
+  padding-top: clamp(135px, 18vw, 210px);
+}
+
+.details-event-grid::before {
+  content: "";
+  position: absolute;
+  top: clamp(-56px, -6vw, -18px);
+  left: 50%;
+  width: clamp(384px, 114vw, 768px);
+  height: clamp(192px, 31.2vw, 312px);
+  background-image: url('/images/details-floral-top.png');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  opacity: 0.3;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.details-event-grid > * {
+  position: relative;
+  z-index: 1;
 }
 
 .details-event-card--reception {
@@ -60,6 +84,7 @@
     --details-event-gap: 1rem;
     --details-event-card-padding: 2.25rem 1.75rem;
     margin-bottom: 0.25rem;
+    padding-top: clamp(115px, 20vw, 170px);
   }
 
   .details-event-card--reception {
@@ -78,6 +103,7 @@
     --details-event-gap: 0;
     --details-event-card-padding: 0 0;
     margin-bottom: 0;
+    padding-top: clamp(100px, 24vw, 160px);
   }
 
   .details-event-card--reception {
@@ -88,7 +114,31 @@
 }
 
 .details-etiquette-preview {
-  margin-top: 3rem;
+  margin-top: 0rem;
+  position: relative;
+  padding-top: clamp(135px, 18vw, 210px);
+}
+
+.details-etiquette-preview::before {
+  content: "";
+  position: absolute;
+  top: clamp(-128px, -12vw, -40px);
+  left: 50%;
+  width: clamp(320px, 95vw, 640px);
+  height: clamp(160px, 26vw, 260px);
+  background-image: url('/images/details-floral-bottom.png');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  opacity: 0.3;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.details-etiquette-preview > * {
+  position: relative;
+  z-index: 1;
 }
 
 .details-etiquette-preview__card {
