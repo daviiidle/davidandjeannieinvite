@@ -1,3 +1,30 @@
+.details-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.details-section::before {
+  content: "";
+  position: absolute;
+  top: clamp(-20px, -4vw, 0px);
+  left: 50%;
+  width: clamp(480px, 96vw, 840px);
+  height: clamp(480px, 96vw, 840px);
+  background-image: url('/images/Untitled design(12).png');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  opacity: 0.3;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.details-section > * {
+  position: relative;
+  z-index: 1;
+}
+
 .details-event-grid {
   --details-event-gap: 1.75rem;
   --details-event-card-padding: 3rem 2rem;
