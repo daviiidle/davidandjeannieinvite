@@ -340,16 +340,10 @@ export function Hero() {
                 textTransform: 'uppercase',
                 borderRadius: 0,
                 border: 'none',
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('/images/Untitled design(6).png')",
-                backgroundSize: 'contain',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
                 color: theme.colors.background.white,
                 padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
                 minHeight: '58px',
                 minWidth: '220px',
-                backgroundColor: 'transparent',
                 cursor: 'pointer',
                 marginTop: theme.spacing.sm,
               }}
