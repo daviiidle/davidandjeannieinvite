@@ -332,6 +332,7 @@ export function Hero() {
             type="button"
             onClick={handleScrollToUpdates}
             className="font-sans hero-calendar-button hero-calendar-button--primary"
+            data-hero-cta
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               fontSize: theme.typography.fontSize.sm,
@@ -350,11 +351,6 @@ export function Hero() {
           >
             {heroCtaLabel}
           </button>
-        </div>
-
-        <div className="hero-scroll-indicator" aria-hidden="true">
-          <span>{scrollHint}</span>
-          <span className="hero-scroll-indicator__arrow" />
         </div>
 
         <div
