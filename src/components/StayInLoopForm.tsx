@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { theme } from '../theme';
 import { SAVE_THE_DATE_WEBHOOK_URL } from '../api/rsvp';
 import { useLanguage } from '../context/useLanguage';
@@ -51,6 +51,8 @@ export function StayInLoopForm() {
   });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [submitError, setSubmitError] = useState<SubmitErrorState>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const successTimeoutRef = useRef<number | null>(null);
 
   const isPhoneValid = useMemo(
     () => PHONE_REGEX.test(sanitizePhone(formState.phone.trim())),
@@ -63,6 +65,14 @@ export function StayInLoopForm() {
       [field]: value,
     }));
   };
+
+  useEffect(() => {
+    return () => {
+      if (successTimeoutRef.current) {
+        window.clearTimeout(successTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const markTouched = (field: keyof typeof touched) => {
     setTouched((prev) => (prev[field] ? prev : { ...prev, [field]: true }));
@@ -127,8 +137,16 @@ export function StayInLoopForm() {
 
       setStatus('success');
       setErrors({});
+      setTouched({ firstName: false, lastName: false, phone: false });
       setFormState(initialState);
       setSubmitError(null);
+      setShowSuccessToast(true);
+      if (successTimeoutRef.current) {
+        window.clearTimeout(successTimeoutRef.current);
+      }
+      successTimeoutRef.current = window.setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 4500);
     } catch (error) {
       if (error instanceof Error && error.message && error.message !== GENERIC_ERROR_TOKEN) {
         setSubmitError({ message: error.message });
@@ -189,6 +207,25 @@ export function StayInLoopForm() {
           </p>
         ) : null}
       </div>
+
+      {showSuccessToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
+            marginBottom: theme.spacing.lg,
+            padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+            borderRadius: theme.borderRadius.full,
+            backgroundColor: 'rgba(139, 157, 195, 0.12)',
+            color: theme.colors.primary.dustyBlue,
+            fontFamily: theme.typography.fontFamily.sans,
+            fontSize: theme.typography.fontSize.sm,
+            textAlign: 'center',
+          }}
+        >
+          {stayInLoop.success}
+        </div>
+      )}
 
       <form
         onSubmit={handleSubmit}
