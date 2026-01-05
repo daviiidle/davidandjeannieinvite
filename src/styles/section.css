@@ -124,7 +124,7 @@
   z-index: -1;
 }
 
-@media (min-width: 360px) and (max-width: 430px) {
+@media (min-width: 360px) and (max-width: 520px) {
   .hero-section {
     --section-padding-y: 3rem;
     --hero-safe-offset: 0.75rem;
@@ -184,5 +184,19 @@
   .app-footer {
     --footer-padding-y: 4.75rem;
     --footer-padding-x: 1.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-section .hero-opener__background {
+    background-color: rgba(255, 255, 255, 0.35) !important;
+  }
+
+  .heroWash {
+    opacity: 0.16;
+  }
+
+  .heroFloralTL {
+    opacity: 0.24;
   }
 }
