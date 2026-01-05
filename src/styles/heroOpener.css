@@ -69,6 +69,10 @@
   animation: hero-cta-pulse 3.8s ease-in-out infinite;
 }
 
+.hero-updates-cta {
+  animation: hero-updates-pulse 3.2s ease-in-out infinite;
+}
+
 .hero-calendar-actions {
   flex-direction: row;
 }
@@ -96,9 +100,25 @@
   }
 }
 
+@keyframes hero-updates-pulse {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 0 rgba(110, 126, 152, 0));
+  }
+  50% {
+    transform: translateY(-3px) scale(1.02);
+    filter: drop-shadow(0 10px 18px rgba(110, 126, 152, 0.28));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-calendar-button--secondary,
   .hero-calendar-button--primary {
+    animation: none;
+  }
+
+  .hero-updates-cta {
     animation: none;
   }
 }
@@ -279,6 +299,7 @@
     bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px));
     transform: translateX(-50%);
     z-index: 120;
+    background: transparent;
   }
 
   .hero-scroll-indicator__inner[data-hero-scroll] {

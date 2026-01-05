@@ -328,29 +328,36 @@ export function Hero() {
             </a>
           </div>
 
-          <button
-            type="button"
-            onClick={handleScrollToUpdates}
-            className="font-sans hero-calendar-button hero-calendar-button--primary"
-            data-hero-cta
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.sm,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              borderRadius: theme.borderRadius.full,
-              border: 'none',
-              backgroundColor: theme.colors.primary.dustyBlue,
-              color: theme.colors.background.white,
-              padding: `${theme.spacing.sm} ${theme.spacing['2xl']}`,
-              minHeight: '48px',
-              cursor: 'pointer',
-              marginTop: theme.spacing.sm,
-            }}
-            aria-label={heroCtaLabel}
-          >
-            {heroCtaLabel}
-          </button>
+          <div data-hero-cta style={{ display: 'inline-flex' }}>
+            <button
+              type="button"
+              onClick={handleScrollToUpdates}
+              className="font-sans hero-calendar-button hero-calendar-button--primary hero-updates-cta"
+              style={{
+                fontFamily: theme.typography.fontFamily.sans,
+                fontSize: theme.typography.fontSize.xs,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                borderRadius: 0,
+                border: 'none',
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('/images/Untitled design(6).png')",
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                color: theme.colors.background.white,
+                padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
+                minHeight: '58px',
+                minWidth: '220px',
+                backgroundColor: 'transparent',
+                cursor: 'pointer',
+                marginTop: theme.spacing.sm,
+              }}
+              aria-label={heroCtaLabel}
+            >
+              {heroCtaLabel}
+            </button>
+          </div>
         </div>
 
         <div
