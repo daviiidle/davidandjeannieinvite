@@ -16,7 +16,6 @@ export function Hero() {
   const heroSubtitle = (strings.hero.subtitle || '').trim();
   const heroCtaLabel = (strings.hero.ctaLabel || 'Receive Updates').trim();
   const updatesHeading = (strings.hero.updatesHeading || 'Updates & RSVP').trim();
-  const scrollHint = (strings.hero.scrollHint || 'Scroll for details').trim();
   const resolvedDate = strings.details.dateLabel;
   const locationText = strings.hero.locationLine;
   const invitationLine = strings.hero.invitationLine;
