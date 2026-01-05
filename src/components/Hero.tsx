@@ -270,7 +270,7 @@ export function Hero() {
               href={googleCalendarLink}
               target="_blank"
               rel="noreferrer noopener"
-              className="font-sans hero-calendar-button"
+              className="font-sans hero-calendar-button hero-calendar-button--secondary"
               style={{
                 fontFamily: theme.typography.fontFamily.sans,
                 fontSize: theme.typography.fontSize.xs,
@@ -300,7 +300,7 @@ export function Hero() {
               href={appleCalendarLink}
               download="david-and-jeannie-wedding.ics"
               rel="noreferrer"
-              className="font-sans hero-calendar-button"
+              className="font-sans hero-calendar-button hero-calendar-button--secondary"
               style={{
                 fontFamily: theme.typography.fontFamily.sans,
                 fontSize: theme.typography.fontSize.xs,
@@ -331,7 +331,7 @@ export function Hero() {
           <button
             type="button"
             onClick={handleScrollToUpdates}
-            className="font-sans hero-calendar-button"
+            className="font-sans hero-calendar-button hero-calendar-button--primary"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               fontSize: theme.typography.fontSize.sm,

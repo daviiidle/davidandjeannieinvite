@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/useLanguage';
@@ -76,6 +76,8 @@ export function RSVP({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successHint, setSuccessHint] = useState<string | null>(null);
   const [showValidation, setShowValidation] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const successTimeoutRef = useRef<number | null>(null);
   const [touched, setTouched] = useState({
     firstName: false,
     lastName: false,
@@ -85,6 +87,14 @@ export function RSVP({
   const markTouched = (field: keyof typeof touched) => {
     setTouched((prev) => (prev[field] ? prev : { ...prev, [field]: true }));
   };
+
+  useEffect(() => {
+    return () => {
+      if (successTimeoutRef.current) {
+        window.clearTimeout(successTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (field: keyof FormState, value: string) => {
     setFormState((prev) => {
@@ -180,7 +190,15 @@ export function RSVP({
       setStatus('success');
       setSuccessHint('We just sent a private View/Edit link via SMS.');
       setShowValidation(false);
+      setTouched({ firstName: false, lastName: false, phone: false });
       setFormState(createDefaultFormState());
+      setShowSuccessToast(true);
+      if (successTimeoutRef.current) {
+        window.clearTimeout(successTimeoutRef.current);
+      }
+      successTimeoutRef.current = window.setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 4500);
     } catch (error) {
       setStatus('error');
       setErrorMessage(
@@ -259,6 +277,25 @@ export function RSVP({
             {t.adultNote}
           </p>
         </div>
+
+        {showSuccessToast && (
+          <div
+            role="status"
+            aria-live="polite"
+            style={{
+              marginBottom: theme.spacing.lg,
+              padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+              borderRadius: theme.borderRadius.full,
+              backgroundColor: 'rgba(139, 157, 195, 0.12)',
+              color: theme.colors.primary.dustyBlue,
+              fontFamily: theme.typography.fontFamily.sans,
+              fontSize: theme.typography.fontSize.sm,
+              textAlign: 'center',
+            }}
+          >
+            {t.successMessage}
+          </div>
+        )}
 
         <FormCard className="rsvp-card" style={{ marginBottom: theme.spacing['2xl'] }}>
           <form
