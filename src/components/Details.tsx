@@ -2,23 +2,16 @@ import { useRef, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/useLanguage';
-import { navigateWithinApp } from '../utils/routing';
 
 export function Details() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const familiesHeadingRef = useRef<HTMLHeadingElement>(null);
-  const parentsRef = useRef<HTMLDivElement>(null);
   const { strings } = useLanguage();
   const activateTitleAnimation = useCallback(() => {
     headingRef.current?.classList.add('page-title-handwriting--active');
-    familiesHeadingRef.current?.classList.add('page-title-handwriting--active');
-    parentsRef.current?.classList.add('page-title-handwriting--active');
   }, []);
   useScrollReveal(sectionRef, { duration: 0.8, onEnter: activateTitleAnimation });
   const { details } = strings;
-  const parents = details.parents;
-  const weddingParty = details.weddingParty;
 
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
@@ -56,212 +49,6 @@ export function Details() {
           margin: '0 auto',
         }}
       >
-        {/* Parents */}
-        <h2
-          ref={familiesHeadingRef}
-          className="font-serif text-center mb-12 page-title-handwriting"
-          style={{
-            fontFamily: '"Mea Culpa", "Playfair Display", serif',
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            fontWeight: 400,
-            color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.05em',
-            marginBottom: theme.spacing['3xl'],
-            lineHeight: 1.4,
-            paddingTop: '0.6rem',
-            paddingBottom: '0.6rem',
-            paddingLeft: '0.08em',
-            overflow: 'visible',
-          }}
-        >
-          <span className="hero-handwriting hero-handwriting--safe details-name-veil">
-            <span className="hero-handwriting__text" style={scriptTextStyle}>
-              {details.familiesHeading}
-            </span>
-          </span>
-        </h2>
-        <div ref={parentsRef} className="wedding-party-grid wedding-party-grid--parents mb-12">
-          <div className="wedding-party-parents-column">
-            <p
-              className="font-sans details-name-veil"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.sm,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: theme.colors.secondary.slate,
-                marginBottom: theme.spacing.xs,
-              }}
-            >
-              <span className="hero-handwriting">
-                <span className="hero-handwriting__text">{parents.groomTitle}</span>
-              </span>
-            </p>
-            <p
-              className="font-serif details-name-veil"
-              style={{
-                fontFamily: theme.typography.fontFamily.serif,
-                fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
-                color: theme.colors.primary.dustyBlue,
-              }}
-            >
-              <span className="hero-handwriting">
-                <span className="hero-handwriting__text">{parents.groomNames}</span>
-              </span>
-            </p>
-          </div>
-          <div className="wedding-party-parents-column">
-            <p
-              className="font-sans details-name-veil"
-              style={{
-                fontFamily: theme.typography.fontFamily.sans,
-                fontSize: theme.typography.fontSize.sm,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: theme.colors.secondary.slate,
-                marginBottom: theme.spacing.xs,
-              }}
-            >
-              <span className="hero-handwriting">
-                <span className="hero-handwriting__text">{parents.brideTitle}</span>
-              </span>
-            </p>
-            <p
-              className="font-serif details-name-veil"
-              style={{
-                fontFamily: theme.typography.fontFamily.serif,
-                fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
-                color: theme.colors.primary.dustyBlue,
-              }}
-            >
-              <span className="hero-handwriting">
-                <span className="hero-handwriting__text">{parents.brideNames}</span>
-              </span>
-            </p>
-          </div>
-        </div>
-
-        {/* Principal Sponsors */}
-        <div
-          style={{
-            textAlign: 'center',
-            marginBottom: theme.spacing['3xl'],
-          }}
-        >
-          <p
-            className="font-sans"
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.sm,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: theme.colors.secondary.slate,
-              marginBottom: theme.spacing.xs,
-            }}
-          >
-            {details.sponsorsLabel}
-          </p>
-          <p
-            className="font-serif"
-            style={{
-              fontFamily: theme.typography.fontFamily.serif,
-              fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
-              color: theme.colors.primary.dustyBlue,
-            }}
-          >
-            Diana & Eddie
-          </p>
-        </div>
-
-        {/* Wedding Party */}
-        <div className="wedding-party-grid mb-12">
-          {weddingParty.columns.map((column, index) => (
-            <div
-              key={`${column.title}-${index}`}
-              className="wedding-party-card"
-              style={{
-                borderRadius: theme.borderRadius.xl,
-              }}
-            >
-              <p
-                className="font-sans text-center"
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  fontSize: theme.typography.fontSize.sm,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: theme.colors.secondary.slate,
-                  marginBottom: theme.spacing.xs,
-                }}
-              >
-                {column.title}
-              </p>
-              <div style={{ textAlign: 'center', marginBottom: theme.spacing.sm }}>
-                <p
-                  style={{
-                    fontFamily: theme.typography.fontFamily.serif,
-                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
-                    fontWeight: theme.typography.fontWeight.normal,
-                    color: theme.colors.primary.dustyBlue,
-                    display: 'inline-block',
-                    marginBottom: theme.spacing.xs,
-                  }}
-                >
-                  {column.name}
-                </p>
-                <span
-                  style={{
-                    display: 'block',
-                    width: '60px',
-                    height: '1px',
-                    backgroundColor: theme.colors.primary.dustyBlue,
-                    margin: '0 auto',
-                    opacity: 0.4,
-                  }}
-                />
-              </div>
-              <p
-                className="font-sans text-center"
-                style={{
-                  fontFamily: theme.typography.fontFamily.sans,
-                  fontSize: theme.typography.fontSize.sm,
-                  fontWeight: theme.typography.fontWeight.semibold,
-                  color: theme.colors.secondary.slate,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.15em',
-                  marginBottom: theme.spacing.sm,
-                }}
-              >
-                {column.groupTitle}
-              </p>
-              <ul
-                style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'grid',
-                  gap: theme.spacing.xs,
-                }}
-              >
-                {column.members.map((member) => (
-                  <li
-                    key={member}
-                    className="font-sans text-center"
-                    style={{
-                      fontFamily: theme.typography.fontFamily.sans,
-                      fontSize: theme.typography.fontSize.base,
-                      color: theme.colors.text.secondary,
-                      letterSpacing: '0.03em',
-                    }}
-                  >
-                    {member}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
         {/* Section Title */}
         <h2
           id="details-heading"
@@ -509,7 +296,12 @@ export function Details() {
                 <button
                   type="button"
                   className="button-link"
-                  onClick={() => navigateWithinApp('/etiquette')}
+                  onClick={() =>
+                    document.getElementById('etiquette')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    })
+                  }
                 >
                   {etiquettePreview.ctaLabel}
                 </button>

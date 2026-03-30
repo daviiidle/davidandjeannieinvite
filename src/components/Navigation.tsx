@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/useLanguage';
@@ -9,26 +9,16 @@ const withBasePath = (path: string) =>
   `${baseAssetPath}${path.startsWith('/') ? path : `/${path}`}`;
 const RSVP_CTA_SRC = withBasePath(encodeURI('/images/the golden button.png'));
 
-interface NavigationLink {
-  path: string;
-  label: string;
-  targetId?: string;
-}
-
 interface NavigationProps {
-  currentPath: string;
-  links: NavigationLink[];
-  onNavigate: (path: string, targetId?: string) => void;
+  onNavigate: (targetId?: string) => void;
 }
 
 const HEADER_VAR = '--app-header-height';
-type NavVariant = 'inline' | 'drawer';
 const languageOptions: Language[] = ['en', 'vi'];
 
-export function Navigation({ currentPath, links, onNavigate }: NavigationProps) {
+export function Navigation({ onNavigate }: NavigationProps) {
   const { strings, language, setLanguage } = useLanguage();
   const navRef = useRef<HTMLElement>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -55,54 +45,18 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
     };
   }, []);
 
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false);
-      }
-    };
-    document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
-  }, [isMenuOpen]);
-
-  const handleNavigate = (path: string, targetId?: string) => {
-    setIsMenuOpen(false);
-    onNavigate(path, targetId);
-  };
-
-  const linkButtonStyle = (active: boolean, variant: NavVariant): CSSProperties => ({
-    fontFamily: theme.typography.fontFamily.sans,
-    fontSize: variant === 'inline' ? theme.typography.fontSize.sm : '0.8rem',
-    fontWeight: theme.typography.fontWeight.medium,
-    color: active ? theme.colors.primary.dustyBlue : theme.colors.secondary.slate,
-    textTransform: 'uppercase',
-    letterSpacing: variant === 'inline' ? '0.05em' : '0.08em',
-    border: 'none',
-    background: 'none',
-    cursor: 'pointer',
-    padding:
-      variant === 'inline'
-        ? `${theme.spacing.xs} ${theme.spacing.sm}`
-        : '0.35rem 0',
-    width: variant === 'drawer' ? '100%' : undefined,
-    textAlign: variant === 'drawer' ? 'left' : 'center',
-    borderBottom:
-      variant === 'drawer' ? `1px solid ${theme.colors.primary.dustyBlue}20` : 'none',
-  });
-
-  const languageGroupStyle = (variant: NavVariant): CSSProperties => ({
+  const languageGroupStyle: CSSProperties = {
     display: 'inline-flex',
     gap: '0.25rem',
-    border: variant === 'inline' ? `1px solid ${theme.colors.primary.dustyBlue}40` : 'none',
-    borderRadius: variant === 'inline' ? theme.borderRadius.full : 0,
-    padding: variant === 'inline' ? '0.25rem' : 0,
-    backgroundColor: variant === 'inline' ? 'rgba(255,255,255,0.65)' : 'transparent',
-  });
+    border: `1px solid ${theme.colors.primary.dustyBlue}40`,
+    borderRadius: theme.borderRadius.full,
+    padding: '0.25rem',
+    backgroundColor: 'rgba(255,255,255,0.65)',
+  };
 
-  const languageOptionStyle = (active: boolean, variant: NavVariant): CSSProperties => ({
+  const languageOptionStyle = (active: boolean): CSSProperties => ({
     fontFamily: theme.typography.fontFamily.sans,
-    fontSize: variant === 'inline' ? theme.typography.fontSize.sm : '0.8rem',
+    fontSize: theme.typography.fontSize.sm,
     fontWeight: theme.typography.fontWeight.medium,
     letterSpacing: '0.05em',
     textTransform: 'uppercase',
@@ -115,40 +69,21 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
     opacity: active ? 1 : 0.8,
   });
 
-  const renderLinkButtons = (items: NavigationLink[], variant: NavVariant) => (
-    <>
-      {items.map((link) => {
-        const active = currentPath === link.path;
-        return (
-          <button
-            key={`${variant}-${link.path}`}
-            type="button"
-            onClick={() => handleNavigate(link.path, link.targetId)}
-            style={linkButtonStyle(active, variant)}
-          >
-            {link.label}
-          </button>
-        );
-      })}
-    </>
-  );
-
-  const renderLanguageButton = (variant: NavVariant) => (
+  const renderLanguageButton = () => (
     <div
       role="group"
       aria-label={strings.navigation.changeLanguage}
-      style={languageGroupStyle(variant)}
+      style={languageGroupStyle}
     >
       {languageOptions.map((option) => (
         <button
-          key={`${variant}-language-${option}`}
+          key={`language-${option}`}
           type="button"
           onClick={() => {
             if (language === option) return;
-            setIsMenuOpen(false);
             setLanguage(option);
           }}
-          style={languageOptionStyle(language === option, variant)}
+          style={languageOptionStyle(language === option)}
           aria-pressed={language === option}
           disabled={language === option}
         >
@@ -157,10 +92,6 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
       ))}
     </div>
   );
-
-  const drawerId = 'navigation-drawer';
-  const secondaryLinks = links.filter((link) => link.path === '/etiquette');
-  const primaryLinks = links.filter((link) => link.path !== '/etiquette');
 
   return (
     <nav
@@ -177,68 +108,21 @@ export function Navigation({ currentPath, links, onNavigate }: NavigationProps) 
       }}
     >
       <div className="navigation-inner">
-        {currentPath === '/details' && (
-          <button
-            type="button"
-            className="navigation-rsvp-cta"
-            onClick={() => handleNavigate('/rsvp')}
-            aria-label={strings.navigation.rsvpCta}
-          >
-            <span
-              className="navigation-rsvp-cta__icon"
-              aria-hidden="true"
-              style={{ backgroundImage: `url(${RSVP_CTA_SRC})` }}
-            />
-            <span className="navigation-rsvp-cta__label">{strings.navigation.rsvpCta}</span>
-          </button>
-        )}
-        <div className="navigation-links">
-          {renderLinkButtons(links, 'inline')}
-          {renderLanguageButton('inline')}
-        </div>
         <button
           type="button"
-          className="navigation-menu-toggle"
-          aria-expanded={isMenuOpen}
-          aria-controls={drawerId}
-          aria-label={isMenuOpen ? strings.navigation.closeMenu : strings.navigation.menuLabel}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="navigation-rsvp-cta"
+          onClick={() => onNavigate('rsvp')}
+          aria-label={strings.navigation.rsvpCta}
         >
-          <span className={`navigation-menu-toggle__icon${isMenuOpen ? ' is-open' : ''}`}>
-            <span />
-            <span />
-            <span />
-          </span>
-          <span className="navigation-menu-toggle__label visually-hidden">
-            {isMenuOpen ? strings.navigation.closeMenu : strings.navigation.menuLabel}
-          </span>
+          <span
+            className="navigation-rsvp-cta__icon"
+            aria-hidden="true"
+            style={{ backgroundImage: `url(${RSVP_CTA_SRC})` }}
+          />
+          <span className="navigation-rsvp-cta__label">{strings.navigation.rsvpCta}</span>
         </button>
-      </div>
-
-      <div
-        id={drawerId}
-        className={`navigation-drawer ${isMenuOpen ? 'is-open' : ''}`}
-        aria-hidden={!isMenuOpen}
-      >
-        <button
-          type="button"
-          className="navigation-drawer__backdrop"
-          aria-label={strings.navigation.closeMenu}
-          onClick={() => setIsMenuOpen(false)}
-        />
-        <div className="navigation-drawer__panel" role="menu">
-          <div className="navigation-drawer__group">
-            {renderLinkButtons(primaryLinks, 'drawer')}
-          </div>
-          {secondaryLinks.length > 0 && (
-            <div className="navigation-drawer__group navigation-drawer__group--secondary">
-              <p>{strings.navigation.moreLabel ?? 'More'}</p>
-              {renderLinkButtons(secondaryLinks, 'drawer')}
-            </div>
-          )}
-          <div className="navigation-drawer__group navigation-drawer__group--actions">
-            {renderLanguageButton('drawer')}
-          </div>
+        <div className="navigation-links">
+          {renderLanguageButton()}
         </div>
       </div>
     </nav>

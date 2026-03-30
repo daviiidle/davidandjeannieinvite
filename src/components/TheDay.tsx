@@ -47,6 +47,7 @@ export function TheDay() {
 
   return (
     <Section
+      id="the-day"
       ref={sectionRef}
       aria-labelledby="the-day-heading"
       maxWidth={theme.layout.maxWidth}

@@ -140,6 +140,7 @@ export function ReceptionTimeline() {
 
   return (
     <Section
+      id="reception"
       ref={sectionRef}
       aria-labelledby="reception-heading"
       maxWidth={theme.layout.maxWidth}
