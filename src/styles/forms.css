@@ -68,6 +68,7 @@
   overflow-x: hidden;
   position: relative;
   isolation: isolate;
+  max-width: 100%;
 }
 
 .page-rsvp .rsvp-header {
@@ -104,6 +105,22 @@
 .page-rsvp .rsvp-header > * {
   position: relative;
   z-index: 1;
+}
+
+.page-rsvp .rsvp-deadline-veil {
+  display: inline-block;
+  padding: 0.2rem 0.9rem;
+  color: #6c80a1 !important;
+}
+
+.page-rsvp .rsvp-deadline-veil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  filter: blur(10px);
+  z-index: -1;
 }
 
 .page-rsvp::after {

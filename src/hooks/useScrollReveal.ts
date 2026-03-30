@@ -10,6 +10,8 @@ interface UseScrollRevealOptions {
   delay?: number;
   yOffset?: number;
   onEnter?: () => void;
+  staggerSelector?: string;
+  staggerAmount?: number;
 }
 
 export function useScrollReveal(
@@ -21,11 +23,16 @@ export function useScrollReveal(
     delay = 0,
     yOffset = 12,
     onEnter,
+    staggerSelector = '[data-reveal]',
+    staggerAmount = 0.12,
   } = options;
 
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
+    const staggerTargets = Array.from(
+      element.querySelectorAll<HTMLElement>(staggerSelector)
+    ).filter((node) => !node.closest('[data-reveal] [data-reveal]'));
 
     // Check for prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -33,12 +40,18 @@ export function useScrollReveal(
     if (prefersReducedMotion) {
       // Skip animation, show final state immediately
       gsap.set(element, { opacity: 1, y: 0 });
+      if (staggerTargets.length > 0) {
+        gsap.set(staggerTargets, { opacity: 1, y: 0, clearProps: 'all' });
+      }
       onEnter?.();
       return;
     }
 
     // Set initial state
     gsap.set(element, { opacity: 0, y: yOffset });
+    if (staggerTargets.length > 0) {
+      gsap.set(staggerTargets, { opacity: 0, y: yOffset * 0.75 });
+    }
 
     // Create scroll-triggered animation
     const animation = gsap.to(element, {
@@ -53,6 +66,16 @@ export function useScrollReveal(
         toggleActions: 'play none none none', // Only play once
         once: true, // Animation only happens once
         onEnter: () => {
+          if (staggerTargets.length > 0) {
+            gsap.to(staggerTargets, {
+              opacity: 1,
+              y: 0,
+              duration: duration * 0.95,
+              ease: 'power2.out',
+              stagger: staggerAmount,
+              overwrite: true,
+            });
+          }
           onEnter?.();
         },
       },
@@ -67,5 +90,5 @@ export function useScrollReveal(
         }
       });
     };
-  }, [ref, duration, delay, yOffset, onEnter]);
+  }, [ref, duration, delay, yOffset, onEnter, staggerSelector, staggerAmount]);
 }

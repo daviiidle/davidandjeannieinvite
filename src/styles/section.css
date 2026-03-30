@@ -25,6 +25,13 @@
   }
 }
 
+@media (max-width: 640px) {
+  .app-section {
+    --section-padding-y: 1.6rem;
+    padding: var(--section-padding-y) 1rem;
+  }
+}
+
 .app-section__inner {
   width: 100%;
   margin: 0 auto;

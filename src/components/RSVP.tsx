@@ -223,6 +223,7 @@ export function RSVP({
           <h2
             id="rsvp-heading"
             ref={headingRef}
+            data-reveal
             className="font-serif page-title-handwriting"
             style={{
               fontFamily: '"Playball", "Playfair Display", serif',
@@ -251,6 +252,8 @@ export function RSVP({
           </h2>
 
           <p
+            data-reveal
+            className="rsvp-deadline-veil"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               fontSize: theme.typography.fontSize.sm,
@@ -267,6 +270,7 @@ export function RSVP({
 
         {showSuccessToast && (
           <div
+            data-reveal
             role="status"
             aria-live="polite"
             style={{
@@ -284,7 +288,11 @@ export function RSVP({
           </div>
         )}
 
-        <FormCard className="rsvp-card" style={{ marginBottom: theme.spacing['2xl'] }}>
+        <FormCard
+          className="rsvp-card page-soft-card"
+          data-reveal
+          style={{ marginBottom: theme.spacing['2xl'] }}
+        >
           <form
             onSubmit={handleSubmit}
             style={{

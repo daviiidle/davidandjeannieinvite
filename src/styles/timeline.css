@@ -12,6 +12,17 @@
 .timeline-section {
   position: relative;
   overflow: hidden;
+  overflow-x: clip;
+}
+
+.page-etiquette + .timeline-section {
+  margin-top: -1.25rem;
+}
+
+@media (max-width: 640px) {
+  .page-etiquette + .timeline-section {
+    margin-top: -1.75rem;
+  }
 }
 
 .timeline-decor {
@@ -73,12 +84,35 @@
   margin: 0.5rem 0;
 }
 
+.timeline-card__title-veil,
+.timeline-card__date-veil {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  padding: 0.08em 0.5em;
+}
+
+.timeline-card__title-veil::before,
+.timeline-card__date-veil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 999px;
+  filter: blur(8px);
+  z-index: -1;
+}
+
 .timeline-card__kicker,
 .timeline-card__date {
   text-transform: uppercase;
   letter-spacing: 0.35em;
   font-size: 0.78rem;
   margin: 0;
+}
+
+.timeline-card__date {
+  color: #62789a !important;
 }
 
 .timeline-card__list-wrapper {

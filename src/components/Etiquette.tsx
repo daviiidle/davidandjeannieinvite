@@ -29,6 +29,7 @@ export function Etiquette() {
       <div className="etiquette-content">
         <div className="etiquette-hero">
           <p
+            data-reveal
             className="font-sans text-xs uppercase tracking-[0.3em] text-slate-500 mb-3 veil-text"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
@@ -38,6 +39,7 @@ export function Etiquette() {
             {etiquette.pageLabel}
           </p>
           <h1
+            data-reveal
             className="font-serif text-4xl md:text-5xl text-[#8B9DC3] page-title-handwriting"
             ref={headingRef}
             style={{
@@ -52,6 +54,7 @@ export function Etiquette() {
             </span>
           </h1>
           <p
+            data-reveal
             className="font-sans text-base md:text-lg text-slate-600 leading-relaxed etiquette-hero-intro"
             style={{
               fontFamily: theme.typography.fontFamily.sans,
@@ -66,6 +69,7 @@ export function Etiquette() {
           {sections.map((column, columnIndex) => (
             <div
               key={`${column.title}-${columnIndex}`}
+              data-reveal
               className="etiquette-section"
             >
               <p className="etiquette-section-title">{column.title}</p>

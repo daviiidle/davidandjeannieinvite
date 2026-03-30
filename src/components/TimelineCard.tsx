@@ -162,7 +162,7 @@ export function TimelineCard({
       style={containerStyle}
       aria-label={`${title} schedule`}
     >
-      <header className="timeline-card__header">
+      <header className="timeline-card__header" data-reveal>
         <h2
           className="timeline-card__title page-title-handwriting"
           ref={titleRef}
@@ -175,12 +175,12 @@ export function TimelineCard({
             marginBottom: theme.spacing.md,
           }}
         >
-          <span className="hero-handwriting">
+          <span className="hero-handwriting timeline-card__title-veil">
             <span className="hero-handwriting__text">{title}</span>
           </span>
         </h2>
         <p
-          className="timeline-card__date"
+          className="timeline-card__date timeline-card__date-veil"
           style={{
             fontFamily: theme.typography.fontFamily.sans,
             color: mutedColor,
@@ -193,7 +193,7 @@ export function TimelineCard({
       <div className="timeline-card__list-wrapper">
         <ul className="timeline-card__list">
           {items.map((item) => (
-            <li key={`${item.time}-${item.label}`} className="timeline-card__item">
+            <li key={`${item.time}-${item.label}`} className="timeline-card__item" data-reveal>
               <div className="timeline-card__topline">
                 <span
                   className="timeline-card__icon"

@@ -49,3 +49,118 @@
   transform: translateY(-4px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
+
+.page-soft-card {
+  transition:
+    transform 360ms ease,
+    box-shadow 360ms ease,
+    border-color 360ms ease;
+}
+
+.page-soft-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(124, 143, 168, 0.12);
+}
+
+.details-event-card,
+.timeline-card__item,
+.etiquette-section,
+.app-footer a,
+.button-link,
+.btn-primary {
+  transition:
+    transform 300ms ease,
+    opacity 300ms ease,
+    box-shadow 300ms ease,
+    filter 300ms ease,
+    color 300ms ease,
+    background-color 300ms ease;
+}
+
+.details-event-card:hover {
+  transform: translateY(-5px);
+}
+
+.timeline-card__item:hover {
+  transform: translateX(4px);
+}
+
+.app-footer a:hover,
+.button-link:hover,
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.page-etiquette::before,
+.timeline-decor__top,
+.timeline-decor__bottom {
+  animation: page-float 12s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.timeline-decor__bottom {
+  animation-duration: 14s;
+  animation-delay: -4s;
+}
+
+.details-heading-stack__amp,
+.timeline-card__title .hero-handwriting__text,
+.page-title-handwriting .hero-handwriting__text {
+  animation: text-breathe 7s ease-in-out infinite;
+}
+
+.details-event-card iframe,
+.details-event-card img {
+  transition: transform 700ms ease, filter 700ms ease;
+}
+
+.details-event-card:hover iframe,
+.details-event-card:hover img {
+  transform: scale(1.015);
+  filter: saturate(1.03);
+}
+
+@keyframes page-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(1.2deg);
+  }
+}
+
+@keyframes text-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-2px);
+    opacity: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-soft-card,
+  .details-event-card,
+  .timeline-card__item,
+  .etiquette-section,
+  .app-footer a,
+  .button-link,
+  .btn-primary,
+  .details-event-card iframe,
+  .details-event-card img {
+    transition: none;
+  }
+
+  .page-etiquette::before,
+  .timeline-decor__top,
+  .timeline-decor__bottom,
+  .details-heading-stack__amp,
+  .timeline-card__title .hero-handwriting__text,
+  .page-title-handwriting .hero-handwriting__text {
+    animation: none;
+  }
+}

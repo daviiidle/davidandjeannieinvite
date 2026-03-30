@@ -45,24 +45,34 @@ export function Details() {
         <h2
           id="details-heading"
           ref={headingRef}
+          data-reveal
           className="font-serif text-center mb-12 page-title-handwriting"
           style={{
-            fontFamily: '"Mea Culpa", "Playfair Display", serif',
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontFamily: '"Cormorant Garamond", "Playfair Display", serif',
+            fontSize: 'clamp(3.1rem, 8.5vw, 5.75rem)',
             fontWeight: 400,
             color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.05em',
-            marginBottom: theme.spacing['3xl'],
-            lineHeight: 1.4,
-            paddingTop: '0.6rem',
-            paddingBottom: '0.6rem',
-            paddingLeft: '0.08em',
+            letterSpacing: '0.015em',
+            marginBottom: theme.spacing['2xl'],
+            lineHeight: 0.92,
+            paddingTop: '0.35rem',
+            paddingBottom: '0.2rem',
             overflow: 'visible',
           }}
         >
-          <span className="hero-handwriting hero-handwriting--safe">
-            <span className="hero-handwriting__text" style={scriptTextStyle}>
-              {details.sectionTitle}
+          <span className="details-heading-monogram" style={scriptTextStyle}>
+            <span className="details-heading-monogram__script details-heading-monogram__script--j">
+              J
+            </span>
+            <span className="details-heading-monogram__script details-heading-monogram__script--d">
+              D
+            </span>
+            <span className="details-heading-monogram__row details-heading-monogram__row--top">
+              <span className="details-heading-monogram__name">JEANNIE</span>
+            </span>
+            <span className="details-heading-monogram__amp">&amp;</span>
+            <span className="details-heading-monogram__row details-heading-monogram__row--bottom">
+              <span className="details-heading-monogram__name">DAVID</span>
             </span>
           </span>
         </h2>
@@ -93,6 +103,7 @@ export function Details() {
             return (
               <article
                 key={`${card.heading}-${index}`}
+                data-reveal
                 className={`details-event-card${isReception ? ' details-event-card--reception' : ''}`}
                 style={{
                   padding: `var(--details-event-card-padding, ${theme.spacing['2xl']} ${theme.spacing.xl})`,

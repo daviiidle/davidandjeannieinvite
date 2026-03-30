@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import { theme } from '../theme';
 import { useLanguage } from '../context/useLanguage';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 interface SocialLink {
   platform: string;
@@ -20,11 +22,14 @@ export function Footer({
   showSocials = false,
   socialLinks = []
 }: FooterProps) {
+  const footerRef = useRef<HTMLElement>(null);
   const currentYear = new Date().getFullYear();
   const { strings } = useLanguage();
+  useScrollReveal(footerRef, { duration: 0.7, yOffset: 10, staggerAmount: 0.08 });
 
   return (
     <footer
+      ref={footerRef}
       className="app-footer"
       style={{
         backgroundColor: theme.colors.primary.dustyBlue,
@@ -73,6 +78,7 @@ export function Footer({
         {/* Contact Email */}
         {email && (
           <p
+            data-reveal
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               fontSize: theme.typography.fontSize.sm,
@@ -97,6 +103,7 @@ export function Footer({
 
         {/* Divider */}
         <div
+          data-reveal
           style={{
             width: '60px',
             height: '1px',
@@ -107,6 +114,7 @@ export function Footer({
         />
 
         <p
+          data-reveal
           style={{
             fontFamily: theme.typography.fontFamily.serif,
             fontSize: theme.typography.fontSize.lg,
@@ -119,6 +127,7 @@ export function Footer({
         </p>
         {strings.footer.formalLine ? (
           <p
+            data-reveal
             style={{
               fontFamily: theme.typography.fontFamily.sans,
               fontSize: theme.typography.fontSize.sm,
@@ -133,6 +142,7 @@ export function Footer({
 
         {/* Copyright */}
         <p
+          data-reveal
           className="font-serif"
           style={{
             fontFamily: theme.typography.fontFamily.serif,
@@ -146,6 +156,7 @@ export function Footer({
         </p>
 
         <p
+          data-reveal
           style={{
             fontFamily: theme.typography.fontFamily.sans,
             fontSize: theme.typography.fontSize.xs,
@@ -160,6 +171,7 @@ export function Footer({
         </p>
 
         <p
+          data-reveal
           className="font-sans"
           style={{
             fontFamily: theme.typography.fontFamily.sans,
@@ -174,6 +186,7 @@ export function Footer({
 
         {/* Made with Love */}
         <p
+          data-reveal
           className="font-sans"
           style={{
             fontFamily: theme.typography.fontFamily.sans,

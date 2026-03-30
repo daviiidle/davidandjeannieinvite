@@ -1,9 +1,17 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Mea+Culpa&family=Playball&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Mea+Culpa&family=Playball&display=swap');
 @import "./styles/animations.css";
 
 :root {
   --app-header-height: 80px;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 @theme {

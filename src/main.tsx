@@ -11,6 +11,7 @@ import './styles/uploadcare.css';
 import './styles/section.css';
 import './styles/saveTheDateIntro.css';
 import './styles/rsvpIntro.css';
+import './styles/animations.css';
 import App from './App.tsx';
 import { initHeroOpener } from './heroOpener';
 

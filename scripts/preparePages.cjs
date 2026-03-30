@@ -12,9 +12,8 @@ if (!fs.existsSync(appIndexPath)) {
 const appIndex = fs.readFileSync(appIndexPath, 'utf8');
 
 const appRoutes = [
-  'save-the-date',
-  path.join('en', 'save-the-date'),
-  path.join('vi', 'save-the-date'),
+  'en',
+  'vi',
 ];
 
 const shareImageUrl = 'https://davidandjeanniewedding.site/images/share-image.jpg?v=20260103';
@@ -25,7 +24,7 @@ const metaByLocale = {
     title: 'David &amp; Jeannie — Save the Date',
     description:
       'October 3, 2026 • Melbourne, Victoria. Please visit the link, scroll down, and enter your details to receive updates.',
-    url: 'https://davidandjeanniewedding.site/en/save-the-date/',
+    url: 'https://davidandjeanniewedding.site/en/',
     locale: 'en_AU',
     localeAlternate: 'vi_VN',
   },
@@ -34,7 +33,7 @@ const metaByLocale = {
     title: 'David &amp; Jeannie — Lễ Thành Hôn',
     description:
       'Kính mời quý khách truy cập đường dẫn bên dưới và vui lòng điền thông tin để nhận thêm cập nhật về lễ cưới.',
-    url: 'https://davidandjeanniewedding.site/vi/save-the-date/',
+    url: 'https://davidandjeanniewedding.site/vi/',
     locale: 'vi_VN',
     localeAlternate: 'en_AU',
   },
@@ -62,7 +61,7 @@ const applyMeta = (html, meta) => {
 for (const route of appRoutes) {
   const dir = path.join(distDir, route);
   fs.mkdirSync(dir, { recursive: true });
-  const locale = route.startsWith('vi') ? 'vi' : 'en';
+  const locale = route === 'vi' ? 'vi' : 'en';
   const localizedIndex = applyMeta(appIndex, metaByLocale[locale]);
   fs.writeFileSync(path.join(dir, 'index.html'), localizedIndex);
 }
@@ -91,12 +90,25 @@ const redirectTemplate = (target) => `<!doctype html>
 </html>
 `;
 
-fs.writeFileSync(path.join(distDir, 'index.html'), redirectTemplate('/en/save-the-date'));
+fs.writeFileSync(path.join(distDir, 'index.html'), redirectTemplate('/en/'));
 
 const enDir = path.join(distDir, 'en');
 const viDir = path.join(distDir, 'vi');
 fs.mkdirSync(enDir, { recursive: true });
 fs.mkdirSync(viDir, { recursive: true });
 
-fs.writeFileSync(path.join(enDir, 'index.html'), redirectTemplate('/en/save-the-date'));
-fs.writeFileSync(path.join(viDir, 'index.html'), redirectTemplate('/vi/save-the-date'));
+fs.writeFileSync(path.join(enDir, 'index.html'), applyMeta(appIndex, metaByLocale.en));
+fs.writeFileSync(path.join(viDir, 'index.html'), applyMeta(appIndex, metaByLocale.vi));
+
+// Preserve old save-the-date links by redirecting them to the current localized entry points.
+const legacyRoutes = [
+  { route: 'save-the-date', target: '/en/' },
+  { route: path.join('en', 'save-the-date'), target: '/en/' },
+  { route: path.join('vi', 'save-the-date'), target: '/vi/' },
+];
+
+for (const { route, target } of legacyRoutes) {
+  const dir = path.join(distDir, route);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), redirectTemplate(target));
+}
