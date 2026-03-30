@@ -263,19 +263,6 @@ export function RSVP({
             {deadlineText}
           </p>
 
-          <p
-            style={{
-              fontFamily: theme.typography.fontFamily.sans,
-              fontSize: theme.typography.fontSize.xs,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: theme.colors.text.secondary,
-              marginBottom: theme.spacing['2xl'],
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            {t.adultNote}
-          </p>
         </div>
 
         {showSuccessToast && (

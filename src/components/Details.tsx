@@ -15,19 +15,11 @@ export function Details() {
 
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
-  const etiquettePreview = strings.etiquette?.preview;
   const scriptTextStyle = {
     transform: 'translateZ(0)',
     backfaceVisibility: 'hidden' as const,
     WebkitFontSmoothing: 'antialiased' as const,
     textRendering: 'geometricPrecision' as const,
-  };
-  const setAddressLinkState = (element: HTMLAnchorElement | null, isActive: boolean) => {
-    if (!element) return;
-    element.style.color = isActive ? theme.colors.primary.dustyBlue : theme.colors.text.secondary;
-    element.style.borderBottomColor = isActive
-      ? theme.colors.primary.dustyBlue
-      : `${theme.colors.primary.dustyBlue}40`;
   };
 
   return (
@@ -90,11 +82,13 @@ export function Details() {
             const mapLink = card.address
               ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`
               : undefined;
+            const embedLink = card.address
+              ? `https://www.google.com/maps?q=${encodeURIComponent(card.address)}&z=16&output=embed`
+              : undefined;
             const assetBase = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
             const imageSrc = card.image
               ? `${assetBase}/${card.image.replace(/^\/+/, '')}`
               : undefined;
-            const qrSize = 120;
 
             return (
               <article
@@ -156,30 +150,96 @@ export function Details() {
                 )}
 
                 {mapLink && (
-                  <a
-                    href={mapLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <div
                     style={{
-                      fontFamily: theme.typography.fontFamily.sans,
-                      fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      lineHeight: theme.typography.lineHeight.relaxed,
-                      letterSpacing: '0.03em',
-                      textDecoration: 'none',
-                      borderBottom: `1px solid ${theme.colors.primary.dustyBlue}40`,
-                      paddingBottom: 2,
-                      transition: theme.transitions.base,
-                      display: 'inline-block',
-                      marginBottom: theme.spacing.xs,
+                      width: '100%',
+                      maxWidth: '340px',
+                      marginTop: theme.spacing.sm,
+                      display: 'grid',
+                      gap: theme.spacing.sm,
                     }}
-                    onMouseEnter={(event) => setAddressLinkState(event.currentTarget, true)}
-                    onFocus={(event) => setAddressLinkState(event.currentTarget, true)}
-                    onMouseLeave={(event) => setAddressLinkState(event.currentTarget, false)}
-                    onBlur={(event) => setAddressLinkState(event.currentTarget, false)}
                   >
-                    {card.address}
-                  </a>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: theme.spacing.xs,
+                        color: theme.colors.text.secondary,
+                      }}
+                    >
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        style={{
+                          width: '18px',
+                          height: '18px',
+                          flex: '0 0 auto',
+                          fill: theme.colors.primary.dustyBlue,
+                        }}
+                      >
+                        <path d="M12 2.75a6.75 6.75 0 0 0-6.75 6.75c0 4.76 5.14 10.27 6.2 11.36a.79.79 0 0 0 1.1 0c1.06-1.09 6.2-6.6 6.2-11.36A6.75 6.75 0 0 0 12 2.75Zm0 9.25a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+                      </svg>
+                      <span
+                        style={{
+                          fontFamily: theme.typography.fontFamily.sans,
+                          fontSize: theme.typography.fontSize.sm,
+                          lineHeight: theme.typography.lineHeight.relaxed,
+                          letterSpacing: '0.03em',
+                        }}
+                      >
+                        {card.address}
+                      </span>
+                    </div>
+
+                    {embedLink && (
+                      <div
+                        style={{
+                          width: '100%',
+                          borderRadius: theme.borderRadius.xl,
+                          overflow: 'hidden',
+                          border: '1px solid rgba(139, 157, 195, 0.22)',
+                          boxShadow: '0 14px 28px rgba(130, 149, 180, 0.14)',
+                          background: '#f7fafc',
+                        }}
+                      >
+                        <iframe
+                          title={`${card.heading} map`}
+                          src={embedLink}
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          style={{
+                            width: '100%',
+                            height: '220px',
+                            border: 0,
+                            display: 'block',
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    <a
+                      href={mapLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        alignSelf: 'center',
+                        fontFamily: theme.typography.fontFamily.sans,
+                        fontSize: theme.typography.fontSize.xs,
+                        fontWeight: theme.typography.fontWeight.semibold,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.16em',
+                        color: theme.colors.primary.dustyBlue,
+                        textDecoration: 'none',
+                        border: '1px solid rgba(139, 157, 195, 0.35)',
+                        borderRadius: theme.borderRadius.full,
+                        padding: '0.8rem 1.1rem',
+                        background: 'rgba(255,255,255,0.9)',
+                      }}
+                    >
+                      {details.mapCtaLabel}
+                    </a>
+                  </div>
                 )}
 
                 {card.description && (
@@ -196,25 +256,6 @@ export function Details() {
                   >
                     {card.description}
                   </p>
-                )}
-
-                {mapLink && (
-                  <div
-                    style={{
-                      marginTop: theme.spacing.sm,
-                      opacity: 0.8,
-                    }}
-                  >
-                    <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${encodeURIComponent(mapLink)}`}
-                      alt={`QR code for ${card.heading} location`}
-                      style={{
-                        width: `${qrSize}px`,
-                        height: `${qrSize}px`,
-                        borderRadius: theme.borderRadius.md,
-                      }}
-                    />
-                  </div>
                 )}
 
                 {imageSrc && (
@@ -244,71 +285,6 @@ export function Details() {
             );
           })}
         </div>
-
-        {etiquettePreview && (
-          <div className="details-etiquette-preview">
-            <article
-              className="details-etiquette-preview__card flex flex-col gap-6 p-6 md:p-10 lg:flex-row lg:items-center lg:gap-10"
-            >
-              <div className="flex-1 text-center lg:text-left space-y-4">
-                <p
-                  className="font-serif text-2xl md:text-3xl text-[#8B9DC3]"
-                  style={{
-                    fontFamily: theme.typography.fontFamily.serif,
-                    color: theme.colors.primary.dustyBlue,
-                  }}
-                >
-                  {etiquettePreview.title}
-                </p>
-                <p
-                  className="font-sans text-base text-slate-600 leading-relaxed"
-                  style={{
-                    fontFamily: theme.typography.fontFamily.sans,
-                    color: theme.colors.text.secondary,
-                  }}
-                >
-                  {etiquettePreview.summary}
-                </p>
-                <ul className="space-y-2">
-                  {etiquettePreview.highlights.map((item) => (
-                    <li
-                      key={item}
-                      className="font-sans text-sm text-slate-600 flex items-start justify-center lg:justify-start gap-2"
-                      style={{
-                        fontFamily: theme.typography.fontFamily.sans,
-                        color: theme.colors.text.secondary,
-                      }}
-                    >
-                      <span
-                        aria-hidden="true"
-                        style={{
-                          color: theme.colors.primary.dustyBlue,
-                        }}
-                      >
-                        •
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex flex-col items-center gap-3 text-center">
-                <button
-                  type="button"
-                  className="button-link"
-                  onClick={() =>
-                    document.getElementById('etiquette')?.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start',
-                    })
-                  }
-                >
-                  {etiquettePreview.ctaLabel}
-                </button>
-              </div>
-            </article>
-          </div>
-        )}
       </div>
     </section>
   );

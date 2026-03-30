@@ -58,6 +58,7 @@ export interface TranslationContent {
       seconds: string;
     };
     sectionTitle: string;
+    mapCtaLabel: string;
     infoTitle?: string;
     moreInfoLabel?: string;
     lessInfoLabel?: string;
@@ -166,7 +167,6 @@ export interface TranslationContent {
     attendanceNo: string;
     havingTrouble: string;
     contactHint: string;
-    adultNote: string;
     partySizeLabel: string;
     partySizeHelper: string;
     otherGuestNamesLabel: string;
@@ -214,66 +214,50 @@ export interface TranslationContent {
 
 const englishInfoSections: InfoSection[] = [
   {
-    title: 'Reception Details',
+    title: 'Before the Ceremony',
     layoutIndex: 0,
     subsections: [
       {
-        heading: 'Reception Timing',
-        body: 'The reception will conclude at 11:00 PM. For guests requiring transportation, departures will begin at 11:15 PM. Kindly note that the venue will close at 11:30 PM.',
+        heading: 'Arrival',
+        body: 'Please arrive 15 minutes early so everyone can be seated before the ceremony begins.',
       },
       {
-        heading: 'Photography & Mobile Phones',
-        body: 'We warmly invite you to be fully present and enjoy the celebration with us. Kindly avoid stepping into aisles or using flash photography during key moments. Our photographers will capture the evening, allowing you to relax and celebrate.',
-      },
-      {
-        heading: 'Seating Arrangements',
-        body: 'All seating details are available on this website. Please enter your name exactly as shown on your invitation to view your assigned table.',
+        heading: 'Phones & Photos',
+        body: 'We would love for everyone to be fully present. Please keep phones away and avoid stepping into the aisle during key moments.',
       },
     ],
   },
   {
-    title: 'Attire & Dress Code',
+    title: 'Dress Code',
     layoutIndex: 1,
     subsections: [
       {
-        heading: 'Dress Code: Semi-Formal / Elegant',
+        heading: 'Semi-Formal / Elegant',
         body: 'We kindly ask guests to dress in polished, evening-appropriate attire.',
         bullets: [
-          'Cocktail dresses, elegant evening wear, or dress shirts are most welcome',
+          'Cocktail dresses, elegant evening wear, or dress shirts are welcome',
           'Neutral, pastel, or rich evening tones are encouraged',
           'Please avoid casual clothing such as jeans, sneakers, or T-shirts',
         ],
       },
-      {
-        heading: 'Children',
-        body: 'This will be an adults-focused celebration to allow everyone to fully enjoy the evening. A small number of children from our immediate family will be in attendance. Thank you sincerely for your understanding.',
-      },
-      {
-        heading: 'Gifts & Well-Wishes',
-        body: 'Your presence is the greatest gift to us. For those who wish to share their well-wishes in a traditional way, a wishing table will be available at the reception.',
-      },
     ],
   },
   {
-    title: 'Celebration Notes',
+    title: 'Reception',
     layoutIndex: 2,
     subsections: [
       {
-        heading: 'Celebration Notes',
-        body: 'Dinner will be served as individual plated courses throughout the evening. We invite everyone to enjoy each course at a relaxed pace.',
+        heading: 'Evening Notes',
+        body: 'Dinner will be served throughout the evening. The reception will conclude at 11:00 PM, and the venue will close at 11:30 PM.',
       },
       {
-        heading: 'Respectful Celebration',
-        body: 'To ensure a pleasant evening for all, we kindly ask guests to:',
+        heading: 'A Few Gentle Notes',
+        body: 'To help the evening flow smoothly, we kindly ask guests to:',
         bullets: [
           'Celebrate responsibly',
           'Be mindful of volume as the evening progresses',
           'Show respect to venue staff and fellow guests',
         ],
-      },
-      {
-        heading: 'At a Glance',
-        body: 'Semi-formal / elegant attire | Adults-focused celebration | Assigned seating via website | Reception ends at 11:00 PM | Venue closes at 11:30 PM',
       },
     ],
   },
@@ -281,29 +265,25 @@ const englishInfoSections: InfoSection[] = [
 
 const vietnameseInfoSections: InfoSection[] = [
   {
-    title: 'Chi tiết tiệc cưới',
+    title: 'Trước giờ làm lễ',
     layoutIndex: 0,
     subsections: [
       {
-        heading: 'Thời gian tiệc',
-        body: 'Tiệc cưới sẽ kết thúc lúc 11:00 PM. Xe đưa đón sẽ bắt đầu khởi hành từ 11:15 PM. Địa điểm tổ chức sẽ đóng cửa lúc 11:30 PM.',
+        heading: 'Thời gian',
+        body: 'Kính mong quý khách đến sớm khoảng 15 phút để ổn định chỗ ngồi trước khi nghi lễ bắt đầu.',
       },
       {
-        heading: 'Chụp hình & điện thoại',
-        body: 'Kính mong quý khách dành thời gian tận hưởng khoảnh khắc cùng chúng tôi. Xin vui lòng tránh di chuyển vào lối đi hoặc sử dụng đèn flash trong các nghi thức chính. Đội ngũ nhiếp ảnh sẽ ghi lại những khoảnh khắc đẹp trong suốt buổi tiệc.',
-      },
-      {
-        heading: 'Sắp xếp chỗ ngồi',
-        body: 'Thông tin chỗ ngồi được cập nhật trên website. Xin vui lòng nhập đúng họ tên như trên thiệp mời để xem bàn được sắp xếp.',
+        heading: 'Điện thoại & chụp hình',
+        body: 'Chúng tôi rất mong mọi người có thể hiện diện trọn vẹn trong khoảnh khắc này. Xin vui lòng hạn chế dùng điện thoại và tránh bước vào lối đi trong những phần quan trọng.',
       },
     ],
   },
   {
-    title: 'Trang phục & Dress code',
+    title: 'Trang phục',
     layoutIndex: 1,
     subsections: [
       {
-        heading: 'Trang phục: Bán trang trọng / Thanh lịch',
+        heading: 'Bán trang trọng / Thanh lịch',
         body: 'Chúng tôi trân trọng kính mời quý khách mặc trang phục lịch sự, phù hợp với không khí buổi tiệc.',
         bullets: [
           'Váy dạ hội nhẹ, trang phục cocktail hoặc áo sơ mi lịch sự đều rất phù hợp',
@@ -311,36 +291,24 @@ const vietnameseInfoSections: InfoSection[] = [
           'Xin vui lòng hạn chế trang phục quá giản dị như quần jeans, giày thể thao hoặc áo thun',
         ],
       },
-      {
-        heading: 'Trẻ em',
-        body: 'Buổi tiệc được tổ chức chủ yếu dành cho người lớn để đảm bảo sự trang trọng. Một số ít trẻ em trong gia đình gần sẽ tham dự. Rất mong quý khách thông cảm và thấu hiểu.',
-      },
-      {
-        heading: 'Quà tặng & lời chúc',
-        body: 'Sự hiện diện của quý khách là niềm vinh hạnh lớn nhất đối với chúng tôi. Nếu quý khách muốn gửi lời chúc theo truyền thống, xin mời ghé bàn chúc mừng tại buổi tiệc.',
-      },
     ],
   },
   {
-    title: 'Ghi chú buổi tiệc',
+    title: 'Tiệc cưới',
     layoutIndex: 2,
     subsections: [
       {
-        heading: 'Lưu ý trong buổi tiệc',
-        body: 'Các món ăn sẽ được phục vụ theo từng phần trong suốt buổi tối. Kính mong quý khách thưởng thức một cách thong thả và thoải mái.',
+        heading: 'Lưu ý buổi tối',
+        body: 'Bữa tối sẽ được phục vụ trong suốt buổi tối. Tiệc sẽ kết thúc lúc 11:00 PM và địa điểm sẽ đóng cửa lúc 11:30 PM.',
       },
       {
-        heading: 'Ăn mừng văn minh',
-        body: 'Để buổi tiệc diễn ra văn minh và trọn vẹn, xin quý khách vui lòng:',
+        heading: 'Một vài lưu ý nhỏ',
+        body: 'Để buổi tối diễn ra nhẹ nhàng và trọn vẹn, kính mong quý khách:',
         bullets: [
           'Vui mừng chừng mực',
           'Giữ âm lượng vừa phải về cuối buổi',
           'Tôn trọng nhân viên và các khách mời khác',
         ],
-      },
-      {
-        heading: 'Thông tin chính',
-        body: 'Trang phục lịch sự, thanh lịch | Tiệc chủ yếu dành cho người lớn | Có sắp xếp chỗ ngồi theo danh sách | Tiệc kết thúc lúc 11:00 PM | Địa điểm đóng cửa lúc 11:30 PM',
       },
     ],
   },
@@ -394,7 +362,8 @@ export const translations: Record<Language, TranslationContent> = {
         minutes: 'MINUTES',
         seconds: 'SECONDS',
       },
-      sectionTitle: 'Event Details',
+      sectionTitle: "Jeannie and David's Wedding",
+      mapCtaLabel: 'Open in Google Maps',
       infoTitle: 'Wedding Etiquette & Important Information',
       moreInfoLabel: 'More info',
       lessInfoLabel: 'Hide info',
@@ -542,8 +511,6 @@ export const translations: Record<Language, TranslationContent> = {
       attendanceNo: 'No, we cannot attend',
       havingTrouble: 'Having trouble?',
       contactHint: 'Email us and we will be happy to help.',
-      adultNote:
-        'This celebration is adults-focused. Only children from our extended family will attend. Thank you for understanding.',
       partySizeLabel: 'Total guests attending (including you)',
       partySizeHelper:
         'Please only include guests listed on your invitation.',
@@ -581,9 +548,8 @@ export const translations: Record<Language, TranslationContent> = {
       preview: {
         title: 'Wedding Etiquette',
         summary:
-          'Our celebration is adults-focused, the ceremony will be unplugged, and we kindly ask everyone to arrive a little early so seating runs smoothly.',
+          'The ceremony will be unplugged, and we kindly ask everyone to arrive a little early so seating runs smoothly.',
         highlights: [
-          'Adults-focused celebration with limited children from immediate family',
           'Unplugged ceremony — please keep phones away during the vows',
           'Arrive 15 minutes early to settle in before the procession',
         ],
@@ -644,6 +610,7 @@ export const translations: Record<Language, TranslationContent> = {
         seconds: 'GIÂY',
       },
       sectionTitle: 'Thông tin sự kiện',
+      mapCtaLabel: 'Mở trong Google Maps',
       infoTitle: 'Nghi thức & thông tin quan trọng',
       moreInfoLabel: 'Xem thêm',
       lessInfoLabel: 'Thu gọn',
@@ -793,8 +760,6 @@ export const translations: Record<Language, TranslationContent> = {
       attendanceNo: 'Rất tiếc, chúng tôi không đến được',
       havingTrouble: 'Gặp khó khăn?',
       contactHint: 'Gửi email cho chúng tôi để được hỗ trợ.',
-      adultNote:
-        'Buổi tiệc chủ yếu dành cho người lớn, chỉ các bé trong đại gia đình tham dự. Cảm ơn bạn đã thông cảm.',
       partySizeLabel: 'Tổng số khách tham dự (tính luôn bạn)',
       partySizeHelper:
         'Vui lòng chỉ bao gồm những người được ghi tên trên thiệp mời.',
@@ -832,9 +797,8 @@ export const translations: Record<Language, TranslationContent> = {
       preview: {
         title: 'Nghi thức cưới',
         summary:
-          'Tiệc ưu tiên người lớn, lễ cưới sẽ “unplugged” và chúng tôi mong mọi người đến sớm 15 phút để ổn định chỗ ngồi.',
+          'Lễ cưới sẽ “unplugged” và chúng tôi mong mọi người đến sớm 15 phút để ổn định chỗ ngồi.',
         highlights: [
-          'Tiệc hướng đến người lớn, chỉ có vài bé trong gia đình thân thiết',
           'Lễ cưới không dùng điện thoại — xin giữ máy trong túi suốt nghi thức',
           'Đến trước giờ làm lễ 15 phút để ổn định chỗ và kịp thời gian',
         ],

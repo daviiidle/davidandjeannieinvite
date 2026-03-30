@@ -56,7 +56,6 @@ export function TheDay() {
     >
       <TimelineCard
         title="Wedding Day Timeline"
-        subtitle="David + Jeannie"
         dateLine="October 3, 2026"
         items={DAY_TIMELINE}
         titleRef={titleRef}

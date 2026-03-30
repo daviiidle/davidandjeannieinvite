@@ -149,7 +149,6 @@ export function ReceptionTimeline() {
     >
       <TimelineCard
         title="Reception Timeline"
-        subtitle="David + Jeannie"
         dateLine="October 3, 2026"
         items={items}
         titleRef={titleRef}

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useCallback, useRef, useState } from 'react';
-import { Navigation } from './components';
 import { Details } from './components/Details';
 import { RSVP } from './components/RSVP';
 import { Footer } from './components/Footer';
@@ -137,23 +136,6 @@ export default function App() {
     }
   }, [path, viewToken]);
 
-  const handleNavigate = useCallback((targetId?: string) => {
-    const localizedHome = buildLocalizedPath(language, '/');
-    if (path !== localizedHome) {
-      pendingScrollIdRef.current = targetId ?? null;
-      navigate(localizedHome);
-      return;
-    }
-    if (targetId) {
-      const el = document.getElementById(targetId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [language, navigate, path]);
-
   const handleLanguageChange = useCallback((nextLanguage: Language) => {
     if (nextLanguage === language) return;
     const nextPath = buildLocalizedPath(nextLanguage, viewToken ? pagePath : '/');
@@ -163,8 +145,6 @@ export default function App() {
   return (
     <LanguageProvider language={language} onChangeLanguage={handleLanguageChange}>
       <div>
-        <Navigation onNavigate={handleNavigate} />
-
         <main>
           {viewToken ? (
             <RsvpAccessPage token={viewToken} />

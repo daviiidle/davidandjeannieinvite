@@ -138,7 +138,6 @@ export interface TimelineItem {
 
 interface TimelineCardProps {
   title: string;
-  subtitle: string;
   dateLine: string;
   items: TimelineItem[];
   titleRef?: React.Ref<HTMLHeadingElement>;
@@ -146,7 +145,6 @@ interface TimelineCardProps {
 
 export function TimelineCard({
   title,
-  subtitle,
   dateLine,
   items,
   titleRef,
@@ -165,15 +163,6 @@ export function TimelineCard({
       aria-label={`${title} schedule`}
     >
       <header className="timeline-card__header">
-        <p
-          className="timeline-card__kicker"
-          style={{
-            fontFamily: theme.typography.fontFamily.sans,
-            color: mutedColor,
-          }}
-        >
-          {subtitle}
-        </p>
         <h2
           className="timeline-card__title page-title-handwriting"
           ref={titleRef}
@@ -205,7 +194,7 @@ export function TimelineCard({
         <ul className="timeline-card__list">
           {items.map((item) => (
             <li key={`${item.time}-${item.label}`} className="timeline-card__item">
-              <div className="timeline-card__icon-col">
+              <div className="timeline-card__topline">
                 <span
                   className="timeline-card__icon"
                   role="img"
@@ -213,8 +202,6 @@ export function TimelineCard({
                 >
                   {iconMap[item.icon]}
                 </span>
-              </div>
-              <div className="timeline-card__content">
                 <p
                   className="timeline-card__time"
                   style={{ fontFamily: theme.typography.fontFamily.sans, color: textColor }}
@@ -231,6 +218,8 @@ export function TimelineCard({
                 >
                   {item.label}
                 </p>
+              </div>
+              <div className="timeline-card__content">
                 {item.description && (
                   <p
                     className="timeline-card__description"

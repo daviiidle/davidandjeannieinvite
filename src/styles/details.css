@@ -3,23 +3,6 @@
   isolation: isolate;
 }
 
-.details-section::before {
-  content: "";
-  position: absolute;
-  top: clamp(-20px, -4vw, 0px);
-  left: 50%;
-  width: clamp(480px, 96vw, 840px);
-  height: clamp(480px, 96vw, 840px);
-  background-image: url('/images/flowerbirds-details.png');
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: contain;
-  opacity: 0.3;
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .details-section > * {
   position: relative;
   z-index: 1;
@@ -72,24 +55,6 @@
   row-gap: var(--details-event-gap);
   margin-bottom: 4rem;
   position: relative;
-  padding-top: clamp(135px, 18vw, 210px);
-}
-
-.details-event-grid::before {
-  content: "";
-  position: absolute;
-  top: clamp(-56px, -6vw, -18px);
-  left: 50%;
-  width: clamp(384px, 114vw, 768px);
-  height: clamp(192px, 31.2vw, 312px);
-  background-image: url('/images/details-floral-top.png');
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: contain;
-  opacity: 0.3;
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .details-event-grid > * {
@@ -108,7 +73,6 @@
     --details-event-gap: 1rem;
     --details-event-card-padding: 2.25rem 1.75rem;
     margin-bottom: 0.25rem;
-    padding-top: clamp(115px, 20vw, 170px);
   }
 
   .details-event-card--reception {
@@ -127,7 +91,6 @@
     --details-event-gap: 0;
     --details-event-card-padding: 0 0;
     margin-bottom: 0;
-    padding-top: clamp(100px, 24vw, 160px);
   }
 
   .details-event-card--reception {

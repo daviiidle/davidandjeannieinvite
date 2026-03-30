@@ -83,9 +83,9 @@
 
 .timeline-card__list-wrapper {
   width: 100%;
-  max-width: 760px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 12px;
 }
 
 .timeline-card__list {
@@ -94,58 +94,59 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 4vw, 2.75rem);
+  gap: clamp(1rem, 2.8vw, 1.75rem);
 }
 
 .timeline-card__item {
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(1.1rem, 3vw, 1.75rem);
+  display: grid;
+  gap: 0.35rem;
+  padding-bottom: 0.15rem;
 }
 
-.timeline-card__icon-col {
-  width: 56px;
+.timeline-card__topline {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-shrink: 0;
+  align-items: baseline;
+  gap: 0.55rem;
 }
 
 .timeline-card__icon {
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 28px;
+  align-self: flex-start;
 }
 
 .timeline-card__content {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
+  padding-left: calc(28px + 0.55rem);
 }
 
 .timeline-card__time {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.86rem;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  flex: 0 0 118px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 
 .timeline-card__label {
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  line-height: 1.2;
+  flex: 1 1 auto;
 }
 
 .timeline-card__description {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.94rem;
+  line-height: 1.35;
 }
 
 @media (max-width: 640px) {
@@ -160,24 +161,40 @@
   }
 
   .timeline-card {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .timeline-card__list-wrapper {
-    padding: 0 16px;
+    padding: 0;
   }
 
-  .timeline-card__item {
-    flex-direction: column;
-    gap: 0.85rem;
-    align-items: flex-start;
+  .timeline-card__topline {
+    gap: 0.45rem;
   }
 
-  .timeline-card__icon-col {
-    width: auto;
+  .timeline-card__icon {
+    width: 18px;
+    height: 18px;
+    flex-basis: 22px;
   }
 
   .timeline-card__content {
-    align-items: flex-start;
+    padding-left: calc(22px + 0.45rem);
+  }
+
+  .timeline-card__time {
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    flex-basis: 104px;
+  }
+
+  .timeline-card__label {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .timeline-card__description {
+    font-size: 0.88rem;
+    line-height: 1.32;
   }
 }
