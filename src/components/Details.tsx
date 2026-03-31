@@ -29,7 +29,6 @@ export function Details() {
       aria-labelledby="details-heading"
       className="details-section"
       style={{
-        paddingTop: `var(--details-section-padding-top, ${theme.spacing['4xl']})`,
         paddingBottom: theme.spacing['4xl'],
         paddingLeft: theme.spacing.lg,
         paddingRight: theme.spacing.lg,
@@ -41,46 +40,64 @@ export function Details() {
           margin: '0 auto',
         }}
       >
-        {/* Section Title */}
-        <h2
-          id="details-heading"
-          ref={headingRef}
-          data-reveal
-          className="font-serif text-center mb-12 page-title-handwriting"
-          style={{
-            fontFamily: '"Cormorant Garamond", "Playfair Display", serif',
-            fontSize: 'clamp(3.1rem, 8.5vw, 5.75rem)',
-            fontWeight: 400,
-            color: theme.colors.primary.dustyBlue,
-            letterSpacing: '0.015em',
-            marginBottom: theme.spacing['2xl'],
-            lineHeight: 0.92,
-            paddingTop: '0.35rem',
-            paddingBottom: '0.2rem',
-            overflow: 'visible',
-          }}
-        >
-          <span className="details-heading-stack">
-            <span className="details-heading-stack__row">Jeannie</span>
-            <span className="details-heading-stack__amp">&amp;</span>
-            <span className="details-heading-stack__row">David</span>
-          </span>
-        </h2>
-
-        <div data-reveal className="details-countdown">
-          <Countdown />
+        <div className="details-intro">
+          <img
+            className="details-intro__splash"
+            src="/images/splash-mobile.png"
+            alt=""
+            aria-hidden="true"
+            width={560}
+            height={1212}
+          />
+          <h2
+            id="details-heading"
+            ref={headingRef}
+            data-reveal
+            className="font-serif text-center page-title-handwriting"
+            style={{
+              fontFamily: '"Great Vibes", "Playfair Display", serif',
+              fontSize: 'clamp(4rem, 10vw, 7rem)',
+              fontWeight: 400,
+              color: theme.colors.primary.dustyBlue,
+              letterSpacing: '0.01em',
+              marginBottom: 0,
+              lineHeight: 1,
+              paddingTop: '0.35rem',
+              paddingBottom: '0.2rem',
+              overflow: 'visible',
+            }}
+          >
+            <span className="details-heading-stack">
+              <span className="details-heading-stack__row">
+                <span className="hero-handwriting details-heading-stack__reveal details-heading-stack__reveal--first">
+                  <span className="hero-handwriting__text">Jeannie</span>
+                </span>
+              </span>
+              <span className="details-heading-stack__amp">&amp;</span>
+              <span className="details-heading-stack__row">
+                <span className="hero-handwriting details-heading-stack__reveal details-heading-stack__reveal--second">
+                  <span className="hero-handwriting__text">David</span>
+                </span>
+              </span>
+            </span>
+          </h2>
         </div>
 
-        {/* Ceremony & Reception */}
-        <div
-          className="details-event-grid grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 'var(--details-event-gap, 2rem)',
-            alignItems: 'stretch',
-          }}
-        >
+        <div className="details-body">
+          <div data-reveal className="details-countdown">
+            <Countdown />
+          </div>
+
+          {/* Ceremony & Reception */}
+          <div
+            className="details-event-grid grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: 'var(--details-event-gap, 2rem)',
+              alignItems: 'stretch',
+            }}
+          >
           {mainCards.map((card, index) => {
             const isReception = index === 1;
             const mapLink = card.address
@@ -292,6 +309,7 @@ export function Details() {
               </article>
             );
           })}
+          </div>
         </div>
       </div>
     </section>
