@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Mea+Culpa&family=Playball&display=swap');
 @import "./styles/animations.css";
 
 :root {
@@ -12,6 +11,11 @@ body,
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 @theme {

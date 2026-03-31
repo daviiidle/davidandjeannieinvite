@@ -2,6 +2,12 @@ import { useRef, useCallback } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/useLanguage';
+import { Countdown } from './Countdown';
+
+const DETAIL_IMAGE_DIMENSIONS: Record<string, { width: number; height: number }> = {
+  'images/ceremony.jpg': { width: 680, height: 382 },
+  'images/reception.jpg': { width: 2560, height: 1706 },
+};
 
 export function Details() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -15,12 +21,6 @@ export function Details() {
 
   const cards = details.cards;
   const mainCards = cards.slice(0, 2);
-  const scriptTextStyle = {
-    transform: 'translateZ(0)',
-    backfaceVisibility: 'hidden' as const,
-    WebkitFontSmoothing: 'antialiased' as const,
-    textRendering: 'geometricPrecision' as const,
-  };
 
   return (
     <section
@@ -60,22 +60,16 @@ export function Details() {
             overflow: 'visible',
           }}
         >
-          <span className="details-heading-monogram" style={scriptTextStyle}>
-            <span className="details-heading-monogram__script details-heading-monogram__script--j">
-              J
-            </span>
-            <span className="details-heading-monogram__script details-heading-monogram__script--d">
-              D
-            </span>
-            <span className="details-heading-monogram__row details-heading-monogram__row--top">
-              <span className="details-heading-monogram__name">JEANNIE</span>
-            </span>
-            <span className="details-heading-monogram__amp">&amp;</span>
-            <span className="details-heading-monogram__row details-heading-monogram__row--bottom">
-              <span className="details-heading-monogram__name">DAVID</span>
-            </span>
+          <span className="details-heading-stack">
+            <span className="details-heading-stack__row">Jeannie</span>
+            <span className="details-heading-stack__amp">&amp;</span>
+            <span className="details-heading-stack__row">David</span>
           </span>
         </h2>
+
+        <div data-reveal className="details-countdown">
+          <Countdown />
+        </div>
 
         {/* Ceremony & Reception */}
         <div
@@ -99,6 +93,7 @@ export function Details() {
             const imageSrc = card.image
               ? `${assetBase}/${card.image.replace(/^\/+/, '')}`
               : undefined;
+            const imageDimensions = card.image ? DETAIL_IMAGE_DIMENSIONS[card.image] : undefined;
 
             return (
               <article
@@ -281,14 +276,16 @@ export function Details() {
                     <img
                       src={imageSrc}
                       alt={`${card.heading} venue`}
-                    style={{
-                      width: '100%',
-                      maxWidth: '320px',
-                      height: '220px',
-                      borderRadius: theme.borderRadius['2xl'],
-                      boxShadow: theme.shadows.md,
-                      objectFit: 'cover',
-                    }}
+                      width={imageDimensions?.width}
+                      height={imageDimensions?.height}
+                      style={{
+                        width: '100%',
+                        maxWidth: '320px',
+                        height: '220px',
+                        borderRadius: theme.borderRadius['2xl'],
+                        boxShadow: theme.shadows.md,
+                        objectFit: 'cover',
+                      }}
                     />
                   </div>
                 )}

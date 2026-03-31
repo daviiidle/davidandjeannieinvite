@@ -94,6 +94,11 @@ export default function App() {
     const match = pagePath.match(/^\/r\/([^/]+)$/);
     return match ? match[1] : null;
   }, [pagePath]);
+  const inviteToken = useMemo(() => {
+    const match = pagePath.match(/^\/invite\/([^/]+)$/);
+    return match ? match[1] : null;
+  }, [pagePath]);
+  const activeGuestToken = inviteToken ?? viewToken;
   const pendingScrollIdRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -112,13 +117,13 @@ export default function App() {
   }, [path]);
 
   useEffect(() => {
-    if (viewToken) return;
+    if (activeGuestToken) return;
     const legacyTarget = LEGACY_SECTION_TARGETS[pagePath];
     const isHome = pagePath === '/';
     if (isHome || !legacyTarget) return;
     pendingScrollIdRef.current = legacyTarget;
     navigate(buildLocalizedPath(language, '/'), { replace: true, skipScroll: true });
-  }, [viewToken, pagePath, language, navigate]);
+  }, [activeGuestToken, pagePath, language, navigate]);
 
   useEffect(() => {
     if (!pendingScrollIdRef.current) return;
@@ -127,20 +132,20 @@ export default function App() {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     pendingScrollIdRef.current = null;
-  }, [path, viewToken]);
+  }, [path, activeGuestToken]);
 
   useEffect(() => {
     if (pendingScrollIdRef.current) return;
-    if (!viewToken) {
+    if (!activeGuestToken) {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
-  }, [path, viewToken]);
+  }, [path, activeGuestToken]);
 
   const handleLanguageChange = useCallback((nextLanguage: Language) => {
     if (nextLanguage === language) return;
-    const nextPath = buildLocalizedPath(nextLanguage, viewToken ? pagePath : '/');
+    const nextPath = buildLocalizedPath(nextLanguage, activeGuestToken ? pagePath : '/');
     navigate(nextPath);
-  }, [language, pagePath, viewToken, navigate]);
+  }, [language, pagePath, activeGuestToken, navigate]);
 
   return (
     <LanguageProvider language={language} onChangeLanguage={handleLanguageChange}>
@@ -156,7 +161,7 @@ export default function App() {
               <Etiquette />
               <TheDay />
               <ReceptionTimeline />
-              <RSVP />
+              <RSVP redirectToken={inviteToken} />
             </>
           )}
         </main>

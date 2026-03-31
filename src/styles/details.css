@@ -50,32 +50,20 @@
   z-index: -1;
 }
 
-.details-heading-monogram {
-  position: relative;
+.details-heading-stack {
   display: inline-grid;
   justify-items: center;
-  line-height: 0.86;
+  gap: 0.08em;
   min-width: min(82vw, 420px);
-  padding: 0.28em 0.18em 0.18em;
 }
 
-.details-heading-monogram__row,
-.details-heading-monogram__amp {
-  position: relative;
-  z-index: 2;
+.details-heading-stack__row,
+.details-heading-stack__amp {
   display: block;
+  line-height: 0.86;
 }
 
-.details-heading-monogram__row--top {
-  transform: translateX(-0.02em);
-}
-
-.details-heading-monogram__row--bottom {
-  transform: translateX(0.02em);
-}
-
-.details-heading-monogram__name {
-  display: block;
+.details-heading-stack__row {
   font-family: "Cormorant Garamond", "Playfair Display", serif;
   font-size: 0.62em;
   font-weight: 600;
@@ -83,7 +71,7 @@
   text-transform: uppercase;
 }
 
-.details-heading-monogram__amp {
+.details-heading-stack__amp {
   font-family: "Cormorant Garamond", "Playfair Display", serif;
   font-size: 0.34em;
   font-weight: 600;
@@ -92,59 +80,18 @@
   margin: 0.05em 0 0.08em;
 }
 
-.details-heading-monogram__script {
-  position: absolute;
-  z-index: 1;
-  line-height: 0.72;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.details-heading-monogram__script--j {
-  font-family: "Mea Culpa", "Playfair Display", serif;
-  font-size: 1.58em;
-  color: rgba(139, 157, 195, 0.92);
-  top: 0.02em;
-  left: 0.36em;
-  transform: rotate(-8deg);
-}
-
-.details-heading-monogram__script--d {
-  font-family: "Cormorant Garamond", "Playfair Display", serif;
-  font-size: 1.34em;
-  font-weight: 500;
-  color: rgba(139, 157, 195, 0.98);
-  top: -0.02em;
-  left: 0.24em;
-  transform: rotate(0deg) scaleX(0.96);
+.details-countdown .countdown-block {
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
 }
 
 @media (max-width: 430px) {
-  .details-heading-monogram {
+  .details-heading-stack {
     min-width: min(88vw, 340px);
   }
 
-  .details-heading-monogram__row--top {
-    transform: translateX(-0.01em);
-  }
-
-  .details-heading-monogram__row--bottom {
-    transform: translateX(0.01em);
-  }
-
-  .details-heading-monogram__script {
-    font-size: 1.22em;
-  }
-
-  .details-heading-monogram__script--j {
-    font-size: 1.34em;
-    left: 0.28em;
-  }
-
-  .details-heading-monogram__script--d {
-    font-size: 1.18em;
-    top: 0.02em;
-    left: 0.18em;
+  .details-countdown .countdown-block {
+    margin-bottom: 2rem;
   }
 }
 

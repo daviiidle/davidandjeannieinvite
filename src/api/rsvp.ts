@@ -5,6 +5,11 @@ const rawBase =
   (import.meta.env.VITE_RSVP_ENDPOINT as string | undefined) ?? DEFAULT_RSVP_BASE;
 
 const RSVP_API_BASE_URL = normalizeBaseUrl(rawBase);
+const DEFAULT_VENIO_RSVP_BASE_URL = 'https://venio.site';
+const rawVenioBase =
+  (import.meta.env.VITE_VENIO_RSVP_BASE_URL as string | undefined) ??
+  DEFAULT_VENIO_RSVP_BASE_URL;
+const VENIO_RSVP_BASE_URL = normalizeBaseUrl(rawVenioBase);
 
 function normalizeBaseUrl(value: string) {
   if (!value) return '';
@@ -32,6 +37,11 @@ const rawSaveTheDate =
 export const SAVE_THE_DATE_WEBHOOK_URL =
   rawSaveTheDate && rawSaveTheDate.length > 0 ? rawSaveTheDate : RSVP_ENDPOINTS.intent;
 
+export function buildVenioRsvpUrl(token: string) {
+  if (!VENIO_RSVP_BASE_URL) return '';
+  return `${VENIO_RSVP_BASE_URL}/rsvp/${encodeURIComponent(token)}`;
+}
+
 export function withQueryParams(
   url: string,
   params: Record<string, string | number | undefined>
@@ -49,4 +59,4 @@ export function withQueryParams(
   return `${url}${separator}${queryString}`;
 }
 
-export { RSVP_API_BASE_URL };
+export { RSVP_API_BASE_URL, VENIO_RSVP_BASE_URL };

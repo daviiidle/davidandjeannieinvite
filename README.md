@@ -57,8 +57,10 @@ Create a `.env`/`.env.local` with:
 
 ```
 VITE_RSVP_ENDPOINT=https://script.google.com/macros/s/DEPLOYMENT_ID/exec
+VITE_VENIO_RSVP_BASE_URL=https://venio.site
 ```
 
 This value should be the **base** Apps Script URL (the code appends `/rsvp` and `/rsvp/update`).
+`VITE_VENIO_RSVP_BASE_URL` is used when tokenized `/invite/<token>` links should hand guests off to Venio for their private RSVP.
 
 For more backend detail (reminder jobs, SMS logging, etc.) see `apps-script/README.md`.

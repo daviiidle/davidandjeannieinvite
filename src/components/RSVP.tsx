@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useEffect } from 'react';
 import { theme } from '../theme';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useLanguage } from '../context/useLanguage';
-import { RSVP_ENDPOINTS } from '../api/rsvp';
+import { buildVenioRsvpUrl, RSVP_ENDPOINTS } from '../api/rsvp';
 import {
   FormCard,
   FormField,
@@ -21,6 +21,7 @@ interface RSVPProps {
   heading?: string;
   deadline?: string;
   emails?: string[];
+  redirectToken?: string | null;
 }
 
 type AttendanceValue = 'YES' | 'NO' | '';
@@ -55,6 +56,7 @@ export function RSVP({
   heading,
   deadline,
   emails = ['daviiidle@gmail.com', 'jheea05@gmail.com'],
+  redirectToken = null,
 }: RSVPProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -67,6 +69,7 @@ export function RSVP({
   const deadlineText = deadline ?? strings.rsvp.deadline;
   const t = strings.rsvp;
   const hiddenLanguageValue = language === 'vi' ? 'VI' : 'EN';
+  const venioRsvpUrl = redirectToken ? buildVenioRsvpUrl(redirectToken) : '';
 
   const [formState, setFormState] = useState<FormState>(createDefaultFormState());
 
@@ -207,6 +210,8 @@ export function RSVP({
     }
   };
 
+  const isRedirectMode = Boolean(redirectToken && venioRsvpUrl);
+
   return (
     <Section
       id="rsvp"
@@ -293,14 +298,66 @@ export function RSVP({
           data-reveal
           style={{ marginBottom: theme.spacing['2xl'] }}
         >
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: theme.spacing.lg,
-            }}
-          >
+          {isRedirectMode ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing.lg,
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  color: theme.colors.text.secondary,
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.base,
+                  lineHeight: 1.7,
+                }}
+              >
+                {language === 'vi'
+                  ? 'Liên kết này dành riêng cho lời mời của bạn. Nhấn nút bên dưới để tiếp tục tới trang RSVP riêng của bạn trong Venio.'
+                  : 'This link is tied to your invitation. Use the button below to continue to your private RSVP page in Venio.'}
+              </p>
+              <a
+                href={venioRsvpUrl}
+                className="link-hover"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  minHeight: '52px',
+                  minWidth: '240px',
+                  padding: `${theme.spacing.sm} ${theme.spacing.xl}`,
+                  borderRadius: theme.borderRadius.full,
+                  backgroundColor: theme.colors.primary.dustyBlue,
+                  color: theme.colors.background.white,
+                  textDecoration: 'none',
+                  fontFamily: theme.typography.fontFamily.sans,
+                  fontSize: theme.typography.fontSize.sm,
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {language === 'vi' ? 'Mở RSVP riêng' : 'Open Personal RSVP'}
+              </a>
+              <FormHelperText>
+                {language === 'vi'
+                  ? 'Bạn sẽ được đưa tới trang RSVP Venio đã gắn sẵn đúng lời mời của mình.'
+                  : 'You will be taken to the Venio RSVP page already matched to your invitation.'}
+              </FormHelperText>
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing.lg,
+              }}
+            >
             <input type="hidden" name="language" value={hiddenLanguageValue} readOnly />
             <FormGrid>
               <FormField
@@ -481,7 +538,8 @@ export function RSVP({
                 {errorMessage ?? 'We could not submit your RSVP. Please email us.'}
               </FormErrorText>
             )}
-          </form>
+            </form>
+          )}
         </FormCard>
 
         <div
