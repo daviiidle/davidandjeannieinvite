@@ -193,8 +193,18 @@ export function TimelineCard({
       <div className="timeline-card__list-wrapper">
         <ul className="timeline-card__list">
           {items.map((item) => (
-            <li key={`${item.time}-${item.label}`} className="timeline-card__item" data-reveal>
-              <div className="timeline-card__topline">
+            <li
+              key={`${item.time}-${item.label}`}
+              className="timeline-card__item"
+              data-reveal
+            >
+              <div
+                className={
+                  item.time.includes('–')
+                    ? 'timeline-card__topline timeline-card__topline--range'
+                    : 'timeline-card__topline'
+                }
+              >
                 <span
                   className="timeline-card__icon"
                   role="img"

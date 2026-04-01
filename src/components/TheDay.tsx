@@ -8,25 +8,16 @@ const DAY_TIMELINE: TimelineItem[] = [
   {
     time: '1:00 PM',
     label: 'Ceremony',
-    description: 'Holy Family Parish · please arrive 15 minutes early for seating.',
     icon: 'ceremony',
   },
   {
     time: '2:00 PM',
     label: 'Photos & Congratulations',
-    description: 'Confetti, hugs, and portraits outside the church.',
     icon: 'photos',
-  },
-  {
-    time: '2:45 PM – 5:15 PM',
-    label: 'Intermission',
-    description: 'Rest, explore nearby cafés, or head home to refresh before the evening.',
-    icon: 'intermission',
   },
   {
     time: '6:00 PM',
     label: 'Reception Doors Open',
-    description: 'Ultima Function Centre · Sketch Room welcomes you with drinks.',
     icon: 'cocktail',
   },
 ];

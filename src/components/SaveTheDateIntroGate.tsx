@@ -12,7 +12,6 @@ const INTRO_VIDEO_SOURCES = [
 ];
 const INTRO_POSTER_SRC = withBasePath('/images/ceremony.jpg');
 const OVERLAY_FADE_DURATION_MS = 1500;
-const CONTENT_REVEAL_DURATION_MS = 1500;
 const MOBILE_SPLASH_DURATION_MS = 2900;
 const MOBILE_SPLASH_FADE_MS = 450;
 const VIDEO_DURATION_FALLBACK_SEC = 5;
@@ -129,10 +128,9 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
   }, [markIntroSeen, beginReveal]);
 
   const handleVideoPlay = useCallback(() => {
-    markIntroSeen();
     hasStartedPlaybackRef.current = true;
     setVideoReady(true);
-  }, [markIntroSeen]);
+  }, []);
 
   const handleLoadedMetadata = useCallback(() => {
     const node = videoRef.current;
@@ -146,21 +144,6 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
   const handleCanPlay = useCallback(() => {
     setVideoReady(true);
   }, []);
-
-  const handleTimeUpdate = useCallback(() => {
-    if (!shouldPlayVideoIntro) return;
-    if (revealStartedRef.current) return;
-    const node = videoRef.current;
-    if (!node) return;
-    const durationSec =
-      Number.isFinite(node.duration) && node.duration > 0
-        ? node.duration
-        : videoDurationRef.current;
-    const threshold = Math.max(durationSec - CONTENT_REVEAL_DURATION_MS / 1000, 0);
-    if (node.currentTime >= threshold) {
-      beginReveal();
-    }
-  }, [shouldPlayVideoIntro, beginReveal]);
 
   useEffect(() => {
     if (!shouldPlayVideoIntro) return;
@@ -279,7 +262,6 @@ export function SaveTheDateIntroGate({ children }: SaveTheDateIntroGateProps) {
                 onPlay={handleVideoPlay}
                 onLoadedMetadata={handleLoadedMetadata}
                 onCanPlay={handleCanPlay}
-                onTimeUpdate={handleTimeUpdate}
                 disablePictureInPicture
                 controls={false}
                 aria-hidden="true"

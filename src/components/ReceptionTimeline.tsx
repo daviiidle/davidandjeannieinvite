@@ -9,85 +9,71 @@ const RECEPTION_ITEMS: TimelineItem[] = [
   {
     time: '6:00 PM',
     label: 'Doors Open & Welcome Drinks',
-    description: 'Guests arrive, mingle, and enjoy a first toast in the Sketch Room.',
     icon: 'cocktail',
   },
   {
     time: '6:30 PM',
     label: 'Grand Entrance & Introductions',
-    description: 'We make our entrance followed by immediate family and the wedding party.',
     icon: 'ceremony',
   },
   {
     time: '6:40 PM',
     label: 'Entrées Served',
-    description: 'Plated starters are served to each guest.',
     icon: 'dinner',
   },
   {
     time: '7:15 PM',
     label: 'Speeches · Round One',
-    description: 'Heartfelt words from family to set the tone for the night.',
     icon: 'speeches',
   },
   {
     time: '7:35 PM',
     label: 'Main Courses Begin',
-    description: 'Plated main courses are served to each guest.',
     icon: 'dinner',
   },
   {
     time: '8:15 PM',
     label: 'Noodle & Rice Courses',
-    description: 'Traditional celebratory courses round out the meal.',
     icon: 'dinner',
   },
   {
     time: '8:35 PM',
     label: 'Cake Cutting & Dessert',
-    description: 'Cake service, tea, and coffee.',
     icon: 'cake',
   },
   {
     time: '8:50 PM',
     label: 'First Dance',
-    description: 'We share our first dance together.',
     icon: 'firstDance',
   },
   {
     time: '8:55 PM',
     label: 'Family Dances',
-    description: 'Bride & father, groom & mother—short songs to keep the evening flowing.',
     icon: 'dancing',
   },
   {
     time: '9:05 PM',
     label: 'Games & Family Toast',
-    description: 'A playful couple game followed by a shared table toast.',
     icon: 'games',
   },
   {
-    time: '9:25 PM – 11:00 PM',
-    label: 'Dancing & Celebration',
-    description: 'Dance floor stays lively through 11:00 PM.',
+    time: '9:25 PM',
+    label: 'Open Dancing',
     icon: 'dancing',
   },
   {
     time: '11:00 PM',
     label: 'Last Songs & Slow Goodbyes',
-    description: 'Dancing concludes with final songs so everyone can catch their breath.',
     icon: 'dancing',
   },
   {
     time: '11:15 PM',
     label: 'Farewells & Departures',
-    description: 'Guests begin departing from 11:15 PM—hugs and thank-yous all around.',
     icon: 'farewell',
   },
   {
     time: '11:30 PM',
     label: 'Venue Clear',
-    description: 'Venue fully cleared by 11:30 PM in line with venue timing.',
     icon: 'farewell',
   },
 ];
@@ -106,13 +92,11 @@ export function ReceptionTimeline() {
         return {
           ...item,
           label: 'Phục vụ món khai vị',
-          description: 'Kính mời quý khách dùng món khai vị theo phần phục vụ riêng.',
         };
       }
       return {
         ...item,
         label: 'Entrées Served',
-        description: 'Plated starters are served to each guest.',
       };
     }
     if (item.label === 'Main Courses Begin') {
@@ -120,13 +104,11 @@ export function ReceptionTimeline() {
         return {
           ...item,
           label: 'Phục vụ món chính',
-          description: 'Kính mời quý khách dùng món chính theo phần phục vụ riêng.',
         };
       }
       return {
         ...item,
         label: 'Main Courses Begin',
-        description: 'Plated main courses are served to each guest.',
       };
     }
     return item;
