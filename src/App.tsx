@@ -19,6 +19,12 @@ const LEGACY_SECTION_TARGETS: Record<string, string> = {
   '/rsvp': 'rsvp',
 };
 
+const getInviteQueryToken = () => {
+  if (typeof window === 'undefined') return null;
+  const token = new URLSearchParams(window.location.search).get('invite');
+  return token?.trim() || null;
+};
+
 const SUPPORTED_LANGUAGES: Language[] = ['en', 'vi'];
 const DEFAULT_LANGUAGE: Language = 'en';
 
@@ -96,7 +102,7 @@ export default function App() {
   }, [pagePath]);
   const inviteToken = useMemo(() => {
     const match = pagePath.match(/^\/invite\/([^/]+)$/);
-    return match ? match[1] : null;
+    return match ? match[1] : getInviteQueryToken();
   }, [pagePath]);
   const activeGuestToken = inviteToken ?? viewToken;
   const pendingScrollIdRef = useRef<string | null>(null);
