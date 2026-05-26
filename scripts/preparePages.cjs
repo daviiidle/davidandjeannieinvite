@@ -21,9 +21,9 @@ const shareImageUrl = 'https://davidandjeanniewedding.site/images/share-image.jp
 const metaByLocale = {
   en: {
     htmlLang: 'en-AU',
-    title: 'David &amp; Jeannie — Save the Date',
+    title: 'David &amp; Jeannie — Wedding Invitation',
     description:
-      'October 3, 2026 • Melbourne, Victoria. Please visit the link, scroll down, and enter your details to receive updates.',
+      '3rd of October, 2026 • Melbourne, Victoria. Please visit the link, scroll down, and enter your details.',
     url: 'https://davidandjeanniewedding.site/en/',
     locale: 'en_AU',
     localeAlternate: 'vi_VN',
@@ -47,11 +47,13 @@ const applyMeta = (html, meta) => {
     [/property="og:description" content="[^"]*"/, `property="og:description" content="${meta.description}"`],
     [/property="og:url" content="[^"]*"/, `property="og:url" content="${meta.url}"`],
     [/property="og:image" content="[^"]*"/, `property="og:image" content="${shareImageUrl}"`],
+    [/property="og:image:secure_url" content="[^"]*"/, `property="og:image:secure_url" content="${shareImageUrl}"`],
     [/property="og:locale" content="[^"]*"/, `property="og:locale" content="${meta.locale}"`],
     [/property="og:locale:alternate" content="[^"]*"/, `property="og:locale:alternate" content="${meta.localeAlternate}"`],
     [/name="twitter:title" content="[^"]*"/, `name="twitter:title" content="${meta.title}"`],
     [/name="twitter:description" content="[^"]*"/, `name="twitter:description" content="${meta.description}"`],
     [/name="twitter:image" content="[^"]*"/, `name="twitter:image" content="${shareImageUrl}"`],
+    [/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${meta.url}" />`],
     [/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`],
   ];
 
@@ -66,14 +68,34 @@ for (const route of appRoutes) {
   fs.writeFileSync(path.join(dir, 'index.html'), localizedIndex);
 }
 
-const redirectTemplate = (target) => `<!doctype html>
-<html lang="en">
+const metaTagBlock = (meta) => `    <meta name="description" content="${meta.description}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="David &amp; Jeannie Wedding">
+    <meta property="og:title" content="${meta.title}">
+    <meta property="og:description" content="${meta.description}">
+    <meta property="og:url" content="${meta.url}">
+    <meta property="og:image" content="${shareImageUrl}">
+    <meta property="og:image:secure_url" content="${shareImageUrl}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="David &amp; Jeannie Wedding Invitation">
+    <meta property="og:locale" content="${meta.locale}">
+    <meta property="og:locale:alternate" content="${meta.localeAlternate}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${meta.title}">
+    <meta name="twitter:description" content="${meta.description}">
+    <meta name="twitter:image" content="${shareImageUrl}">`;
+
+const redirectTemplate = (target, meta = metaByLocale.en) => `<!doctype html>
+<html lang="${meta.htmlLang}">
   <head>
     <meta charset="utf-8">
-    <title>Redirecting...</title>
+    <title>${meta.title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+${metaTagBlock(meta)}
     <meta http-equiv="refresh" content="0; url=${target}">
-    <link rel="canonical" href="${target}">
+    <link rel="canonical" href="${meta.url}">
     <script>
       (function () {
         var target = "${target}";
@@ -85,7 +107,7 @@ const redirectTemplate = (target) => `<!doctype html>
     </script>
   </head>
   <body>
-    <p>Redirecting to <a href="${target}">Save the Date</a>...</p>
+    <p>Redirecting to <a href="${target}">Wedding Invitation</a>...</p>
   </body>
 </html>
 `;
@@ -109,6 +131,7 @@ const legacyRoutes = [
 
 for (const { route, target } of legacyRoutes) {
   const dir = path.join(distDir, route);
+  const locale = target.startsWith('/vi') ? 'vi' : 'en';
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), redirectTemplate(target));
+  fs.writeFileSync(path.join(dir, 'index.html'), redirectTemplate(target, metaByLocale[locale]));
 }

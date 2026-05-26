@@ -354,7 +354,7 @@ export const translations: Record<Language, TranslationContent> = {
       saveTheDate: 'Save the Date',
       familiesHeading: 'Jeannie & David',
       sponsorsLabel: 'Principal Sponsors',
-      dateLabel: 'October 3, 2026',
+      dateLabel: '3rd of October, 2026',
       countdownTitle: 'Countdown to the Wedding Day',
       countdownUnits: {
         days: 'DAYS',

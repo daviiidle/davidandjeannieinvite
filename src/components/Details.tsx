@@ -49,10 +49,12 @@ export function Details() {
             width={560}
             height={1212}
           />
+        </div>
+
+        <div className="details-title-block" data-reveal>
           <h2
             id="details-heading"
             ref={headingRef}
-            data-reveal
             className="font-serif text-center page-title-handwriting"
             style={{
               fontFamily: '"Great Vibes", "Playfair Display", serif',
@@ -81,6 +83,7 @@ export function Details() {
               </span>
             </span>
           </h2>
+          <p className="details-date-line">{details.dateLabel}</p>
         </div>
 
         <div className="details-body">
